@@ -131,8 +131,3 @@ find_and_use_package(SFML 2 COMPONENTS graphics window system)
 
 ## Boost
 find_and_use_package(Boost COMPONENTS thread)
-
-## UUID
-if (WIN32)
-	target_link_libraries(${PROJECT_NAME} Rpcrt4.lib)
-endif()

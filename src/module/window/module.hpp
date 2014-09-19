@@ -12,7 +12,7 @@ public:
 	void update();
 
 private:
-	typedef manager::entity::id id;
+	using id = manager::entity::id;
 
 	void listeners();
 	void open(id entity);

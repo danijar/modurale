@@ -60,7 +60,7 @@ private:
 
 } // namespace event_detail
 
-typedef event_detail::manager event;
+using event = event_detail::manager;
 
 } // namespace manager
 } // namespace engine

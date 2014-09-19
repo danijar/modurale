@@ -46,7 +46,7 @@ void window::update()
 
 void window::listeners()
 {
-	typedef Keyboard::Key Key;
+	using Key = Keyboard::Key;
 
 	manager.event.listen("type:window:key", [=](id entity, Key code) {
 		// Get window property

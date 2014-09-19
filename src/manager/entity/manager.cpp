@@ -1,13 +1,6 @@
 #include "manager.hpp"
 
 #include <chrono>
-extern "C" {
-#ifdef _WIN32
-#include <Rpc.h>
-#else
-#include <uuid/uuid.h>
-#endif
-}
 
 namespace engine {
 namespace manager {
@@ -22,25 +15,7 @@ entity::~entity()
 
 entity::id entity::create()
 {
-	id entity = 0;
-#ifdef _WIN32
-	UUID uuid;
-	UuidCreate(&uuid);
-	entity |= uuid.Data1;
-	entity <<= 32;
-	entity |= uuid.Data2;
-	entity <<= 16;
-	entity |= uuid.Data2;
-#else
-	// Untested
-	uuid_t uuid;
-	uuid_generate_random(uuid);
-	for (int i = 0; i < 8; ++i) {
-		entity <<= 8;
-		entity |= uuid[i];
-	}
-#endif
-	return entity;
+	return m_generator();
 }
 
 unsigned int entity::check(id entity)

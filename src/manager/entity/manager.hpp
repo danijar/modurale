@@ -10,13 +10,17 @@
 #include <atomic>
 #include <functional>
 #include <boost/thread/shared_mutex.hpp>
+#include <boost/uuid/uuid.hpp>
+#include <boost/uuid/uuid_generators.hpp>
+#include <boost/functional/hash.hpp>
 
 namespace engine {
 namespace manager {
 
 class entity {
 public:
-	typedef uint64_t id;
+	using id = boost::uuids::uuid;
+	using id_hash = boost::hash<boost::uuids::uuid>;
 
 	entity();
 	~entity();
@@ -40,7 +44,7 @@ private:
 		virtual void remove(id entity) = 0;
 		virtual bool check(id entity) = 0;
 
-		std::unordered_map<id, size_t> m_indices;
+		std::unordered_map<id, size_t, id_hash> m_indices;
 		std::unordered_map<size_t, id> m_ids;
 		boost::shared_mutex m_values_mutex, m_expired_mutex;
 		std::set<id> m_expired;
@@ -56,6 +60,7 @@ private:
 	template <typename T> size_t get_index(property<T> &p, id entity);
 	void update();
 
+	boost::uuids::random_generator m_generator;
 	std::unordered_map<std::type_index, std::unique_ptr<abstract_property>> m_properties;
 	std::atomic<bool> m_update_running{ true };
 	std::thread m_update;
