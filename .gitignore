@@ -1,0 +1,23 @@
+# Dependencies
+/external/
+
+# Build
+/build/
+*.exe
+*.ilk
+*.pdb
+
+# CLion
+.idea
+
+# Visual Studio
+*.sln
+*.sdf
+*.opensdf
+*.suo
+*.vcxproj
+*.vcxproj.filters
+*.vcxproj.user
+
+# Windows
+Thumbs.db

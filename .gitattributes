@@ -1,0 +1,12 @@
+# Line endings
+* text eol=lf
+
+# Text files
+*.md text
+*.hpp text
+*.inl text
+*.cpp text
+
+# Binary files
+*.png binary
+*.jpg binary
