@@ -13,15 +13,15 @@ public:
 	module &detach(std::string name);
 	void activate(std::string name);
 	void deactivate(std::string name);
-	bool active(std::string name);
+	bool active(std::string name) const;
 	void init();
 	void update();
-	bool running();
+	bool running() const;
 
 private:
 	struct entry {
 		entry(module &module) : m_module(module) {}
-		bool operator=(const entry &rhs) { return m_module.name == rhs.m_module.name; }
+		bool operator=(const entry &rhs) const;
 		module &m_module;
 		bool m_active = true;
 	};

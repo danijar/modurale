@@ -26,9 +26,9 @@ public:
 	~entity();
 	id create();
 	template <typename T> T&add(id entity);
-	template <typename T> T &get(id entity);
-	template <typename T> bool check(id entity);
-	unsigned int check(id entity);
+	template <typename T> T &get(id entity) const;
+	template <typename T> bool check(id entity) const;
+	unsigned int check(id entity) const;
 	// Template whole iterator, not just parameter type because they can't automatically get deducted.
 	// template <typename T> void each(std::function<void(T)> iterator);
 	// template <typename T> void each(std::function<void(T, id)> iterator);
@@ -36,13 +36,13 @@ public:
 	template <typename T> void each(std::function<void(T&, id)> iterator);
 	template <typename T> void remove(id entity);
 	void remove(id entity);
-	template <typename T> id resolve(size_t index);
-	template <typename T> size_t size();
+	template <typename T> id resolve(size_t index) const;
+	template <typename T> size_t size() const;
 
 private:
 	struct abstract_property {
 		virtual void remove(id entity) = 0;
-		virtual bool check(id entity) = 0;
+		virtual bool check(id entity) const = 0;
 
 		std::unordered_map<id, size_t, id_hash> m_indices;
 		std::unordered_map<size_t, id> m_ids;
@@ -51,13 +51,13 @@ private:
 	};
 	template <typename T> struct property : abstract_property {
 		void remove(id entity);
-		bool check(id entity);
+		bool check(id entity) const;
 
 		std::vector<T> m_values;
 	};
 
-	template <typename T> property<T> &get_property();
-	template <typename T> size_t get_index(property<T> &p, id entity);
+	template <typename T> property<T> &get_property() const;
+	template <typename T> size_t get_index(property<T> &p, id entity) const;
 	void update();
 
 	boost::uuids::random_generator m_generator;

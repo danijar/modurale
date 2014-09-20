@@ -56,19 +56,12 @@ void system::deactivate(string name)
 
 }
 
-bool system::active(string name)
+bool system::active(string name) const
 {
 	for (auto i : m_modules)
 		if (i.m_module.name == name)
 			return i.m_active;
 	throw runtime_error("The module does not exist.");
-}
-
-void system::init()
-{
-	for (auto i : m_modules)
-		if (i.m_active)
-			i.m_module.init();
 }
 
 void system::update()
@@ -78,9 +71,14 @@ void system::update()
 			i.m_module.update();
 }
 
-bool system::running()
+bool system::running() const
 {
 	return m_running;
+}
+
+bool system::entry::operator=(const entry &rhs) const
+{
+	return m_module.name == rhs.m_module.name;
 }
 
 } // namespace system

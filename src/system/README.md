@@ -4,13 +4,6 @@ Sytem
 The system is the global control unit of the application. It holds both modules
 and managers and updates the former.
 
-Initialization
---------------
-
-After adding all modules to the system, it must the initialized by calling
-`void init()`. This injects a reference to the running variable, which may be
-modified by the modules to exit the system.
-
 Update
 ------
 

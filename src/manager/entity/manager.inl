@@ -29,7 +29,7 @@ T &entity::add(id entity)
 }
 
 template <typename T>
-T &entity::get(id entity)
+T &entity::get(id entity) const
 {
 	// Return modifiable reference to element
 	auto &p = get_property<T>();
@@ -39,13 +39,14 @@ T &entity::get(id entity)
 }
 
 template <typename T>
-bool entity::check(id entity)
+bool entity::check(id entity) const
 {
 	// Check if property is attached
 	auto key = std::type_index(typeid(T));
-	if (m_properties.find(key) == m_properties.end())
+	auto find = m_properties.find(key);
+	if (find == m_properties.end())
 		return false;
-	return m_properties[key]->check();
+	return find->second->check();
 }
 
 /*
@@ -91,18 +92,19 @@ void entity::each(std::function<void(T&, id)> iterator)
 }
 
 template <typename T>
-size_t entity::size()
+size_t entity::size() const
 {
 	// Return number of properties of one type
 	auto key = std::type_index(typeid(T));
-	if (m_properties.find(key) == m_properties.end())
+	auto find = m_properties.find(key);
+	if (find == m_properties.end())
 		return 0;
-	auto &p = *((property<T>*)m_properties[key].get());
+	auto &p = *((property<T>*)find->second.get());
 	return p.m_values.size();
 }
 
 template <typename T>
-entity::id entity::resolve(size_t index)
+entity::id entity::resolve(size_t index) const
 {
 	// Get id by property type and index
 	auto &p = get_property<T>();
@@ -131,24 +133,25 @@ void entity::property<T>::remove(id entity)
 }
 
 template <typename T>
-bool entity::property<T>::check(id entity)
+bool entity::property<T>::check(id entity) const
 {
 	// Check if property has this entity
 	return m_indices.find(entity) != m_indices.end();
 }
 
 template <typename T>
-entity::property<T> &entity::get_property()
+entity::property<T> &entity::get_property() const
 {
 	// Get reference to property struct by type
 	auto key = std::type_index(typeid(T));
-	if (m_properties.find(key) == m_properties.end())
+	auto find = m_properties.find(key);
+	if (find == m_properties.end())
 		throw runtime_error("Property does not exist.");
-	return *((property<T>*)m_properties[key].get());
+	return *((property<T>*)find->second.get());
 }
 
 template <typename T>
-size_t entity::get_index(property<T> &p, id entity)
+size_t entity::get_index(property<T> &p, id entity) const
 {
 	if (p.m_indices.find(entity) == p.m_indices.end())
 		throw runtime_error("Entity does not have this property.");

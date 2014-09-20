@@ -18,7 +18,7 @@ entity::id entity::create()
 	return m_generator();
 }
 
-unsigned int entity::check(id entity)
+unsigned int entity::check(id entity) const
 {
 	// Counter number of attached properties
 	unsigned int counter = 0;

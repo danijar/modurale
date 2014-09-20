@@ -8,7 +8,6 @@ namespace module {
 class window : public engine::system::module {
 public:
 	window(std::string name);
-	void init();
 	void update();
 
 private:

@@ -10,7 +10,6 @@ class module {
 public:
 	module(std::string name);
 	void set(bool *running);
-	virtual void init();
 	virtual void update();
 	const std::string name;
 

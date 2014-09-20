@@ -9,9 +9,7 @@ namespace module {
 using namespace std;
 using namespace sf;
 
-window::window(string name) : module(name) {}
-
-void window::init()
+window::window(string name) : module(name)
 {
 	// Register listeners
 	listeners();

@@ -11,8 +11,6 @@ void module::set(bool *running)
 	m_running = running;
 }
 
-void module::init() {}
-
 void module::update() {}
 
 void module::exit()

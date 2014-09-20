@@ -10,7 +10,6 @@ int main()
 	module::window window("window");
 	system.attach(window);
 
-	system.init();
 	while (system.running())
 		system.update();
 
