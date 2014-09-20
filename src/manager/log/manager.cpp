@@ -6,14 +6,25 @@ namespace engine {
 namespace manager {
 using namespace std;
 
-void log::print(const string message)
+log::stream::stream(ostream &out, boost::mutex &mutex, string name, string sep, string end) : m_out(out), m_mutex(mutex), m_name(name), m_sep(sep), m_end(end) {}
+
+log::stream::~stream()
 {
-	cout << message << endl;
+	if (m_touched) {
+		m_out << m_end;
+		m_out.flush();
+		m_mutex.unlock();
+	}
 }
 
-void log::debug(const string message)
+log::stream log::info(string sep, string end)
 {
-	cout << message << endl;
+	return stream(m_out, m_mutex, "Name", sep, end);
+}
+
+log::stream log::debug(string sep, string end)
+{
+	return stream(m_out, m_mutex, "Name", sep, end);
 }
 
 } // namespace manager

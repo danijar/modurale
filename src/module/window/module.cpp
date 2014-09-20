@@ -37,6 +37,10 @@ void window::update()
 				break;
 			}
 		}
+
+		// Display what other modules have drawn and reset canvas
+		window.m_handle->display();
+		window.m_handle->clear(Color(100, 149, 237));
 	});
 
 	// Exit if last window was closed
@@ -54,10 +58,10 @@ void window::listeners()
 
 		// Handle different keys
 		switch (code) {
-		case Keyboard::Escape:
+		case Key::Escape:
 			close(entity);
 			break;
-		case Keyboard::F11:
+		case Key::F11:
 			window.m_fullscreen = !window.m_fullscreen;
 			open(entity);
 			break;
@@ -87,7 +91,7 @@ void window::close(window::id entity)
 {
 	// Close window and remove entity
 	auto &window = manager.entity.get<type::window>(entity);
-	manager.log.debug("Close window '" + window.m_title + "'.");
+	manager.log.debug() << "Close window" << "'" + window.m_title + "'";
 	window.m_handle->close();
 	manager.entity.remove(entity);
 }

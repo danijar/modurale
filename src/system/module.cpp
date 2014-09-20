@@ -19,7 +19,7 @@ void module::exit()
 {
 	if (!m_running)
 		throw runtime_error("Cannot exit system during initialization.");
-	manager.log.print("Exit the system.");
+	manager.log.info() << "Exit the system";
 	*m_running = false;
 }
 
