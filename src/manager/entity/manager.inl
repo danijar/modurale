@@ -49,7 +49,15 @@ bool entity::check(id entity) const
 	return find->second->check();
 }
 
-/*
+template <typename T> typename
+std::enable_if<!entity::is_std_function<T>::value>::type entity::each(T iterator)
+{
+	// All iterators that aren't already std::function use this overload. They
+	// get then converted to an std::function to allow signature distinction.
+	typename deduce_std_function<decltype(&T::operator())>::type std_function_iterator = iterator;
+	each(std_function_iterator);
+}
+
 template <typename T>
 void entity::each(std::function<void(T)> iterator)
 {
@@ -79,7 +87,6 @@ void entity::each(std::function<void(T&)> iterator)
 	for (auto &i : p.m_values)
 		iterator(*i);
 }
-*/
 
 template <typename T>
 void entity::each(std::function<void(T&, id)> iterator)

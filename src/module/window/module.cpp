@@ -22,7 +22,7 @@ window::window(string name) : module(name)
 void window::update()
 {
 	// Loop over all windows
-	manager.entity.each<type::window>([=](type::window &window, id entity) {
+	manager.entity.each([&](type::window &window, id entity) {
 		// Handle window events
 		Event e;
 		while (window.m_handle->isOpen() && window.m_handle->pollEvent(e)) {
