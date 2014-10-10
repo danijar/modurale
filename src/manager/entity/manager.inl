@@ -6,7 +6,7 @@
 namespace engine {
 namespace manager {
 
-template <typename T>
+template<typename T>
 T &entity::add(id entity)
 {
 	// Get type
@@ -28,7 +28,7 @@ T &entity::add(id entity)
 	return p.m_values.back();
 }
 
-template <typename T>
+template<typename T>
 T &entity::get(id entity) const
 {
 	// Return modifiable reference to element
@@ -38,7 +38,7 @@ T &entity::get(id entity) const
 	return p.m_values[index];
 }
 
-template <typename T>
+template<typename T>
 bool entity::check(id entity) const
 {
 	// Check if property is attached
@@ -49,8 +49,8 @@ bool entity::check(id entity) const
 	return find->second->check();
 }
 
-template <typename T> typename
-std::enable_if<!entity::is_std_function<T>::value>::type entity::each(T iterator)
+template<typename T>
+typename std::enable_if<!entity::is_std_function<T>::value>::type entity::each(T iterator)
 {
 	// All iterators that aren't already std::function use this overload. They
 	// get then converted to an std::function to allow signature distinction.
@@ -58,7 +58,7 @@ std::enable_if<!entity::is_std_function<T>::value>::type entity::each(T iterator
 	each(std_function_iterator);
 }
 
-template <typename T>
+template<typename T>
 void entity::each(std::function<void(T)> iterator)
 {
 	// Read only iterate over copies of all properties
@@ -68,7 +68,7 @@ void entity::each(std::function<void(T)> iterator)
 		iterator(*i);
 }
 
-template <typename T>
+template<typename T>
 void entity::each(std::function<void(T, id)> iterator)
 {
 	// Read only iterate over copies of all properties
@@ -78,7 +78,7 @@ void entity::each(std::function<void(T, id)> iterator)
 		iterator(p.m_values[i], p.m_ids[i]);
 }
 
-template <typename T>
+template<typename T>
 void entity::each(std::function<void(T&)> iterator)
 {
 	// Read and write iterate over references of all properties
@@ -88,7 +88,7 @@ void entity::each(std::function<void(T&)> iterator)
 		iterator(*i);
 }
 
-template <typename T>
+template<typename T>
 void entity::each(std::function<void(T&, id)> iterator)
 {
 	// Read and write iterate over references of all properties
@@ -98,7 +98,7 @@ void entity::each(std::function<void(T&, id)> iterator)
 		iterator(p.m_values[i], p.m_ids[i]);
 }
 
-template <typename T>
+template<typename T>
 size_t entity::size() const
 {
 	// Return number of properties of one type
@@ -110,7 +110,7 @@ size_t entity::size() const
 	return p.m_values.size();
 }
 
-template <typename T>
+template<typename T>
 entity::id entity::resolve(size_t index) const
 {
 	// Get id by property type and index
@@ -120,7 +120,7 @@ entity::id entity::resolve(size_t index) const
 	return 0;
 }
 
-template <typename T>
+template<typename T>
 void entity::property<T>::remove(id entity)
 {
 	// Check if entity exists
@@ -139,14 +139,14 @@ void entity::property<T>::remove(id entity)
 	m_indices.erase(entity);
 }
 
-template <typename T>
+template<typename T>
 bool entity::property<T>::check(id entity) const
 {
 	// Check if property has this entity
 	return m_indices.find(entity) != m_indices.end();
 }
 
-template <typename T>
+template<typename T>
 entity::property<T> &entity::get_property() const
 {
 	// Get reference to property struct by type
@@ -157,7 +157,7 @@ entity::property<T> &entity::get_property() const
 	return *((property<T>*)find->second.get());
 }
 
-template <typename T>
+template<typename T>
 size_t entity::get_index(property<T> &p, id entity) const
 {
 	if (p.m_indices.find(entity) == p.m_indices.end())

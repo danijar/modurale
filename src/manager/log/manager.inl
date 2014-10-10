@@ -5,7 +5,7 @@ namespace engine {
 namespace manager {
 using namespace std;
 
-template <typename T>
+template<typename T>
 log::stream &log::stream::operator<<(const T &v)
 {
 	if (!m_touched) {

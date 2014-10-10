@@ -24,8 +24,8 @@ public:
 	using id_hash = boost::hash<boost::uuids::uuid>;
 
 	// Decide whether a template type is an std::function specialization
-	template <class T> struct is_std_function : std::false_type {};
-	template <class T> struct is_std_function<std::function<T>> : std::true_type{};
+	template<class T> struct is_std_function : std::false_type {};
+	template<class T> struct is_std_function<std::function<T>> : std::true_type{};
 
 	// Constructor and destructor
 	entity();
@@ -33,23 +33,23 @@ public:
 	
 	// Manage properties
 	id create();
-	template <typename T> T &add(id entity);
-	template <typename T> T &get(id entity) const;
-	template <typename T> bool check(id entity) const;
+	template<typename T> T &add(id entity);
+	template<typename T> T &get(id entity) const;
+	template<typename T> bool check(id entity) const;
 	unsigned int check(id entity) const;
-	template <typename T> void remove(id entity);
+	template<typename T> void remove(id entity);
 	void remove(id entity);
 
 	// Iterate over all properties of one type
-	template <typename T> typename std::enable_if<!is_std_function<T>::value>::type each(T iterator);
-	template <typename T> void each(std::function<void(T)> iterator);
-	template <typename T> void each(std::function<void(T, id)> iterator);
-	template <typename T> void each(std::function<void(T&)> iterator);
-	template <typename T> void each(std::function<void(T&, id)> iterator);
+	template<typename T> typename std::enable_if<!is_std_function<T>::value>::type each(T iterator);
+	template<typename T> void each(std::function<void(T)> iterator);
+	template<typename T> void each(std::function<void(T, id)> iterator);
+	template<typename T> void each(std::function<void(T&)> iterator);
+	template<typename T> void each(std::function<void(T&, id)> iterator);
 	
 	// Public helpers for underlying vector
-	template <typename T> id resolve(size_t index) const;
-	template <typename T> size_t size() const;
+	template<typename T> id resolve(size_t index) const;
+	template<typename T> size_t size() const;
 
 private:
 	// Collection of all properties of one type
@@ -62,7 +62,7 @@ private:
 		boost::shared_mutex m_values_mutex, m_expired_mutex;
 		std::set<id> m_expired;
 	};
-	template <typename T> struct property : abstract_property {
+	template<typename T> struct property : abstract_property {
 		void remove(id entity);
 		bool check(id entity) const;
 
@@ -70,17 +70,17 @@ private:
 	};
 
 	// Get std::function specialization from general template type
-	template <typename T> struct deduce_std_function;
-	template <typename R, typename C, typename... T> struct deduce_std_function<R(C::*)(T...)> {
+	template<typename T> struct deduce_std_function;
+	template<typename R, typename C, typename... T> struct deduce_std_function<R(C::*)(T...)> {
 		using type = std::function<R(T...)>;
 	};
-	template <typename R, typename C, typename... T> struct deduce_std_function<R(C::*)(T...) const> {
+	template<typename R, typename C, typename... T> struct deduce_std_function<R(C::*)(T...) const> {
 		using type = std::function<R(T...)>;
 	};
 
 	// Templated helper functions for convenience
-	template <typename T> property<T> &get_property() const;
-	template <typename T> size_t get_index(property<T> &p, id entity) const;
+	template<typename T> property<T> &get_property() const;
+	template<typename T> size_t get_index(property<T> &p, id entity) const;
 
 	// Regular updates from asynchronous thread
 	void update();
