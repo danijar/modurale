@@ -9,7 +9,7 @@ template <typename F>
 event::dispatcher<Args...>::dispatcher(F f) : m_function(move(f)) {}
 
 template <typename... Args>
-void event::dispatcher<Args...>::operator() (vector<boost::any> const& v)
+void event::dispatcher<Args...>::operator() (vector<boost::any> const &v)
 {
 	if (v.size() < sizeof...(Args))
 		throw runtime_error("Callback has wrong arity.");
@@ -18,7 +18,7 @@ void event::dispatcher<Args...>::operator() (vector<boost::any> const& v)
 
 template <typename... Args>
 template <int... Is>
-void event::dispatcher<Args...>::do_call(vector<boost::any> const& v, std::integer_sequence<int, Is...>)
+void event::dispatcher<Args...>::do_call(vector<boost::any> const &v, std::integer_sequence<int, Is...>)
 {
 	try {
 		return m_function((get_ith<Args>(v, Is))...);
@@ -29,7 +29,7 @@ void event::dispatcher<Args...>::do_call(vector<boost::any> const& v, std::integ
 
 template <typename... Args>
 template <typename T>
-T event::dispatcher<Args...>::get_ith(vector<boost::any> const& v, int i)
+T event::dispatcher<Args...>::get_ith(vector<boost::any> const &v, int i)
 {
 	return boost::any_cast<T>(v[i]);
 }
@@ -56,20 +56,20 @@ function<void(vector<boost::any> const&)> event::make_dispatcher(void(*f)(Args..
 }
 	
 template <typename F>
-void event::listen(std::string const& event, F&& f)
+void event::listen(std::string const &event, F&& f)
 {
 	m_callbacks.emplace(event, make_dispatcher(forward<F>(f)));
 }
 
 template <typename... Args>
-void event::fire(std::string const& event, Args const&... args) {
+void event::fire(std::string const &event, Args const&... args) {
 	auto rng = m_callbacks.equal_range(event);
 	for (auto it = rng.first; it != rng.second; ++it)
 		call(it->second, args...);
 }
 
 template <typename F, typename... Args>
-void event::call(F const& f, Args const&... args) {
+void event::call(F const &f, Args const&... args) {
 	vector<boost::any> v{args...};
 	f(v);
 }

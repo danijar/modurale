@@ -14,18 +14,18 @@ namespace manager {
 
 class event {
 public:
-	template <typename F> void listen(std::string const& event, F&& f);
-	template <typename... Args> void fire(std::string const& event, Args const&... args);
+	template <typename F> void listen(std::string const &event, F&& f);
+	template <typename... Args> void fire(std::string const &event, Args const&... args);
 
 private:
 	template <typename... Args> class dispatcher {
 	public:
 		template <typename F> dispatcher(F f);
-		void operator() (std::vector<boost::any> const& v);
+		void operator() (std::vector<boost::any> const &v);
 
 	private:
-		template <int... Is> void do_call(std::vector<boost::any> const& v, std::integer_sequence<int, Is...>);
-		template <typename T> T get_ith(std::vector<boost::any> const& v, int i);
+		template <int... Is> void do_call(std::vector<boost::any> const &v, std::integer_sequence<int, Is...>);
+		template <typename T> T get_ith(std::vector<boost::any> const &v, int i);
 
 		std::function<void(Args...)> m_function;
 	};
@@ -44,7 +44,7 @@ private:
 
 	template <typename F> std::function<void(std::vector<boost::any> const&)> make_dispatcher(F&& f);
 	template <typename... Args> std::function<void(std::vector<boost::any> const&)> make_dispatcher(void(*f)(Args...));
-	template <typename F, typename... Args> void call(F const& f, Args const&... args);
+	template <typename F, typename... Args> void call(F const &f, Args const&... args);
 
 	std::multimap<std::string, dispatcher_type> m_callbacks;
 };

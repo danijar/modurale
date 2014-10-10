@@ -6,6 +6,8 @@ using namespace std;
 
 void system::attach(module &module)
 {
+	if (!module.name.length())
+		throw runtime_error("The module has no name.");
 	for (auto i : m_modules)
 		if (i.m_module.name == module.name)
 			throw runtime_error("There is already a module with the name.");

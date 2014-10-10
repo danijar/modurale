@@ -10,10 +10,10 @@ namespace system {
 class system {
 public:
 	void attach(module &module);
-	module &detach(std::string name);
-	void activate(std::string name);
+	module &detach (std::string name);
+	void activate  (std::string name);
 	void deactivate(std::string name);
-	bool active(std::string name) const;
+	bool active    (std::string name) const;
 	void init();
 	void update();
 	bool running() const;

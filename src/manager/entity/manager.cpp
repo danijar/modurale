@@ -4,6 +4,8 @@
 
 namespace engine {
 namespace manager {
+using namespace std;
+using namespace std::chrono;
 
 entity::entity() : m_update(&entity::update, this) {}
 
@@ -52,7 +54,7 @@ void entity::update()
 				p.m_expired.clear();
 			}
 		}
-		std::this_thread::sleep_for(std::chrono::milliseconds(10));
+		this_thread::sleep_for(milliseconds(10));
 	}
 }
 
