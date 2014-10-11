@@ -8,13 +8,13 @@ namespace system {
 
 class module {
 public:
-	module(std::string name);
+	module(std::string name, managers &managers);
 	void set(bool *running);
 	virtual void update();
 	const std::string name;
 
 protected:
-	managers manager;
+	managers::instances manager;
 	void exit();
 
 private:

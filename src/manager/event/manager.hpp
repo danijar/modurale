@@ -2,8 +2,10 @@
 
 #include <string>
 #include <vector>
+#include <unordered_map>
 #include <map>
 #include <tuple>
+#include <memory>
 #include <functional>
 #include <utility>
 #include <boost/any.hpp>
@@ -14,8 +16,11 @@ namespace manager {
 
 class event {
 public:
-	template<typename F> void listen(std::string const &event, F&& f);
-	template<typename... Args> void fire(std::string const &event, Args const&... args);
+	class instance;
+
+	instance &make_instance(std::string user);
+	template<typename F> void listen(std::string user, std::string const &event, F &callback);
+	template<typename... Args> void fire(std::string user, std::string const &event, Args const&... args);
 
 private:
 	template<typename... Args> class dispatcher {
@@ -39,14 +44,26 @@ private:
 	};
 	template<typename T> struct dispatcher_maker;
 	template<typename... Args> struct dispatcher_maker<std::tuple<Args...>> {
-		template<typename F> dispatcher_type make(F&& f);
+		template<typename F> dispatcher_type make(F &f);
 	};
 
-	template<typename F> std::function<void(std::vector<boost::any> const&)> make_dispatcher(F&& f);
+	template<typename F> std::function<void(std::vector<boost::any> const&)> make_dispatcher(F &f);
 	template<typename... Args> std::function<void(std::vector<boost::any> const&)> make_dispatcher(void(*f)(Args...));
 	template<typename F, typename... Args> void call(F const &f, Args const&... args);
 
 	std::multimap<std::string, dispatcher_type> m_callbacks;
+	std::unordered_map<std::string, std::unique_ptr<instance>> m_instances;
+};
+
+class event::instance {
+public:
+	instance(std::string name, event &manager);
+	template<typename F> void listen(std::string const &event, F &callback);
+	template<typename... Args> void fire(std::string const &event, Args const&... args);
+
+private:
+	std::string m_name;
+	event &m_manager;
 };
 
 } // namespace manager

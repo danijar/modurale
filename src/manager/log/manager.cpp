@@ -17,14 +17,53 @@ log::stream::~stream()
 	}
 }
 
-log::stream log::info(string sep, string end)
+log::instance &log::make_instance(string user)
 {
-	return stream(m_out, m_mutex, "Name", sep, end);
+	if (m_instances.find(user) == m_instances.end())
+		m_instances.emplace(user, make_unique<instance>(user, *this));
+	return *(m_instances[user].get());
 }
 
-log::stream log::debug(string sep, string end)
+log::stream log::info(std::string name, string sep, string end)
 {
-	return stream(m_out, m_mutex, "Name", sep, end);
+	return stream(m_out, m_mutex, name, sep, end);
+}
+
+log::stream log::warning(std::string name, string sep, string end)
+{
+	return stream(m_out, m_mutex, name, sep, end);
+}
+
+log::stream log::error(std::string name, string sep, string end)
+{
+	return stream(m_out, m_mutex, name, sep, end);
+}
+
+log::stream log::debug(std::string name, string sep, string end)
+{
+	return stream(m_out, m_mutex, name, sep, end);
+}
+
+log::instance::instance(string name, log &manager) : m_name(name), m_manager(manager) {}
+
+log::stream log::instance::info(string sep, string end)
+{
+	return m_manager.info(m_name, sep, end);
+}
+
+log::stream log::instance::warning(string sep, string end)
+{
+	return m_manager.warning(m_name, sep, end);
+}
+
+log::stream log::instance::error(string sep, string end)
+{
+	return m_manager.error(m_name, sep, end);
+}
+
+log::stream log::instance::debug(string sep, string end)
+{
+	return m_manager.debug(m_name, sep, end);
 }
 
 } // namespace manager

@@ -9,7 +9,7 @@ namespace module {
 using namespace std;
 using namespace sf;
 
-window::window(string name) : module(name)
+window::window(string name, system::managers &managers) : module(name, managers)
 {
 	// Register listeners
 	listeners();
@@ -31,7 +31,7 @@ void window::update()
 				close(entity);
 				break;
 			case Event::KeyPressed:
-				manager.event.fire("type:window:key", entity, e.key.code);
+				manager.event.fire("type:window:key", entity, e.key.code, e.key.control);
 				break;
 			}
 		}
@@ -65,6 +65,13 @@ void window::listeners()
 			break;
 		}
 	});
+
+	// Create new window on Ctrl + N.Doesn't work until event listeners 
+	// are called asynchronously.
+	// manager.event.listen("type:window:key", [&](id entity, Key code, bool control) {
+	//	if (control && code == Key::N)
+	//		open(manager.entity.create());
+	// });
 }
 
 void window::open(window::id entity)

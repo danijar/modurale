@@ -27,10 +27,55 @@ public:
 	template<class T> struct is_std_function : std::false_type {};
 	template<class T> struct is_std_function<std::function<T>> : std::true_type{};
 
-	// Constructor and destructor
+	// Collection of all properties of one type
+	struct abstract_property {
+		virtual void remove(id entity) = 0;
+		virtual bool check(id entity) const = 0;
+
+		std::unordered_map<id, size_t, id_hash> m_indices;
+		std::unordered_map<size_t, id> m_ids;
+		boost::shared_mutex m_values_mutex, m_expired_mutex;
+		std::set<id> m_expired;
+	};
+	template<typename T> struct property : abstract_property{
+		void remove(id entity);
+		bool check(id entity) const;
+
+		std::vector<T> m_values;
+	};
+
+	class instance;
+
+	// General functions
 	entity();
 	~entity();
-	
+	instance &make_instance(std::string user);
+
+	std::unordered_map<std::type_index, std::unique_ptr<abstract_property>> m_properties;
+	boost::uuids::random_generator m_generator;
+
+private:
+	// Get std::function specialization from general template type
+	template<typename T> struct deduce_std_function;
+	template<typename R, typename C, typename... T> struct deduce_std_function<R(C::*)(T...)> {
+		using type = std::function<R(T...)>;
+	};
+	template<typename R, typename C, typename... T> struct deduce_std_function<R(C::*)(T...) const> {
+		using type = std::function<R(T...)>;
+	};
+
+	// Regular updates from asynchronous thread
+	void update();
+
+	std::atomic<bool> m_update_running{ true };
+	std::thread m_update;
+	std::unordered_map<std::string, std::unique_ptr<instance>> m_instances;
+};
+
+class entity::instance {
+public:
+	instance(std::string name, entity &manager);
+
 	// Manage properties
 	id create();
 	template<typename T> T &add(id entity);
@@ -46,49 +91,18 @@ public:
 	template<typename T> void each(std::function<void(T, id)> iterator);
 	template<typename T> void each(std::function<void(T&)> iterator);
 	template<typename T> void each(std::function<void(T&, id)> iterator);
-	
+
 	// Public helpers for underlying vector
 	template<typename T> id resolve(size_t index) const;
 	template<typename T> size_t size() const;
 
 private:
-	// Collection of all properties of one type
-	struct abstract_property {
-		virtual void remove(id entity) = 0;
-		virtual bool check(id entity) const = 0;
-
-		std::unordered_map<id, size_t, id_hash> m_indices;
-		std::unordered_map<size_t, id> m_ids;
-		boost::shared_mutex m_values_mutex, m_expired_mutex;
-		std::set<id> m_expired;
-	};
-	template<typename T> struct property : abstract_property {
-		void remove(id entity);
-		bool check(id entity) const;
-
-		std::vector<T> m_values;
-	};
-
-	// Get std::function specialization from general template type
-	template<typename T> struct deduce_std_function;
-	template<typename R, typename C, typename... T> struct deduce_std_function<R(C::*)(T...)> {
-		using type = std::function<R(T...)>;
-	};
-	template<typename R, typename C, typename... T> struct deduce_std_function<R(C::*)(T...) const> {
-		using type = std::function<R(T...)>;
-	};
-
 	// Templated helper functions for convenience
 	template<typename T> property<T> &get_property() const;
 	template<typename T> size_t get_index(property<T> &p, id entity) const;
 
-	// Regular updates from asynchronous thread
-	void update();
-
-	boost::uuids::random_generator m_generator;
-	std::unordered_map<std::type_index, std::unique_ptr<abstract_property>> m_properties;
-	std::atomic<bool> m_update_running{ true };
-	std::thread m_update;
+	std::string m_name;
+	entity &m_manager;
 };
 
 } // namespace manager

@@ -4,7 +4,9 @@ namespace engine {
 namespace system {
 using namespace std;
 
-module::module(string name) : name(name), manager(name) {}
+module::module(string name, managers &managers) :
+	name(name),
+	manager{managers::instances(name, managers)} {}
 
 void module::set(bool *running)
 {

@@ -1,6 +1,7 @@
 #include <exception>
 #include <iostream>
 #include "../system/system.hpp"
+#include "../system/managers.hpp"
 #include "../module/window/module.hpp"
 
 using namespace std;
@@ -10,8 +11,9 @@ int main()
 {
 	try {
 		system::system system;
+		system::managers managers;
 
-		module::window window("window");
+		module::window window("window", managers);
 		system.attach(window);
 
 		while (system.running())

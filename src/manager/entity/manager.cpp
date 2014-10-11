@@ -15,24 +15,24 @@ entity::~entity()
 	m_update.join();
 }
 
-entity::id entity::create()
+entity::id entity::instance::create()
 {
-	return m_generator();
+	return m_manager.m_generator();
 }
 
-unsigned int entity::check(id entity) const
+unsigned int entity::instance::check(id entity) const
 {
 	// Counter number of attached properties
 	unsigned int counter = 0;
-	for (auto &i : m_properties)
+	for (auto &i : m_manager.m_properties)
 		if (i.second->check(entity))
 			counter++;
 	return counter;
 }
 
-void entity::remove(id entity)
+void entity::instance::remove(id entity)
 {
-	for (auto &i : m_properties) {
+	for (auto &i : m_manager.m_properties) {
 		if (i.second->check(entity)) {
 			auto &p = *i.second.get();
 			boost::unique_lock<boost::shared_mutex> lock(p.m_expired_mutex);
@@ -57,6 +57,15 @@ void entity::update()
 		this_thread::sleep_for(milliseconds(10));
 	}
 }
+
+entity::instance &entity::make_instance(string user)
+{
+	if (m_instances.find(user) == m_instances.end())
+		m_instances.emplace(user, make_unique<instance>(user, *this));
+	return *(m_instances[user].get());
+}
+
+entity::instance::instance(string name, entity &manager) : m_name(name), m_manager(manager) {}
 
 } // namespace manager
 } // namespace engine

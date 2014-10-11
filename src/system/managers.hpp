@@ -4,19 +4,24 @@
 #include "../manager/log/manager.hpp"
 #include "../manager/entity/manager.hpp"
 #include "../manager/event/manager.hpp"
-// ...
 
 namespace engine {
 namespace system {
 
-class managers {
-public:
-	managers(std::string name);
+struct managers {
+	struct instances;
 
-	manager::log log;
-	manager::entity entity;
-	manager::event event;
-	// ...
+	manager::log    m_log;
+	manager::entity m_entity;
+	manager::event  m_event;
+};
+
+struct managers::instances {
+	instances(std::string name, managers &managers);
+
+	manager::log::instance    &log;
+	manager::entity::instance &entity;
+	manager::event::instance  &event;
 };
 
 } // namespace system
