@@ -14,8 +14,8 @@ Dependencies
 
 The following external libraries are used.
 
-- [SFML][sfml] 2.1. Simple and fast multimedia library.
-- [Boost][boost] 1.56.0. Large collection of multi purpose C++ libraries.
+- [SFML][sfml] 2.1 Simple and fast multimedia library.
+- [Boost][boost] 1.56.0 Large collection of multi purpose C++ libraries.
 
 [sfml]: https://github.com/LaurentGomila/SFML
 [boost]: http://www.boost.org/

@@ -46,7 +46,6 @@ public:
 
 	class instance;
 
-	// General functions
 	entity();
 	~entity();
 	instance &make_instance(std::string user);
@@ -92,9 +91,10 @@ public:
 	template<typename T> void each(std::function<void(T&)> iterator);
 	template<typename T> void each(std::function<void(T&, id)> iterator);
 
-	// Public helpers for underlying vector
+	// Public helpers for underlying vector and locking
 	template<typename T> id resolve(size_t index) const;
 	template<typename T> size_t size() const;
+	template<typename T> boost::shared_mutex &mutex();
 
 private:
 	// Templated helper functions for convenience

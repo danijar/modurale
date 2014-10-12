@@ -109,7 +109,7 @@ void entity::instance::each(std::function<void(T&)> iterator)
 {
 	// Read and write iterate over references of all properties
 	auto &p = get_property<T>();
-	boost::shared_lock<boost::shared_mutex> lock(p.m_values_mutex);
+	boost::unique_lock<boost::shared_mutex> lock(p.m_values_mutex);
 	for (auto &i : p.m_values)
 		iterator(*i);
 }
@@ -119,7 +119,7 @@ void entity::instance::each(std::function<void(T&, id)> iterator)
 {
 	// Read and write iterate over references of all properties
 	auto &p = get_property<T>();
-	boost::shared_lock<boost::shared_mutex> lock(p.m_values_mutex);
+	boost::unique_lock<boost::shared_mutex> lock(p.m_values_mutex);
 	for (size_t i = 0; i < p.m_values.size(); i++)
 		iterator(p.m_values[i], p.m_ids[i]);
 }
@@ -134,6 +134,12 @@ size_t entity::instance::size() const
 		return 0;
 	auto &p = *((property<T>*)find->second.get());
 	return p.m_values.size();
+}
+
+template<typename T> boost::shared_mutex &entity::instance::mutex()
+{
+	auto &p = get_property<T>();
+	return p.m_values_mutex;
 }
 
 template<typename T>
