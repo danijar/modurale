@@ -7,9 +7,9 @@
 #include <typeindex>
 #include <memory>
 #include <thread>
+#include <mutex>
 #include <atomic>
 #include <functional>
-#include <boost/thread/shared_mutex.hpp>
 #include <boost/uuid/uuid.hpp>
 #include <boost/uuid/uuid_generators.hpp>
 #include <boost/functional/hash.hpp>
@@ -34,7 +34,7 @@ public:
 
 		std::unordered_map<id, size_t, id_hash> m_indices;
 		std::unordered_map<size_t, id> m_ids;
-		boost::shared_mutex m_values_mutex, m_expired_mutex;
+		std::recursive_mutex m_values_mutex, m_expired_mutex;
 		std::set<id> m_expired;
 	};
 	template<typename T> struct property : abstract_property{
@@ -94,7 +94,7 @@ public:
 	// Public helpers for underlying vector and locking
 	template<typename T> id resolve(size_t index) const;
 	template<typename T> size_t size() const;
-	template<typename T> boost::shared_mutex &mutex();
+	template<typename T> std::recursive_mutex &mutex();
 
 private:
 	// Templated helper functions for convenience

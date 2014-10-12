@@ -20,7 +20,7 @@ T &entity::instance::add(id entity)
 		return get<T>(entity);
 
 	// Emplace element and return pointer
-	boost::unique_lock<boost::shared_mutex> lock(p.m_values_mutex);
+	std::lock_guard<std::recursive_mutex> lock(p.m_values_mutex);
 	size_t index = p.m_values.size();
 	p.m_indices[entity] = index;
 	p.m_ids[index] = entity;
@@ -33,7 +33,7 @@ T &entity::instance::get(id entity) const
 {
 	// Return modifiable reference to element
 	auto &p = get_property<T>();
-	boost::shared_lock<boost::shared_mutex> lock(p.m_values_mutex);
+	std::lock_guard<std::recursive_mutex> lock(p.m_values_mutex);
 	size_t index = get_index(p, entity);
 	return p.m_values[index];
 }
@@ -89,7 +89,7 @@ void entity::instance::each(std::function<void(T)> iterator)
 {
 	// Read only iterate over copies of all properties
 	auto &p = get_property<T>();
-	boost::shared_lock<boost::shared_mutex> lock(p.m_values_mutex);
+	std::lock_guard<std::recursive_mutex> lock(p.m_values_mutex);
 	for (auto &i : p.m_values)
 		iterator(*i);
 }
@@ -99,7 +99,7 @@ void entity::instance::each(std::function<void(T, id)> iterator)
 {
 	// Read only iterate over copies of all properties
 	auto &p = get_property<T>();
-	boost::shared_lock<boost::shared_mutex> lock(p.m_values_mutex);
+	std::lock_guard<std::recursive_mutex> lock(p.m_values_mutex);
 	for (size_t i = 0; i < p.m_values.size(); i++)
 		iterator(p.m_values[i], p.m_ids[i]);
 }
@@ -109,7 +109,7 @@ void entity::instance::each(std::function<void(T&)> iterator)
 {
 	// Read and write iterate over references of all properties
 	auto &p = get_property<T>();
-	boost::unique_lock<boost::shared_mutex> lock(p.m_values_mutex);
+	std::lock_guard<std::recursive_mutex> lock(p.m_values_mutex);
 	for (auto &i : p.m_values)
 		iterator(*i);
 }
@@ -119,7 +119,7 @@ void entity::instance::each(std::function<void(T&, id)> iterator)
 {
 	// Read and write iterate over references of all properties
 	auto &p = get_property<T>();
-	boost::unique_lock<boost::shared_mutex> lock(p.m_values_mutex);
+	std::lock_guard<std::recursive_mutex> lock(p.m_values_mutex);
 	for (size_t i = 0; i < p.m_values.size(); i++)
 		iterator(p.m_values[i], p.m_ids[i]);
 }
@@ -136,7 +136,7 @@ size_t entity::instance::size() const
 	return p.m_values.size();
 }
 
-template<typename T> boost::shared_mutex &entity::instance::mutex()
+template<typename T> std::recursive_mutex &entity::instance::mutex()
 {
 	auto &p = get_property<T>();
 	return p.m_values_mutex;

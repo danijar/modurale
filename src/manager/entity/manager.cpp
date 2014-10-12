@@ -35,7 +35,7 @@ void entity::instance::remove(id entity)
 	for (auto &i : m_manager.m_properties) {
 		if (i.second->check(entity)) {
 			auto &p = *i.second.get();
-			boost::unique_lock<boost::shared_mutex> lock(p.m_expired_mutex);
+			std::lock_guard<std::recursive_mutex> lock(p.m_expired_mutex);
 			p.m_expired.insert(entity);
 		}
 	}
@@ -47,8 +47,8 @@ void entity::update()
 		for (auto &i : m_properties) {
 			auto &p = *i.second.get();
 			if (p.m_expired.size()) {
-				boost::unique_lock<boost::shared_mutex> lock_expired(p.m_expired_mutex);
-				boost::unique_lock<boost::shared_mutex> lock_values(p.m_values_mutex);
+				std::lock_guard<std::recursive_mutex> lock_expired(p.m_expired_mutex);
+				std::lock_guard<std::recursive_mutex> lock_values(p.m_values_mutex);
 				for (auto entity : p.m_expired)
 					p.remove(entity);
 				p.m_expired.clear();

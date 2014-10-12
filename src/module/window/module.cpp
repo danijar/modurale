@@ -2,7 +2,6 @@
 
 #include <iostream>
 #include <SFML/Window.hpp>
-#include "../../type/window/type.hpp"
 
 namespace engine {
 namespace module {
@@ -15,20 +14,30 @@ window::window(string name, system::managers &managers) : module(name, managers)
 	listeners();
 
 	// Create window if none
-	if (!manager.entity.size<type::window>())
-		open(manager.entity.create());
+	if (!manager.entity.size<type::window>()) {
+		id entity = manager.entity.create();
+		auto window = manager.entity.add<type::window>(entity);
+		window.m_dirty = true;
+	}
 }
 
 void window::update()
 {
 	// Loop over all windows
 	manager.entity.each([&](type::window &window, id entity) {
+		// Adapt to property changes
+		if (window.m_remove) {
+			remove(entity);
+			return;
+		}
+		apply(window);
+
 		// Handle window events
 		Event e;
 		while (window.m_handle->pollEvent(e)) {
 			switch (e.type) {
 			case Event::Closed:
-				close(entity);
+				remove(entity);
 				break;
 			case Event::KeyPressed:
 				manager.event.fire("type:window:key", entity, e.key.code, e.key.control);
@@ -50,57 +59,68 @@ void window::listeners()
 {
 	using Key = Keyboard::Key;
 
-	manager.event.listen("type:window:key", [=](id entity, Key code) {
+	manager.event.listen("type:window:key", [=](id entity, Key code, bool control) {
 		// Get window property
 		auto &window = manager.entity.get<type::window>(entity);
 
 		// Handle different keys
 		switch (code) {
 		case Key::Escape:
-			close(entity);
+			remove(entity);
 			break;
 		case Key::F11:
-			// Move in own function and aquire lock
 			window.m_fullscreen = !window.m_fullscreen;
-			// This doesn't work. The window will be opened in the window of the
-			// event manager. But window events must be polled in the thread it
-			// was created in.
-			open(entity);
+			window.m_dirty = true;
 			break;
+		case Key::N:
+			if (control) {
+				manager.log.info() << "Open new window";
+				id entity = manager.entity.create();
+				auto window = manager.entity.add<type::window>(entity);
+				window.m_dirty = true;
+			}
 		}
 	});
 }
 
-void window::open(window::id entity)
-{
-	// Get window or create new one
-	auto window = manager.entity.add<type::window>(entity);
+void window::apply(type::window &window)
+{	
+	// No changes made
+	if (!window.m_dirty)
+		return;
 
-	boost::unique_lock<boost::shared_mutex> lock(manager.entity.mutex<type::window>());
+	if (window.m_handle->isOpen()) {
+		// Store position to restore after fullscreen
+		if (window.m_fullscreen)
+			window.m_position = window.m_handle->getPosition();
 
-	// Close if open first
-	if (window.m_handle->isOpen())
-		window.m_handle->close();
+		// Close first
+		if (window.m_handle->isOpen())
+			window.m_handle->close();
+	}
 
-	// Open up new window
-	auto resolution = window.m_fullscreen ? VideoMode::getDesktopMode() : VideoMode(800, 600);
-	auto decoration = window.m_fullscreen ? Style::Fullscreen : Style::Default;
-	window.m_handle->create(resolution, window.m_title, decoration, ContextSettings(0, 0, 0, 3, 3));
+	if (window.m_open) {
+		// Open up new window
+		auto resolution = window.m_fullscreen ? VideoMode::getDesktopMode() : VideoMode(800, 600);
+		auto decoration = window.m_fullscreen ? Style::Fullscreen : Style::Default;
+		window.m_handle->create(resolution, window.m_title, decoration, ContextSettings(0, 0, 0, 3, 3));
 
-	// Store position to restore after fullscreen
-	window.m_position = window.m_handle->getPosition();
+		// Restore position if windowed mode
+		if (!window.m_fullscreen)
+			if (window.m_position != Vector2i())
+				window.m_handle->setPosition(window.m_position);
+	}
+
+	// Everything done
+	window.m_dirty = false;
 }
 
-void window::close(window::id entity)
+void window::remove(window::id entity)
 {
 	// Close window and remove entity
 	auto &window = manager.entity.get<type::window>(entity);
-	
-	boost::unique_lock<boost::shared_mutex> lock(manager.entity.mutex<type::window>());
-	manager.log.debug() << "Close window" << "'" + window.m_title + "'";
+	manager.log.debug() << "Remove window" << "'" + window.m_title + "'";
 	window.m_handle->close();
-	lock.unlock();
-
 	manager.entity.remove(entity);
 }
 

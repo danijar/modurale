@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../../system/module.hpp"
+#include "../../type/window/type.hpp"
 
 namespace engine {
 namespace module {
@@ -14,8 +15,8 @@ private:
 	using id = manager::entity::id;
 
 	void listeners();
-	void open(id entity);
-	void close(id entity);
+	void apply(type::window &window);
+	void remove(id entity);
 };
 
 } // namespace module
