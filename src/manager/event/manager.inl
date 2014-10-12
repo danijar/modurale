@@ -66,13 +66,16 @@ void event::fire(std::string user, std::string const &event, Args const&... args
 {
 	auto rng = m_callbacks.equal_range(event);
 	for (auto it = rng.first; it != rng.second; ++it)
-		call(it->second, args...);
+		enqueue(it->second, args...);
 }
 
 template<typename F, typename... Args>
-void event::call(F const &f, Args const&... args) {
+void event::enqueue(F const &f, Args const&... args) {
+	// Bind arguments and add function to jobs queue. Maybe there is a
+	// way to directly bind the parameter pack with using boost::any.
 	std::vector<boost::any> v{ args... };
-	f(v);
+	auto *job = new std::function<void()>(std::bind(f, v));
+	while (!m_jobs.push(job));
 }
 
 template<typename F> void event::instance::listen(std::string const &event, F &callback)

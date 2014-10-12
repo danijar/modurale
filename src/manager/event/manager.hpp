@@ -6,9 +6,12 @@
 #include <map>
 #include <tuple>
 #include <memory>
+#include <thread>
+#include <atomic>
 #include <functional>
 #include <utility>
 #include <boost/any.hpp>
+#include <boost/lockfree/queue.hpp>
 #include "integer_sequence.hpp"
 
 namespace engine {
@@ -18,6 +21,8 @@ class event {
 public:
 	class instance;
 
+	event();
+	~event();
 	instance &make_instance(std::string user);
 	template<typename F> void listen(std::string user, std::string const &event, F &callback);
 	template<typename... Args> void fire(std::string user, std::string const &event, Args const&... args);
@@ -49,9 +54,13 @@ private:
 
 	template<typename F> std::function<void(std::vector<boost::any> const&)> make_dispatcher(F &f);
 	template<typename... Args> std::function<void(std::vector<boost::any> const&)> make_dispatcher(void(*f)(Args...));
-	template<typename F, typename... Args> void call(F const &f, Args const&... args);
+	template<typename F, typename... Args> void enqueue(F const &f, Args const&... args);
+	void update();
 
 	std::multimap<std::string, dispatcher_type> m_callbacks;
+	std::atomic<bool> m_update_running{ true };
+	boost::lockfree::queue<std::function<void()>*, boost::lockfree::capacity<16>> m_jobs;
+	std::thread m_update;
 	std::unordered_map<std::string, std::unique_ptr<instance>> m_instances;
 };
 

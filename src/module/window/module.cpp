@@ -25,7 +25,7 @@ void window::update()
 	manager.entity.each([&](type::window &window, id entity) {
 		// Handle window events
 		Event e;
-		while (window.m_handle->isOpen() && window.m_handle->pollEvent(e)) {
+		while (window.m_handle->pollEvent(e)) {
 			switch (e.type) {
 			case Event::Closed:
 				close(entity);
@@ -60,18 +60,15 @@ void window::listeners()
 			close(entity);
 			break;
 		case Key::F11:
+			// Move in own function and aquire lock
 			window.m_fullscreen = !window.m_fullscreen;
+			// This doesn't work. The window will be opened in the window of the
+			// event manager. But window events must be polled in the thread it
+			// was created in.
 			open(entity);
 			break;
 		}
 	});
-
-	// Create new window on Ctrl + N.Doesn't work until event listeners 
-	// are called asynchronously.
-	// manager.event.listen("type:window:key", [&](id entity, Key code, bool control) {
-	//	if (control && code == Key::N)
-	//		open(manager.entity.create());
-	// });
 }
 
 void window::open(window::id entity)
@@ -79,11 +76,13 @@ void window::open(window::id entity)
 	// Get window or create new one
 	auto window = manager.entity.add<type::window>(entity);
 
-	// Close if open
+	boost::unique_lock<boost::shared_mutex> lock(manager.entity.mutex<type::window>());
+
+	// Close if open first
 	if (window.m_handle->isOpen())
 		window.m_handle->close();
 
-	// Open window
+	// Open up new window
 	auto resolution = window.m_fullscreen ? VideoMode::getDesktopMode() : VideoMode(800, 600);
 	auto decoration = window.m_fullscreen ? Style::Fullscreen : Style::Default;
 	window.m_handle->create(resolution, window.m_title, decoration, ContextSettings(0, 0, 0, 3, 3));
@@ -96,8 +95,12 @@ void window::close(window::id entity)
 {
 	// Close window and remove entity
 	auto &window = manager.entity.get<type::window>(entity);
+	
+	boost::unique_lock<boost::shared_mutex> lock(manager.entity.mutex<type::window>());
 	manager.log.debug() << "Close window" << "'" + window.m_title + "'";
 	window.m_handle->close();
+	lock.unlock();
+
 	manager.entity.remove(entity);
 }
 
