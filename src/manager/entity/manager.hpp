@@ -108,4 +108,8 @@ private:
 } // namespace manager
 } // namespace engine
 
+
+// Provide printing for uuids
+std::ostream &operator<<(std::ostream &stream, const boost::uuids::uuid &uuid);
+
 #include "manager.inl"

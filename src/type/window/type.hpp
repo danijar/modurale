@@ -9,8 +9,9 @@ namespace type {
 
 struct window {
 	std::shared_ptr<sf::RenderWindow> m_handle{ new sf::RenderWindow }; // Do I need a pointer here?
-	sf::Vector2i m_position;
 	std::string m_title = "Window";
+	sf::Vector2u m_size{ 800, 600 };
+	sf::Vector2i m_position;
 	bool m_open = true, m_fullscreen = false, m_remove = false, m_dirty = true;
 };
 

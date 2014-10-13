@@ -15,8 +15,7 @@ private:
 	using id = manager::entity::id;
 
 	void listeners();
-	void apply(type::window &window);
-	void remove(id entity);
+	void apply(id entity);
 };
 
 } // namespace module

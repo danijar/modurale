@@ -1,6 +1,8 @@
 #include "manager.hpp"
 
 #include <chrono>
+#include <boost/lexical_cast.hpp>
+#include <boost/uuid/uuid_io.hpp>
 
 namespace engine {
 namespace manager {
@@ -69,3 +71,9 @@ entity::instance::instance(string name, entity &manager) : m_name(name), m_manag
 
 } // namespace manager
 } // namespace engine
+
+std::ostream &operator<<(std::ostream &stream, const boost::uuids::uuid &uuid)
+{
+	stream << boost::lexical_cast<std::string>(uuid);
+	return stream;
+}
