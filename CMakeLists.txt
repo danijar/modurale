@@ -2,14 +2,14 @@
 # Project settings
 ################################################################
 
-# CMake version.
+# CMake version
 cmake_minimum_required(VERSION 2.8.4)
 
-# Project name.
+# Project name
 set(PROJECT_NAME modurale)
 project(${PROJECT_NAME})
 
-# Version number.
+# Version number
 set(${PROJECT_NAME}_VERSION_MAJOR 0)
 set(${PROJECT_NAME}_VERSION_MINOR 1)
 set(${PROJECT_NAME}_VERSION_PATCH 0)
@@ -18,9 +18,9 @@ set(${PROJECT_NAME}_VERSION_PATCH 0)
 # Include headers and source files
 ################################################################
 
-# Recursively look for headers and source files and add them.
+# Recursively look for headers and source files and add them
 set(SRC ${CMAKE_SOURCE_DIR}/src)
-file(GLOB_RECURSE HEADER_FILES ${SRC}/*.h ${SRC}/*.inl)
+file(GLOB_RECURSE HEADER_FILES ${SRC}/*.hpp ${SRC}/*.inl)
 file(GLOB_RECURSE SOURCE_FILES ${SRC}/*.cpp)
 include_directories(${SRC})
 add_executable(${PROJECT_NAME} ${HEADER_FILES} ${SOURCE_FILES})
@@ -32,17 +32,17 @@ add_executable(${PROJECT_NAME} ${HEADER_FILES} ${SOURCE_FILES})
 # Enable modern C++ features
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++1y")
 
-# Default to release builds without debug symbols.
+# Default to release builds without debug symbols
 if(CMAKE_BUILD_TYPE STREQUAL "")
 	set(CMAKE_BUILD_TYPE Release)
 endif()
 
-# Link everything statically.
+# Link everything statically
 set(BUILD_SHARED_LIBS FALSE)
+set(CMAKE_FIND_LIBRARY_SUFFIXES ".a") # This isn't cross platform yet
+set(CMAKE_EXE_LINKER_FLAGS "-static-libgcc -static-libstdc++")
 set_target_properties(${PROJECT_NAME} PROPERTIES LINK_SEARCH_START_STATIC ON)
 set_target_properties(${PROJECT_NAME} PROPERTIES LINK_SEARCH_END_STATIC ON)
-set(CMAKE_FIND_LIBRARY_SUFFIXES ".a")
-set(CMAKE_EXE_LINKER_FLAGS "-static-libgcc -static-libstdc++")
 
 ################################################################
 # Helper functions
@@ -62,7 +62,7 @@ endfunction()
 # package was found. If so, includes headers and libraries. Otherwise, prints
 # passed error message.
 function(use_package NAME_PRETTY)
-	# Must libraries use uppercase prefix, but not all. So we try both.
+	# Not all libraries use uppercase prefix, so we try both
 	string(TOUPPER ${NAME_PRETTY} NAME)
 	# Collect headers an libraries from all variables we can think of. Some
 	# libraries use plural form, some use singular. This may add duplicates and
@@ -81,10 +81,10 @@ function(use_package NAME_PRETTY)
 		"${${NAME_PRETTY}_DEPENDENCIES}")
 	clean_up_list(INCLUDE_DIRS)
 	clean_up_list(LIBRARIES)
-	# Include header directories and use libraries.
+	# Include header directories and use libraries
 	include_directories(${INCLUDE_DIRS})
 	target_link_libraries(${PROJECT_NAME} ${LIBRARIES})
-	# Print include dirs and libraries.
+	# Print include dirs and libraries
 	message(WARNING "${NAME_PRETTY} includes (${INCLUDE_DIRS}) and "
 		"links (${LIBRARIES}).")
 endfunction()
@@ -94,8 +94,8 @@ endfunction()
 #  [OPTIONAL_COMPONENTS components...]
 #  [NO_POLICY_SCOPE])
 # Creates upper case configuration variable for a package, tries to find the
-# package and includes it's headers and libraries. Otherwise, prints descriptive
-# error messages.
+# package and includes it's headers and libraries. Otherwise, prints
+# descriptive error messages.
 function(find_and_use_package)
 	# The first parameter is the library name.
 	list(GET ARGN 0 NAME_PRETTY)
@@ -118,12 +118,16 @@ endfunction()
 # Library dependencies
 ################################################################
 
-# Set path to find scripts.
+# Set path to find scripts
 set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake ${CMAKE_MODULE_PATH})
 
-## GLEW
-# add_definitions(-DGLEW_STATIC)
-# find_and_use_package(GLEW)
+# Define dependencies
+add_dependencies(${PROJECT_NAME} SFML Boost)
+
+# Automatically download dependencies
+include(ExternalProject)
+include(ExternalSFML)
+include(ExternalBoost)
 
 ## SFML
 set(SFML_STATIC_LIBRARIES ON)
