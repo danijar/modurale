@@ -27,14 +27,14 @@ include(Helpers)
 # Enable modern C++ features
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++1y")
 
-# Default to release builds without debug symbols
-if(CMAKE_BUILD_TYPE STREQUAL "")
-	set(CMAKE_BUILD_TYPE Debug)
-endif()
+# Use release builds without debug symbols
+set(CMAKE_BUILD_TYPE Release)
 
 # Link everything statically
 set(BUILD_SHARED_LIBS FALSE)
-set(CMAKE_FIND_LIBRARY_SUFFIXES ".a") # This isn't cross platform yet
+# if (UNIX)
+#	set(CMAKE_FIND_LIBRARY_SUFFIXES ".a")
+# endif()
 set(CMAKE_EXE_LINKER_FLAGS "-static-libgcc -static-libstdc++")
 
 ################################################################
@@ -49,23 +49,20 @@ add_executable(${PROJECT_NAME} ${HEADER_FILES} ${SOURCE_FILES})
 
 # If set, force use of static libraries
 if (NOT BUILD_SHARED_LIBS)
-	set_target_properties(${PROJECT_NAME} PROPERTIES LINK_SEARCH_START_STATIC ON)
-	set_target_properties(${PROJECT_NAME} PROPERTIES LINK_SEARCH_END_STATIC ON)
+	set_target_properties(${PROJECT_NAME} PROPERTIES LINK_SEARCH_START_STATIC TRUE)
+	set_target_properties(${PROJECT_NAME} PROPERTIES LINK_SEARCH_END_STATIC TRUE)
 endif()
 
 ################################################################
 # Library dependencies
 ################################################################
 
-# List all dependencies
-add_dependencies(${PROJECT_NAME} SFML Boost)
-
 # SFML
-set(SFML_STATIC_LIBRARIES ON)
+set(SFML_STATIC_LIBRARIES TRUE)
 set(SFML_ROOT ${REPOSITORY_DIR}/external/SFML/install)
 use_package(${PROJECT_NAME} SFML 2 COMPONENTS graphics window system)
 
 # Boost
-set(Boost_USE_STATIC_LIBS ON)
+set(Boost_USE_STATIC_LIBS TRUE)
 set(BOOST_ROOT ${REPOSITORY_DIR}/external/Boost/install)
 use_package(${PROJECT_NAME} Boost COMPONENTS thread)

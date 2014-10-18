@@ -1,5 +1,5 @@
 # Boost
-include (ExternalProject)
+include(ExternalProject)
 set(BOOST_PREFIX ${CMAKE_SOURCE_DIR}/Boost)
 
 # Find platform dependend commands to configure
@@ -66,6 +66,7 @@ ExternalProject_Add(Boost
 	                      --prefix=${BOOST_PREFIX}/install
 	                      --toolset=${BOOST_TOOLSET}
 	                      --link=${BOOST_LINKING}
+	                      --variant=${BOOST_VARIANT}
 	                      --threading=multi
 	BUILD_IN_SOURCE   1
 	#--Install step---------------

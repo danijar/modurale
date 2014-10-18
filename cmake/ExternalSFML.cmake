@@ -1,6 +1,10 @@
 # SFML
-include (ExternalProject)
+include(ExternalProject)
 set(SFML_PREFIX ${CMAKE_SOURCE_DIR}/SFML)
+
+if (NOT BUILD_SHARED_LIBS)
+	set(SFML_USE_STATIC_STD_LIBS TRUE)
+endif()
 
 # Download, configure, build and install.
 ExternalProject_Add(SFML
@@ -16,6 +20,9 @@ ExternalProject_Add(SFML
 	#--Configure step-------------
 	SOURCE_DIR     ${SFML_PREFIX}/source
 	CMAKE_ARGS     -DCMAKE_INSTALL_PREFIX:PATH=${SFML_PREFIX}/install
+	               -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
+	               -DBUILD_SHARED_LIBS=${BUILD_SHARED_LIBS}
+	               -DSFML_USE_STATIC_STD_LIBS=${SFML_USE_STATIC_STD_LIBS}
 	#--Build step-----------------
 	BINARY_DIR     ${SFML_PREFIX}/build
 	#--Install step---------------
