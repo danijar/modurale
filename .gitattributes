@@ -6,6 +6,7 @@
 *.hpp text
 *.inl text
 *.cpp text
+*.cmake text
 
 # Binary files
 *.png binary

@@ -82,7 +82,7 @@ find_path(SFML_INCLUDE_DIR SFML/Config.hpp
 set(SFML_VERSION_OK TRUE)
 if(SFML_FIND_VERSION AND SFML_INCLUDE_DIR)
     # extract the major and minor version numbers from SFML/Config.hpp
-    # we have to handle framework a little bit differently :
+    # we have to handle framework a little bit differently:
     if("${SFML_INCLUDE_DIR}" MATCHES "SFML.framework")
         set(SFML_CONFIG_HPP_INPUT "${SFML_INCLUDE_DIR}/Headers/Config.hpp")
     else()
@@ -239,7 +239,7 @@ if(SFML_STATIC_LIBRARIES)
     # macro that searches for a 3rd-party library
     macro(find_sfml_dependency output friendlyname)
         find_library(${output} NAMES ${ARGN} PATHS ${FIND_SFML_PATHS} PATH_SUFFIXES lib)
-        if("${${output}} " STREQUAL "${output}-NOTFOUND ")
+        if(${${output}} STREQUAL "${output}-NOTFOUND")
             unset(output)
             set(FIND_SFML_DEPENDENCIES_NOTFOUND "${FIND_SFML_DEPENDENCIES_NOTFOUND} ${friendlyname}")
         endif()

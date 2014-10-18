@@ -1,5 +1,12 @@
 # Dependencies
-/external/
+/external/*/
+
+# CMake
+CMakeCache.txt
+CMakeFiles
+Makefile
+cmake_install.cmake
+install_manifest.txt
 
 # Build
 /build/

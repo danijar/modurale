@@ -1,5 +1,8 @@
 # SFML
-set(SFML_PREFIX ${CMAKE_SOURCE_DIR}/external/SFML)
+include (ExternalProject)
+set(SFML_PREFIX ${CMAKE_SOURCE_DIR}/SFML)
+
+# Download, configure, build and install.
 ExternalProject_Add(SFML
 	# DEPENDS
 	PREFIX         ${SFML_PREFIX}
@@ -19,4 +22,5 @@ ExternalProject_Add(SFML
 	INSTALL_DIR    ${SFML_PREFIX}/install
 )
 
+# Set root so that find module knows where to look.
 set(SFML_ROOT ${SFML_PREFIX}/install)
