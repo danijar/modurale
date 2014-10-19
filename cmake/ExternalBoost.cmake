@@ -4,11 +4,11 @@ set(BOOST_PREFIX ${CMAKE_SOURCE_DIR}/Boost)
 
 # Find platform dependend commands to configure
 # and compile. Fail if unclear.
-if(UNIX)
+if (UNIX)
 	set(BOOST_CONFIGURE_COMMAND ./bootstrap.sh)
 	set(BOOST_BUILD_EXECUTABLE ./b2)
 	set(BOOST_TOOLSET gcc)
-elseif(WIN32)
+elseif (WIN32)
 	set(BOOST_CONFIGURE_COMMAND bootstrap.bat)
 	set(BOOST_BUILD_EXECUTABLE b2.exe)
 else()
@@ -16,33 +16,36 @@ else()
 endif()
 
 # Find compiler toolset. Fail if unclear.
-if(UNIX)
+if (UNIX OR MINGW)
 	set(BOOST_TOOLSET gcc)
-elseif(WIN32)
-	if(MSVC)
-		set(BOOST_TOOLSET msvc)
-	elseif(MINGW)
-		set(BOOST_TOOLSET gcc)
-	else()
-		message(ERROR "Unsupported Windows compiler.")
-	endif()
+elseif (WIN32 AND MSVC)
+	set(BOOST_TOOLSET msvc)
+else()
+	message(ERROR "Unsupported compiler.")
 endif()
-
 
 # Use linking type from global BUILD_SHARED_LIBS
-# variable. Default to static.
-if(BUILD_SHARED_LIBS)
-	set(BOOST_LINKING shared)
+# variable. Defaults to static.
+if (BUILD_SHARED_LIBS)
+	set(BOOST_LINK shared)
 else()
-	set(BOOST_LINKING static)
+	set(BOOST_LINK static)
 endif()
 
-# Use build variant from CMAKE_BUILD_TYPE. Default
-# to release.
-if(CMAKE_BUILD_TYPE MATCHES Debug)
+# Use build variant from global CMAKE_BUILD_TYPE.
+# Defaults to release.
+if (CMAKE_BUILD_TYPE MATCHES Debug)
 	set(BOOST_VARIANT debug)
 else()
 	set(BOOST_VARIANT release)
+endif()
+
+# Use runtime linkingtype from global
+# USE_STATIC_STD_LIBS. Defaults to shared.
+if (USE_STATIC_STD_LIBS)
+	set(BOOST_RUNTIME_LINK static)
+else()
+	set(BOOST_RUNTIME_LINK shared)
 endif()
 
 # Use collected variables to download, configure, build
@@ -64,10 +67,12 @@ ExternalProject_Add(Boost
 	BUILD_COMMAND     ${BOOST_BUILD_EXECUTABLE} install
 	                      --build-dir=${BOOST_PREFIX}/build
 	                      --prefix=${BOOST_PREFIX}/install
-	                      --toolset=${BOOST_TOOLSET}
-	                      --link=${BOOST_LINKING}
-	                      --variant=${BOOST_VARIANT}
-	                      --threading=multi
+	                      variant=${BOOST_VARIANT}
+	                      link=${BOOST_LINK}
+	                      threading=multi
+	                      address-model=32
+	                      toolset=${BOOST_TOOLSET}
+	                      runtime-link=${BOOST_RUNTIME_LINK}
 	BUILD_IN_SOURCE   1
 	#--Install step---------------
 	INSTALL_COMMAND   ""

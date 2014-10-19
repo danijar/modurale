@@ -2,14 +2,9 @@ Installation
 ============
 
 This guide describes how to set up a development environment of the project in
-order to work on and compile it.
-
-Preparation
------------
-
-You need [Git][git] and [CMake][cmake] to build this project. This guide will
-assume you use the graphical interface of CMake but you can use the command line
-tool directly as well.
+order to work on and compile it. You need [Git][git] and [CMake][cmake] to build
+this project. This guide assumes you use the graphical interface of CMake but
+you can use the command line tool directly as well.
 
 [git]: http://git-scm.com/downloads
 [cmake]: http://www.cmake.org/download/
@@ -17,33 +12,30 @@ tool directly as well.
 Dependencies
 ------------
 
-The following steps set up build scripts specific to your compilers. They are
-capable of downloading and building all dependencies automatically.
+This project comes with build scripts capable of downloading and building all
+dependencies automatically. They will create a sub directory for each dependency
+under `<repository>/external`, where downloaded source, intermediate files and
+the final libraries get stored. Here is how to use the build scripts.
 
-1. Start CMake and select `<repository>/external/` as source and
-`<repository>/external/` as binary directory.
+1. Start CMake and select `<repository>/external/` as source and a temporary
+directory such as `<repository>/external/build/` as binary directory.
 2. Click <kbd>Configure</kbd> and select your compiler, for example *Visual
-Studio 12 2013*.
+Studio 12 2013*. Don't be afraid of the errors.
 3. If you don't have Git available globally, set `GIT_EXECUTABLE` to point to
-your `git.exe`. Click <kbd>Configure</kbd> again. There shouldn't be any errors
-this time.
-4. Click <kbd>Generate</kbd> and close CMake.
+your `git.exe`.
+4. Click <kbd>Configure</kbd> again. There shouldn't be any errors this time.
+5. Click <kbd>Generate</kbd> and leave CMake open for later.
 
-Now we have the build scripts. How to execute them depends on your compiler.
-For GCC or MinGW, navigate into `<repository>/external` and run these steps.
+Now we have set up the bulid environment. To start compilation, execute this
+command with the binary directory you selected above. Be patient while the
+dependencies are being compiled. This can take a while.
 
-    ./configure
-    make
-    make install
+    cmake --build <binary-directory>
 
-In contrast, use the following steps for the Visual Studio compiler. Make sure
-you use the *Developer Command Promt* and navigate into the external directory,
-too.
-
-    msbuild Project.sln /p:Configuration=Release
-    msbuild Project.sln /p:Configuration=Debug
-
-The dependencies are now being compiled. Be patient, this can take a while.
+This gives us the release binaries. To get debug binaries, set
+`CMAKE_BUILD_TYPE` to `Debug` in CMake and configure and generate again. Then
+run the above command again to start the build process. The binaries differ in
+their names, so they can live next to each other just fine.
 
 This project
 ------------
@@ -51,10 +43,11 @@ This project
 Now that we have all the dependencies available, we can generate the main
 project. It should find all libraries now.
 
-1. Start CMake and select `<repository>/src/` as source and
-`<repository>/build/` as binary directory.
-2. Click <kbd>Configure</kbd> and select your compiler, for example `Visual
-Studio 12.0`. There shouldn't be any errors.
-3. Click <kbd>Generate</kbd> and close CMake.
+1. Start CMake and select `<repository>/src/` as source and a temporary
+directory such as `<repository>/build/` as binary directory.
+2. Click <kbd>Configure</kbd> and select your compiler, for example *Visual
+Studio 12 2013*. Don't be afraid of the errors.
+3. Click <kbd>Configure</kbd> again. There shouldn't be any errors this time.
+4. Click <kbd>Generate</kbd> and close CMake.
 
-Your project is now set up in the `<repository>/src/` directory.
+Your project is now set up in the binary directory you selected.
