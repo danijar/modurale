@@ -61,6 +61,15 @@ if (BUILD_SHARED_LIBS AND USE_STATIC_STD_LIBS)
 endif()
 
 ################################################################
+# Generator settings
+################################################################
+
+# Configuration types
+set(CMAKE_CONFIGURATION_TYPES "Debug;Release" CACHE STRING "")
+set(CMAKE_CONFIGURATION_TYPES ${CMAKE_CONFIGURATION_TYPES} CACHE STRING
+	"Semicolon separated list of supported configuration types, only supports Debug, Release, MinSizeRel, and RelWithDebInfo, anything else will be ignored." FORCE)
+
+################################################################
 # Include headers and source files
 ################################################################
 

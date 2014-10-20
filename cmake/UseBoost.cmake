@@ -1,6 +1,6 @@
 # Boost
 set(BOOST_ROOT ${REPOSITORY_DIR}/external/Boost/install CACHE FILEPATH "")
-set(BOOST_ROOT ${BOOST_ROOT} CACHE FILEPATH "Path to Boost library installation.")
+set(BOOST_ROOT ${BOOST_ROOT} CACHE FILEPATH "Path to Boost installation.")
 
 # Runtime linking
 if (NOT BUILD_SHARED_LIBS)
@@ -17,11 +17,12 @@ endif()
 add_definitions(-DBOOST_ALL_NO_LIB)
 
 # Find package and include headers and libraries
-find_package(Boost COMPONENTS thread system)
+find_package(Boost QUIET COMPONENTS thread system)
 if (Boost_FOUND)
 	include_directories(${Boost_INCLUDE_DIR})
 	target_link_libraries(${PROJECT_NAME} ${Boost_LIBRARIES})
+	message(STATUS "Found dependency Boost at " ${BOOST_ROOT})
 else()
-	message(SEND_ERROR "Boost library not found. Please set BOOST_ROOT to the "
-		"installation directory.")
+	message(SEND_ERROR "Dependency Boost not found. Please set BOOST_ROOT to "
+		"the installation directory.")
 endif()
