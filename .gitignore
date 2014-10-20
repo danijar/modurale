@@ -9,7 +9,8 @@ cmake_install.cmake
 install_manifest.txt
 
 # Build
-/build/
+[Dd]ebug/
+[Rr]elease/
 *.exe
 *.ilk
 *.pdb

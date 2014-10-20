@@ -21,7 +21,7 @@ find_package(Boost QUIET COMPONENTS thread system)
 if (Boost_FOUND)
 	include_directories(${Boost_INCLUDE_DIR})
 	target_link_libraries(${PROJECT_NAME} ${Boost_LIBRARIES})
-	message(STATUS "Found dependency Boost at " ${BOOST_ROOT})
+	message(STATUS "Found dependency Boost at " ${BOOST_ROOT} ".")
 else()
 	message(SEND_ERROR "Dependency Boost not found. Please set BOOST_ROOT to "
 		"the installation directory.")
