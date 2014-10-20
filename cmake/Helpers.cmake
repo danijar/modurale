@@ -1,16 +1,4 @@
 ################################################################
-# clean_up_list(<name>)
-# Removes duplicates and empty items from the list. Excepts the name of this
-# list as parameter, not its values.
-################################################################
-
-function(clean_up_list NAME)
-	list(REMOVE_DUPLICATES ${NAME})
-	list(REMOVE_ITEM ${NAME} "")
-	set(${NAME} ${${NAME}} PARENT_SCOPE)
-endfunction()
-
-################################################################
 # use_found_package(<name-pretty> <depender>)
 # Tries both, the passed pretty name and it's uppercase version to see if a
 # package was found. If so, includes headers and links libraries aginst the
@@ -28,15 +16,22 @@ function(use_found_package NAME_PRETTY DEPENDER)
 		"${${NAME}_INCLUDE_DIR}"
 		"${${NAME_PRETTY}_INCLUDE_DIRS}"
 		"${${NAME_PRETTY}_INCLUDE_DIR}")
+	list(REMOVE_DUPLICATES INCLUDE_DIRS)
+	list(REMOVE_ITEM INCLUDE_DIRS "")
+	# However, the build configuration is a form of wanted duplicates in the
+	# LIBRARIES list, so we just remove empty entries here.
 	set(LIBRARIES
 		"${${NAME}_LIBRARIES}"
 		"${${NAME}_LIBRARY}"
-		"${${NAME}_DEPENDENCIES}"
-		"${${NAME_PRETTY}_LIBRARIES}"
-		"${${NAME_PRETTY}_LIBRARY}"
-		"${${NAME_PRETTY}_DEPENDENCIES}")
-	clean_up_list(INCLUDE_DIRS)
-	clean_up_list(LIBRARIES)
+		"${${NAME}_DEPENDENCIES}")
+	list(REMOVE_ITEM LIBRARIES "")
+	if (NOT LIBRARIES)
+		set(LIBRARIES
+			"${${NAME_PRETTY}_LIBRARIES}"
+			"${${NAME_PRETTY}_LIBRARY}"
+			"${${NAME_PRETTY}_DEPENDENCIES}")
+		list(REMOVE_ITEM LIBRARIES "")
+	endif()
 	# Include header directories and use libraries
 	include_directories(${INCLUDE_DIRS})
 	target_link_libraries(${DEPENDER} ${LIBRARIES})
