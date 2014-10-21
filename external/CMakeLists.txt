@@ -68,7 +68,7 @@ set(CMAKE_CONFIGURATION_TYPES "Debug;Release" CACHE STRING
 ################################################################
 
 # Make GIT_EXECUTABLE show up in the graphical user interface
-set(GIT_EXECUTABLE "git.exe" CACHE FILEPATH "")
+set(GIT_EXECUTABLE "git" CACHE FILEPATH "")
 set(GIT_EXECUTABLE ${GIT_EXECUTABLE} CACHE FILEPATH
 	"Path to the git executable used to download dependencies." FORCE)
 

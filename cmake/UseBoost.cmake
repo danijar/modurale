@@ -1,6 +1,6 @@
 # Boost
 set(BOOST_ROOT ${REPOSITORY_DIR}/external/Boost/install CACHE FILEPATH "")
-set(BOOST_ROOT ${BOOST_ROOT} CACHE FILEPATH "Path to Boost installation.")
+set(BOOST_ROOT ${BOOST_ROOT} CACHE FILEPATH "Path to Boost installation." FORCE)
 
 # Runtime linking
 if (NOT BUILD_SHARED_LIBS)

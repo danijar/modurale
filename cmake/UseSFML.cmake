@@ -1,6 +1,8 @@
 # SFML
 set(SFML_ROOT ${REPOSITORY_DIR}/external/SFML/install CACHE FILEPATH "")
-set(SFML_ROOT ${SFML_ROOT} CACHE FILEPATH "Path to SFML installation.")
+set(SFML_ROOT ${SFML_ROOT} CACHE FILEPATH "Path to SFML installation." FORCE)
+
+message(STATUS "SFML_ROOT: " ${SFML_ROOT})
 
 # Runtime linking
 if (USE_STATIC_STD_LIBS)
@@ -8,7 +10,8 @@ if (USE_STATIC_STD_LIBS)
 endif()
 
 # Find package and include headers and libraries
-find_package(SFML 2 QUIET COMPONENTS graphics window system)
+# find_package(SFML 2 QUIET COMPONENTS graphics window system)
+find_package(SFML 2 COMPONENTS graphics window system)
 if (SFML_FOUND)
 	include_directories(${SFML_INCLUDE_DIR})
 	target_link_libraries(${PROJECT_NAME} ${SFML_LIBRARIES} ${SFML_DEPENDENCIES})

@@ -42,10 +42,17 @@ endif()
 
 # Use runtime linkingtype from global
 # USE_STATIC_STD_LIBS. Defaults to shared.
-if (USE_STATIC_STD_LIBS)
+if (USE_STATIC_STD_LIBS AND WIN32)
 	set(BOOST_RUNTIME_LINK static)
 else()
 	set(BOOST_RUNTIME_LINK shared)
+endif()
+
+# Adress model
+if (UNIX)
+	set(BOOST_ADDRESS_MODEL 64)
+elseif (WIN32)
+	set(BOOST_ADDRESS_MODEL 32)
 endif()
 
 # Use collected variables to download, configure, build
@@ -70,9 +77,11 @@ ExternalProject_Add(Boost
 	                      variant=${BOOST_VARIANT}
 	                      link=${BOOST_LINK}
 	                      threading=multi
-	                      address-model=32
+	                      address-model=${BOOST_ADDRESS_MODEL}
 	                      toolset=${BOOST_TOOLSET}
 	                      runtime-link=${BOOST_RUNTIME_LINK}
+	                      --without-python
+	                      -sNO_BZIP2=1
 	BUILD_IN_SOURCE   1
 	#--Install step---------------
 	INSTALL_COMMAND   ""
