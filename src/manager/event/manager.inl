@@ -12,7 +12,7 @@ template<typename... Args>
 void event::dispatcher<Args...>::operator() (std::vector<boost::any> const &v)
 {
 	if (v.size() < sizeof...(Args))
-		throw runtime_error("Callback has wrong arity.");
+		throw std::runtime_error("Callback has wrong arity.");
 	return do_call(v, std::make_integer_sequence<int, sizeof...(Args)>());
 }
 
@@ -23,7 +23,7 @@ void event::dispatcher<Args...>::do_call(std::vector<boost::any> const &v, std::
 	try {
 		return m_function((get_ith<Args>(v, Is))...);
 	} catch (boost::bad_any_cast const&) {
-		throw runtime_error("Callback has wrong signature.");
+		throw std::runtime_error("Callback has wrong signature.");
 	}
 }
 
@@ -36,29 +36,29 @@ T event::dispatcher<Args...>::get_ith(std::vector<boost::any> const &v, int i)
 
 template<typename... Args>
 template<typename F>
-event::dispatcher_type event::dispatcher_maker<std::tuple<Args...>>::make(F &f)
+event::dispatcher_type event::dispatcher_maker<std::tuple<Args...>>::make(F &&f)
 {
-	return dispatcher<Args...>{forward<F>(f)};
+	return dispatcher<Args...>{std::forward<F>(f)};
 }
 
 template<typename F>
-std::function<void(std::vector<boost::any> const&)> event::make_dispatcher(F &f)
+std::function<void(std::vector<boost::any> const&)> event::make_dispatcher(F &&f)
 {
 	using f_type = decltype(&F::operator());
 	using args_type = typename function_traits<f_type>::args_type;
-	return dispatcher_maker<args_type>{}.make(forward<F>(f));
+	return dispatcher_maker<args_type>{}.make(std::forward<F>(f));
 }
 
 template<typename... Args>
 std::function<void(std::vector<boost::any> const&)> event::make_dispatcher(void(*f)(Args...))
 {
-	return dispatcher_maker<tuple<Args...>>{}.make(f);
+	return dispatcher_maker<std::tuple<Args...>>{}.make(f);
 }
 	
 template<typename F>
 void event::listen(std::string user, std::string const &event, F &callback)
 {
-	m_callbacks.emplace(event, make_dispatcher(forward<F>(callback)));
+	m_callbacks.emplace(event, make_dispatcher(std::forward<F>(callback)));
 }
 
 template<typename... Args>
@@ -78,7 +78,7 @@ void event::enqueue(F const &f, Args const&... args) {
 	while (!m_jobs.push(job));
 }
 
-template<typename F> void event::instance::listen(std::string const &event, F &callback)
+template<typename F> void event::instance::listen(std::string const &event, F &&callback)
 {
 	m_manager.listen(m_name, event, callback);
 }

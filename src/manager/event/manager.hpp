@@ -12,7 +12,10 @@
 #include <utility>
 #include <boost/any.hpp>
 #include <boost/lockfree/queue.hpp>
+
+#ifdef _MSC_VER
 #include "integer_sequence.hpp"
+#endif
 
 namespace engine {
 namespace manager {
@@ -49,10 +52,10 @@ private:
 	};
 	template<typename T> struct dispatcher_maker;
 	template<typename... Args> struct dispatcher_maker<std::tuple<Args...>> {
-		template<typename F> dispatcher_type make(F &f);
+		template<typename F> dispatcher_type make(F &&f);
 	};
 
-	template<typename F> std::function<void(std::vector<boost::any> const&)> make_dispatcher(F &f);
+	template<typename F> std::function<void(std::vector<boost::any> const&)> make_dispatcher(F &&f);
 	template<typename... Args> std::function<void(std::vector<boost::any> const&)> make_dispatcher(void(*f)(Args...));
 	template<typename F, typename... Args> void enqueue(F const &f, Args const&... args);
 	void update();
@@ -67,7 +70,7 @@ private:
 class event::instance {
 public:
 	instance(std::string name, event &manager);
-	template<typename F> void listen(std::string const &event, F &callback);
+	template<typename F> void listen(std::string const &event, F &&callback);
 	template<typename... Args> void fire(std::string const &event, Args const&... args);
 
 private:

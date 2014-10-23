@@ -1,6 +1,7 @@
 #pragma once
 #include "manager.hpp"
 
+#include <stdexcept>
 #include <boost/thread/locks.hpp>
 
 namespace engine {
@@ -12,7 +13,7 @@ T &entity::instance::add(id entity)
 	// Get type
 	auto key = std::type_index(typeid(T));
 	if (m_manager.m_properties.find(key) == m_manager.m_properties.end())
-		m_manager.m_properties[key] = unique_ptr<abstract_property>(new property<T>);
+		m_manager.m_properties[key] = std::unique_ptr<abstract_property>(new property<T>);
 	auto &p = *((property<T>*)m_manager.m_properties[key].get());
 
 	// Check if already existing
@@ -46,7 +47,7 @@ bool entity::instance::check(id entity) const
 	auto find = m_manager.m_properties.find(key);
 	if (find == m_manager.m_properties.end())
 		return false;
-	return find->second->check();
+	return find->second->check(entity);
 }
 
 template<typename T>
@@ -61,7 +62,7 @@ void entity::property<T>::remove(id entity)
 {
 	// Check if entity exists
 	if (m_indices.find(entity) == m_indices.end())
-		throw runtime_error("Entity does not have this property.");
+		throw std::runtime_error("Entity does not have this property.");
 	size_t index = m_indices[entity];
 
 	// Copy last element over
@@ -159,7 +160,7 @@ entity::property<T> &entity::instance::get_property() const
 	auto key = std::type_index(typeid(T));
 	auto find = m_manager.m_properties.find(key);
 	if (find == m_manager.m_properties.end())
-		throw runtime_error("Property does not exist.");
+		throw std::runtime_error("Property does not exist.");
 	return *((property<T>*)find->second.get());
 }
 
@@ -167,7 +168,7 @@ template<typename T>
 size_t entity::instance::get_index(property<T> &p, id entity) const
 {
 	if (p.m_indices.find(entity) == p.m_indices.end())
-		throw runtime_error("Entity does not have this property.");
+		throw std::runtime_error("Entity does not have this property.");
 	return p.m_indices[entity];
 }
 

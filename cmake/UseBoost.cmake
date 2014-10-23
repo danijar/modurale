@@ -24,6 +24,6 @@ if (Boost_FOUND)
 	target_link_libraries(tests    ${Boost_LIBRARIES})
 	message(STATUS "Found dependency Boost at " ${BOOST_ROOT} ".")
 else()
-	message(SEND_ERROR "Dependency Boost not found. Please set BOOST_ROOT to "
+	message(SEND_ERROR "Dependency Boost not found, please set BOOST_ROOT to "
 		"the installation directory.")
 endif()
