@@ -9,6 +9,7 @@ ExternalProject_Add(SFML
 	TMP_DIR        ${SFML_PREFIX}/temp
 	STAMP_DIR      ${SFML_PREFIX}/stamp
 	#--Download step--------------
+	DOWNLOAD_DIR   ${SFML_PREFIX}/source
 	GIT_REPOSITORY https://github.com/LaurentGomila/SFML.git
 	GIT_TAG        e2c378e9d1
 	#--Update/Patch step----------

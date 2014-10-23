@@ -118,3 +118,4 @@ set(CMAKE_CONFIGURATION_TYPES "Debug;Release" CACHE STRING
 
 include(UseBoost)
 include(UseSFML)
+include(UseCatch)

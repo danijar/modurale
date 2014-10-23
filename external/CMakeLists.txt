@@ -80,3 +80,4 @@ set(GIT_EXECUTABLE ${GIT_EXECUTABLE} CACHE FILEPATH
 # ../cmake/ directory that make calls to ExternalProject_Add.
 include(ExternalSFML)
 include(ExternalBoost)
+include(ExternalCatch)

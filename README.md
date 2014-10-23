@@ -18,6 +18,8 @@ Library        | Version | Description
 -------------- |:-------:| ------------------------------------------------
 [SFML][sfml]   | 2.1     | Simple and fast multimedia library.
 [Boost][boost] | 1.56.0  | Large collection of multi purpose C++ libraries.
+[Catch][catch] | 1.0.53  | Multi-paradigm automated test framework.
 
 [sfml]: https://github.com/LaurentGomila/SFML
 [boost]: http://www.boost.org/
+[catch]: https://github.com/philsquared/Catch
