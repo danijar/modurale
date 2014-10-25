@@ -1,30 +1,27 @@
 # SFML
+cmake_minimum_required(VERSION 2.8.12)
 include(ExternalProject)
-set(SFML_PREFIX ${CMAKE_SOURCE_DIR}/SFML)
 
 # Download, configure, build and install.
 ExternalProject_Add(SFML
 	# DEPENDS
-	PREFIX         ${SFML_PREFIX}
-	TMP_DIR        ${SFML_PREFIX}/temp
-	STAMP_DIR      ${SFML_PREFIX}/stamp
+	PREFIX         ${CMAKE_SOURCE_DIR}
+	TMP_DIR        ${CMAKE_SOURCE_DIR}/temp
+	STAMP_DIR      ${CMAKE_SOURCE_DIR}/stamp
 	#--Download step--------------
-	DOWNLOAD_DIR   ${SFML_PREFIX}/source
+	DOWNLOAD_DIR   ${CMAKE_SOURCE_DIR}/source
 	GIT_REPOSITORY https://github.com/LaurentGomila/SFML.git
 	GIT_TAG        e2c378e9d1
 	#--Update/Patch step----------
 	UPDATE_COMMAND ""
 	#--Configure step-------------
-	SOURCE_DIR     ${SFML_PREFIX}/source
-	CMAKE_ARGS     -DCMAKE_INSTALL_PREFIX:PATH=${SFML_PREFIX}/install
+	SOURCE_DIR     ${CMAKE_SOURCE_DIR}/source
+	CMAKE_ARGS     -DCMAKE_INSTALL_PREFIX:PATH=${CMAKE_SOURCE_DIR}/install
 	               -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
 	               -DBUILD_SHARED_LIBS=${BUILD_SHARED_LIBS}
 	               -DSFML_USE_STATIC_STD_LIBS=${USE_STATIC_STD_LIBS}
 	#--Build step-----------------
-	BINARY_DIR     ${SFML_PREFIX}/build
+	BINARY_DIR     ${CMAKE_SOURCE_DIR}/build
 	#--Install step---------------
-	INSTALL_DIR    ${SFML_PREFIX}/install
+	INSTALL_DIR    ${CMAKE_SOURCE_DIR}/install
 )
-
-# Set root so that find module knows where to look.
-set(SFML_ROOT ${SFML_PREFIX}/install)

@@ -1,13 +1,13 @@
 # Catch
+cmake_minimum_required(VERSION 2.8.12)
 include(ExternalProject)
-set(CATCH_PREFIX ${CMAKE_SOURCE_DIR}/Catch)
 
 # Download, configure, build and install.
 ExternalProject_Add(Catch
 	# DEPENDS
-	PREFIX            ${CATCH_PREFIX}
-	TMP_DIR           ${CATCH_PREFIX}/temp
-	STAMP_DIR         ${CATCH_PREFIX}/stamp
+	PREFIX            ${CMAKE_SOURCE_DIR}
+	TMP_DIR           ${CMAKE_SOURCE_DIR}/temp
+	STAMP_DIR         ${CMAKE_SOURCE_DIR}/stamp
 	#--Download step--------------
 	DOWNLOAD_DIR      ${SFML_PREFIX}/source
 	GIT_REPOSITORY    https://github.com/philsquared/Catch.git
@@ -16,14 +16,11 @@ ExternalProject_Add(Catch
 	UPDATE_COMMAND    ""
 	#--Configure step-------------
 	CONFIGURE_COMMAND ""
-	SOURCE_DIR        ${CATCH_PREFIX}/source
+	SOURCE_DIR        ${CMAKE_SOURCE_DIR}/source
 	#--Build step-----------------
 	BUILD_COMMAND     ""
-	BINARY_DIR        ${CATCH_PREFIX}
+	BINARY_DIR        ${CMAKE_SOURCE_DIR}
 	#--Install step---------------
-	INSTALL_COMMAND   ${CMAKE_COMMAND} -E copy_directory source/include install/include
-	INSTALL_DIR       ${CATCH_PREFIX}/install
+	INSTALL_COMMAND   ${CMAKE_COMMAND} -E copy_directory source/include install/include/catch
+	INSTALL_DIR       ${CMAKE_SOURCE_DIR}/install
 )
-
-# Set root so that find module knows where to look.
-set(CATCH_ROOT ${CATCH_PREFIX}/install)

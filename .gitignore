@@ -1,5 +1,6 @@
 # Dependencies
-/external/*/
+/external/
+!/external/*/CMakeLists.txt
 
 # CMake
 CMakeCache.txt

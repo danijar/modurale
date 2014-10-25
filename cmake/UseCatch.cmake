@@ -1,5 +1,5 @@
 # Catch
-set(CATCH_ROOT ${REPOSITORY_DIR}/external/Catch/install CACHE FILEPATH "")
+set(CATCH_ROOT ${CMAKE_SOURCE_DIR}/external/catch/install CACHE FILEPATH "")
 set(CATCH_ROOT ${CATCH_ROOT} CACHE FILEPATH "Path to Catch installation." FORCE)
 
 # Find package and include headers

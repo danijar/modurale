@@ -1,5 +1,5 @@
 # Boost
-set(BOOST_ROOT ${REPOSITORY_DIR}/external/Boost/install CACHE FILEPATH "")
+set(BOOST_ROOT ${CMAKE_SOURCE_DIR}/external/boost/install CACHE FILEPATH "")
 set(BOOST_ROOT ${BOOST_ROOT} CACHE FILEPATH "Path to Boost installation." FORCE)
 
 # Runtime linking
@@ -20,7 +20,8 @@ add_definitions(-DBOOST_ALL_NO_LIB)
 find_package(Boost QUIET COMPONENTS thread system)
 if (Boost_FOUND)
 	include_directories(${Boost_INCLUDE_DIR})
-	target_link_libraries(${PROJECT_NAME} ${Boost_LIBRARIES})
+	target_link_libraries(modurale ${Boost_LIBRARIES})
+	target_link_libraries(tets     ${Boost_LIBRARIES})
 	message(STATUS "Found dependency Boost at " ${BOOST_ROOT} ".")
 else()
 	message(SEND_ERROR "Dependency Boost not found. Please set BOOST_ROOT to "

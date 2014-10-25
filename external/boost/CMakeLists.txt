@@ -1,6 +1,6 @@
 # Boost
+cmake_minimum_required(VERSION 2.8.12)
 include(ExternalProject)
-set(BOOST_PREFIX ${CMAKE_SOURCE_DIR}/Boost)
 
 # Find platform dependend commands to configure
 # and compile. Fail if unclear.
@@ -58,22 +58,22 @@ endif()
 # Use collected variables to download, configure, build
 # and install.
 ExternalProject_Add(Boost
-	PREFIX            ${BOOST_PREFIX}
-	TMP_DIR           ${BOOST_PREFIX}/temp
-	STAMP_DIR         ${BOOST_PREFIX}/stamp
+	PREFIX            ${CMAKE_SOURCE_DIR}
+	TMP_DIR           ${CMAKE_SOURCE_DIR}/temp
+	STAMP_DIR         ${CMAKE_SOURCE_DIR}/stamp
 	#--Download step--------------
-	DOWNLOAD_DIR      ${BOOST_PREFIX}/download
+	DOWNLOAD_DIR      ${CMAKE_SOURCE_DIR}/download
 	URL               http://downloads.sourceforge.net/project/boost/boost/1.56.0/boost_1_56_0.tar.gz
 	URL_MD5           8c54705c424513fa2be0042696a3a162
 	#--Update/Patch step----------
 	UPDATE_COMMAND    ""
 	#--Configure step-------------
-	SOURCE_DIR        ${BOOST_PREFIX}/source
+	SOURCE_DIR        ${CMAKE_SOURCE_DIR}/source
 	CONFIGURE_COMMAND ${BOOST_CONFIGURE_COMMAND}
 	#--Build step-----------------
 	BUILD_COMMAND     ${BOOST_BUILD_EXECUTABLE} install
-	                      --build-dir=${BOOST_PREFIX}/build
-	                      --prefix=${BOOST_PREFIX}/install
+	                      --build-dir=${CMAKE_SOURCE_DIR}/build
+	                      --prefix=${CMAKE_SOURCE_DIR}/install
 	                      variant=${BOOST_VARIANT}
 	                      link=${BOOST_LINK}
 	                      threading=multi
@@ -86,6 +86,3 @@ ExternalProject_Add(Boost
 	#--Install step---------------
 	INSTALL_COMMAND   ""
 )
-
-# Set root so that find module knows where to look.
-set(BOOST_ROOT ${BOOST_PREFIX}/install)
