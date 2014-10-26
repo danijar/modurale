@@ -48,6 +48,9 @@ When using Visual Studio, please note that `ALL_BUILD` get set as startup
 project, which is not able to run the executable. Therefore, you have to right
 click on *modurale* and set it as startup project. This
 [has been discussed][question] already, and there is no automated solution.
+Another way would be to right click the project and under *Debug* click
+*Start new instance* every time. This can be useful for running the tests
+without switching the statup project every time.
 
 As an advice, you may also want to use *Show All Files* mode from the toolbar
 of the *Solution Explorer* for that project to show source files in their
