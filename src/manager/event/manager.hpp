@@ -10,6 +10,9 @@
 #include <atomic>
 #include <functional>
 #include <utility>
+#include <exception>
+#include <stdexcept>
+#include <mutex>
 #include <boost/any.hpp>
 #include <boost/lockfree/queue.hpp>
 
@@ -22,6 +25,8 @@ namespace manager {
 
 class event {
 public:
+	class bad_arity : public std::exception { virtual const char *what() const { return "Callback expects more parameters than provided."; }; };
+	class bad_types : public std::exception { virtual const char *what() const { return "Callback expects other parameter types than provided."; }; };
 	class instance;
 
 	event();
@@ -29,6 +34,7 @@ public:
 	instance &make_instance(std::string user);
 	template<typename F> void listen(std::string user, std::string const &event, F &callback);
 	template<typename... Args> void fire(std::string user, std::string const &event, Args const&... args);
+	void rethrow();
 
 private:
 	template<typename... Args> class dispatcher {
@@ -65,6 +71,8 @@ private:
 	boost::lockfree::queue<std::function<void()>*, boost::lockfree::capacity<16>> m_jobs;
 	std::thread m_update;
 	std::unordered_map<std::string, std::unique_ptr<instance>> m_instances;
+	std::exception_ptr m_last_exception;
+	std::mutex m_last_exception_access;
 };
 
 class event::instance {
@@ -72,6 +80,7 @@ public:
 	instance(std::string name, event &manager);
 	template<typename F> void listen(std::string const &event, F &&callback);
 	template<typename... Args> void fire(std::string const &event, Args const&... args);
+	void rethrow();
 
 private:
 	std::string m_name;

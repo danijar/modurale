@@ -12,7 +12,7 @@ template<typename... Args>
 void event::dispatcher<Args...>::operator() (std::vector<boost::any> const &v)
 {
 	if (v.size() < sizeof...(Args))
-		throw std::runtime_error("Callback has wrong arity.");
+		throw bad_arity();
 	return do_call(v, std::make_integer_sequence<int, sizeof...(Args)>());
 }
 
@@ -23,7 +23,7 @@ void event::dispatcher<Args...>::do_call(std::vector<boost::any> const &v, std::
 	try {
 		return m_function((get_ith<Args>(v, Is))...);
 	} catch (boost::bad_any_cast const&) {
-		throw std::runtime_error("Callback has wrong signature.");
+		throw bad_types();
 	}
 }
 

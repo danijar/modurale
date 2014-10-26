@@ -3,6 +3,11 @@
 #include <catch/catch.hpp>
 #include "../src/manager/event/manager.hpp"
 
+struct custom_type {
+	custom_type(int number) : number(number) {}
+	int number = 0;
+};
+
 TEST_CASE("event manager") {
 	engine::manager::event event;
 	auto instance_one = event.make_instance("first user");
@@ -42,23 +47,16 @@ TEST_CASE("event manager") {
 		REQUIRE(number == 42);
 	}
 
-	/*
 	SECTION("custom types can be used as parameters") {
-		struct type {
-			type(int number) : number(number) {}
-			int number = 0;
-		};
-
 		int number = 0;
-		instance_one.listen("event", [&](type parameter) {
+		instance_one.listen("event", [&](custom_type parameter) {
 			number = parameter.number;
 		});
-		instance_two.fire("event", type(42));
+		instance_two.fire("event", custom_type(42));
 
 		std::this_thread::sleep_for(delay);
 		REQUIRE(number == 42);
 	}
-	*/
 
 	SECTION("not all parameters have to be used") {
 		int number = 0;
@@ -73,16 +71,20 @@ TEST_CASE("event manager") {
 
 	SECTION("at least the expected parameters need to be provided") {
 		instance_one.listen("event", [&](int one, double two) {});
+		instance_two.fire("event", 42);
 
 		std::this_thread::sleep_for(delay);
-		REQUIRE_THROWS(instance_two.fire("event", 42));
+		REQUIRE_THROWS_AS(event.rethrow(), engine::manager::event::bad_arity);
+		REQUIRE_NOTHROW(event.rethrow());
 	}
 
 	SECTION("the provided parameters must match in type") {
 		instance_one.listen("event", [&](int one, double two) {});
+		instance_two.fire("event", 42, "second");
 
 		std::this_thread::sleep_for(delay);
-		REQUIRE_THROWS(instance_two.fire("event", 42, "second"));
+		REQUIRE_THROWS_AS(event.rethrow(), engine::manager::event::bad_types);
+		REQUIRE_NOTHROW(event.rethrow());
 	}
 
 	SECTION("callbacks are called asynchronously") {
