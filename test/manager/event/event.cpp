@@ -1,5 +1,6 @@
 #include <thread>
 #include <chrono>
+#include <atomic>
 #include <catch/catch.hpp>
 #include "../src/manager/event/manager.hpp"
 
@@ -12,7 +13,7 @@ TEST_CASE("event manager") {
 	engine::manager::event event;
 	auto instance_one = event.make_instance("first user");
 	auto instance_two = event.make_instance("second user");
-	std::chrono::milliseconds delay(100);
+	std::chrono::milliseconds delay(10);
 
 	SECTION("events of one instance will be heard by the other") {
 		bool success = false;
@@ -23,9 +24,10 @@ TEST_CASE("event manager") {
 
 		std::this_thread::sleep_for(delay);
 		REQUIRE(success);
+		REQUIRE_NOTHROW(event.rethrow());
 	}
 
-	SECTION("events of one instanc will be heard by itself") {
+	SECTION("events of one instance will be heard by itself") {
 		bool success = false;
 		instance_one.listen("event", [&]() {
 			success = true;
@@ -34,9 +36,10 @@ TEST_CASE("event manager") {
 
 		std::this_thread::sleep_for(delay);
 		REQUIRE(success);
+		REQUIRE_NOTHROW(event.rethrow());
 	}
 
-	SECTION("parameter can be passed") {
+	SECTION("parameters can be passed") {
 		int number = 0;
 		instance_one.listen("event", [&](int parameter) {
 			number = parameter;
@@ -45,28 +48,37 @@ TEST_CASE("event manager") {
 
 		std::this_thread::sleep_for(delay);
 		REQUIRE(number == 42);
+		REQUIRE_NOTHROW(event.rethrow());
 	}
 
 	SECTION("custom types can be used as parameters") {
 		int number = 0;
 		instance_one.listen("event", [&](custom_type parameter) {
-			number = parameter.number;
+			number += parameter.number;
 		});
 		instance_two.fire("event", custom_type(42));
 
 		std::this_thread::sleep_for(delay);
 		REQUIRE(number == 42);
+		REQUIRE_NOTHROW(event.rethrow());
 	}
 
 	SECTION("not all parameters have to be used") {
-		int number = 0;
+		std::atomic_int number{ 0 };
+		instance_one.listen("event", [&]() {
+			number++;
+		});
 		instance_one.listen("event", [&](int parameter) {
-			number = parameter;
+			number += parameter;
+		});
+		instance_one.listen("event", [&](int ignore, double parameter) {
+			number += static_cast<int>(parameter);
 		});
 		instance_two.fire("event", 42, 3.14);
 
 		std::this_thread::sleep_for(delay);
-		REQUIRE(number == 42);
+		REQUIRE(number == 46);
+		REQUIRE_NOTHROW(event.rethrow());
 	}
 
 	SECTION("at least the expected parameters need to be provided") {
@@ -98,6 +110,7 @@ TEST_CASE("event manager") {
 		REQUIRE_FALSE(success);
 		std::this_thread::sleep_for(delay);
 		REQUIRE(success);
+		REQUIRE_NOTHROW(event.rethrow());
 	}
 
 	SECTION("callbacks are executed in registration order") {
@@ -113,5 +126,6 @@ TEST_CASE("event manager") {
 
 		std::this_thread::sleep_for(5 * delay);
 		REQUIRE(number == 13);
+		REQUIRE_NOTHROW(event.rethrow());
 	}
 }
