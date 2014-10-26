@@ -6,7 +6,7 @@ namespace manager {
 
 template<typename... Args>
 template<typename F>
-event::dispatcher<Args...>::dispatcher(F f) : m_function(move(f)) {}
+event::dispatcher<Args...>::dispatcher(F f) : m_function(std::move(f)) {}
 
 template<typename... Args>
 void event::dispatcher<Args...>::operator() (std::vector<boost::any> const &v)
