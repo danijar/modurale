@@ -10,9 +10,8 @@ set(MODURALE_VERSION_MAJOR 0)
 set(MODURALE_VERSION_MINOR 1)
 set(MODURALE_VERSION_PATCH 0)
 
-# Declare projects
+# Declare project name
 project(modurale)
-project(tests)
 
 # Include scripts
 set(CMAKE_MODULE_PATH cmake ${CMAKE_MODULE_PATH})
@@ -80,7 +79,7 @@ function(create_project PROJECT ROOT)
 	file(GLOB_RECURSE HEADERS ${ROOT}/*.hpp ${ROOT}/*.inl)
 	file(GLOB_RECURSE SOURCES ${ROOT}/*.cpp)
 	# Add the collected files and add root as include directory
-	add_executable(${PROJECT} HEADERS SOURCES)
+	add_executable(${PROJECT} ${HEADERS} ${SOURCES})
 	include_directories(${ROOT})
 	# Display status message
 	list(LENGTH HEADERS HEADERS_COUNT)

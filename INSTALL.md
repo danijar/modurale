@@ -17,8 +17,7 @@ dependency under `<repository>/external`, where downloaded source, intermediate
 files and the final libraries get stored. Here is how to use the build scripts.
 
 Open a terminal at the repository root and run `cmake` with the following
-options. When targeting Visual Studio, please use the *Developer Command
-Promt*.
+options.
 
 - `-G"<generator>"` Name of the toolchain you want to use. This option is
 required. Use `cmake --help` to get a list of all available generators. In most
@@ -57,3 +56,12 @@ safely check the box to not show popups about *No Debug Information* again when
 building.
 
 [question]: http://stackoverflow.com/q/7304625
+
+Cleanup
+-------
+
+If you want to clean up your repository from temporary directories and files
+created by CMake and your compiler, you can run `git clean -xffd`. This also
+removed the dependencies that were set up automatically, so you have to rebuild
+them next time. Therefore, this is only useful if you have issues with the
+build system or to test changes made to it.
