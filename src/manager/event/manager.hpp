@@ -25,8 +25,8 @@ namespace manager {
 
 class event {
 public:
-	class bad_arity : public std::exception { virtual const char *what() const { return "Callback expects more parameters than provided."; }; };
-	class bad_types : public std::exception { virtual const char *what() const { return "Callback expects other parameter types than provided."; }; };
+	class bad_arity : public std::exception { const char *what() const throw() { return "Callback expects more parameters than provided."; }; };
+	class bad_types : public std::exception { const char *what() const throw() { return "Callback expects other parameter types than provided."; }; };
 	class instance;
 
 	event();
