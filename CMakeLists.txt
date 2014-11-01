@@ -92,11 +92,6 @@ function(create_target NAME)
 	list(LENGTH SOURCES SOURCES_COUNT)
 	message(STATUS "Added project " ${NAME} " with " ${HEADERS_COUNT} " "
 		"headers and " ${SOURCES_COUNT} " source files.")
-	# If use static libraries if set
-	if (NOT BUILD_SHARED_LIBS)
-		set_target_properties(${NAME} PROPERTIES LINK_SEARCH_START_STATIC TRUE)
-		set_target_properties(${NAME} PROPERTIES LINK_SEARCH_END_STATIC TRUE)
-	endif()
 endfunction()
 
 # Use function above

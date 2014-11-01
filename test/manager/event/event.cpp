@@ -1,8 +1,8 @@
 #include <thread>
 #include <chrono>
 #include <atomic>
-#include <catch/catch.hpp>
-#include "../src/manager/event/manager.hpp"
+#include <catch.hpp>
+#include "manager/event/manager.hpp"
 
 struct custom_type {
 	custom_type(int number) : number(number) {}
