@@ -12,12 +12,12 @@ General
 -------
 
 This project comes with build scripts capable of downloading and building all
-dependencies automatically. They will create a sub directory for each
-dependency under `<repository>/external`, where downloaded source, intermediate
-files and the final libraries get stored. Here is how to use the build scripts.
-
-Open a terminal at the repository root and run `cmake` with the following
-options.
+dependencies automatically. Here is how to use it. Open a terminal at the
+repository root and run `cmake` with the following options. This sets up the
+project and also will automatically download, extract, build and install
+dependendies. Be prepared for this step to take a while. Every dependency gets
+its sub directory under `<repository>/external` so that your normal system
+won't be affected.
 
 - `-G"<generator>"` Name of the toolchain you want to use. This option is
 required. Use `cmake --help` to get a list of all available generators. In most
@@ -29,8 +29,9 @@ git available globally.
 - `-DCMAKE_BUILD_TYPE:STRING=<variant>` Build variant. Defaults to *Release*.
 Change this to *Debug* if you want debug binaries instead.
 
-Now we have set up the build environment. To start compilation, execute `cmake
---build .` appended with the following options.
+Now we have set up the build environment and built all dependencies. To start
+compilation of the actual project, execute `cmake --build .` appended with the
+following options.
 
 - `--config <variant>` Build variant. This option is required. Set this so that
 it matches your choice above.
@@ -38,8 +39,9 @@ it matches your choice above.
 all dependencies, this project and its unit tests. Set this to the name of a
 dependency, *modurale* or *tests* to only build a specific target.
 
-This builds everything, including tests, dependencies and downloading them
-first. This can take a while.
+This builds the project, including tests. After this process, you have two
+executables for this, in a location depending on our platform and toolset. Run
+them and see if they start without any errors. Congratulations!
 
 Visual Studio
 -------------
@@ -48,9 +50,6 @@ When using Visual Studio, please note that `ALL_BUILD` get set as startup
 project, which is not able to run the executable. Therefore, you have to right
 click on *modurale* and set it as startup project. This
 [has been discussed][question] already, and there is no automated solution.
-Another way would be to right click the project and under *Debug* click
-*Start new instance* every time. This can be useful for running the tests
-without switching the statup project every time.
 
 As an advice, you may also want to use *Show All Files* mode from the toolbar
 of the *Solution Explorer* for that project to show source files in their
