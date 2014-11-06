@@ -2,8 +2,10 @@
 set(SFML_ROOT ${CMAKE_SOURCE_DIR}/external/sfml/install CACHE FILEPATH "")
 set(SFML_ROOT ${SFML_ROOT} CACHE FILEPATH "Path to SFML installation." FORCE)
 
-# Runtime linking
-if (USE_STATIC_STD_LIBS)
+# Linkage
+if (BUILD_SHARED_LIBS)
+	set(SFML_STATIC_LIBRARIES FALSE)
+else()
 	set(SFML_STATIC_LIBRARIES TRUE)
 endif()
 

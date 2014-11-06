@@ -52,6 +52,15 @@ if (USE_STATIC_STD_LIBS)
 	endif()
 endif()
 
+# Find correct file extension for libraries
+if (UNIX)
+	if (BUILD_SHARED_LIBS)
+		set(CMAKE_FIND_LIBRARY_SUFFIXES ".so")
+	else()
+		set(CMAKE_FIND_LIBRARY_SUFFIXES ".a")
+	endif()
+endif()
+
 # Linkage options are mutually exclusive
 if (BUILD_SHARED_LIBS AND USE_STATIC_STD_LIBS)
 	message(FATAL_ERROR "Can't link libraries dynamically but runtime "
