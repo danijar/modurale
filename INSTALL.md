@@ -8,16 +8,34 @@ build this project.
 [git]: http://git-scm.com/downloads
 [cmake]: http://www.cmake.org/download/
 
-General
+Summary
 -------
 
+To just build the project, run these two commands inside the repository root.
+You can skip the next section if you are not interested in a more detailed
+build process. However, make sure to take a look at the later sections as they
+provide practical advice.
+
+```
+# Windows
+cmake -G"Visual Studio 12 2013"
+cmake --build .
+
+# Linux
+sudo cmake -G"Unix Makefiles"
+sudo cmake --build .
+```
+
+Advanced
+--------
+
 This project comes with build scripts capable of downloading and building all
-dependencies automatically. Here is how to use it. Open a terminal at the
-repository root and run `cmake` with the following options. This sets up the
-project and also will automatically download, extract, build and install
-dependendies. Be prepared for this step to take a while. Every dependency gets
-its sub directory under `<repository>/external` so that your normal system
-won't be affected.
+dependencies automatically. They will create a sub directory for each
+dependency under `<repository>/external` where downloaded source, intermediate
+files and the final libraries get stored. Here is how to use the build scripts.
+Open a terminal at the repository root and run `cmake` with the following
+options. If you want to stick with the defaults, just set the first option. On
+Linux, you need `sudo` for this.
 
 - `-G"<generator>"` Name of the toolchain you want to use. This option is
 required. Use `cmake --help` to get a list of all available generators. In most
@@ -28,10 +46,17 @@ cases, you want to use *"Unix Makefiles"* on Linux and *"Visual Studio 12
 git available globally.
 - `-DCMAKE_BUILD_TYPE:STRING=<variant>` Build variant. Defaults to *Release*.
 Change this to *Debug* if you want debug binaries instead.
+- `-DBUILD_SHARED_LIBS:BOOL=<linkage>` Linkage type of library dependencies.
+Defaults to *FALSE* on Windows which means shared linking and *TRUE* on Linux
+which means static linking.
+- `-DUSE_STATIC_STD_LIBS:BOOL=<std-linkage>` Linkage type of runtime library.
+Defaults to *TRUE* on Windows and *FALSE* on Linux. Only one of this and the
+option right above can be true.
 
 Now we have set up the build environment and built all dependencies. To start
 compilation of the actual project, execute `cmake --build .` appended with the
-following options.
+following options. To stick with the defaults, add none of these. On Linux, you
+need `sudo` for this.
 
 - `--config <variant>` Build variant. This option is required. Set this so that
 it matches your choice above.
@@ -41,7 +66,7 @@ dependency, *modurale* or *tests* to only build a specific target.
 
 This builds the project, including tests. After this process, you have two
 executables for this, in a location depending on our platform and toolset. Run
-them and see if they start without any errors. Congratulations!
+them and see if they start without any errors.
 
 Visual Studio
 -------------
