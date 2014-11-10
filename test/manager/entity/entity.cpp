@@ -1,6 +1,6 @@
 #include <catch.hpp>
-#include "manager/entity/manager.hpp"
+#include "../src/manager/entity/manager.hpp"
 
-TEST_CASE("entity manager") {
+TEST_CASE("manager-entity") {
 
 }

@@ -2,14 +2,14 @@
 #include <chrono>
 #include <atomic>
 #include <catch.hpp>
-#include "manager/event/manager.hpp"
+#include "../src/manager/event/manager.hpp"
 
 struct custom_type {
 	custom_type(int number) : number(number) {}
 	int number = 0;
 };
 
-TEST_CASE("event manager") {
+TEST_CASE("manager-event") {
 	engine::manager::event event;
 	auto instance_one = event.make_instance("first user");
 	auto instance_two = event.make_instance("second user");
@@ -17,7 +17,7 @@ TEST_CASE("event manager") {
 
 	SECTION("events of one instance will be heard by the other") {
 		bool success = false;
-		instance_one.listen("event", [&]() {
+		instance_one.listen("event", [&] {
 			success = true;
 		});
 		instance_two.fire("event");
@@ -29,7 +29,7 @@ TEST_CASE("event manager") {
 
 	SECTION("events of one instance will be heard by itself") {
 		bool success = false;
-		instance_one.listen("event", [&]() {
+		instance_one.listen("event", [&] {
 			success = true;
 		});
 		instance_one.fire("event");
@@ -65,7 +65,7 @@ TEST_CASE("event manager") {
 
 	SECTION("not all parameters have to be used") {
 		std::atomic_int number{ 0 };
-		instance_one.listen("event", [&]() {
+		instance_one.listen("event", [&] {
 			number++;
 		});
 		instance_one.listen("event", [&](int parameter) {
@@ -101,7 +101,7 @@ TEST_CASE("event manager") {
 
 	SECTION("callbacks are called asynchronously") {
 		bool success = false;
-		instance_one.listen("event", [&]() {
+		instance_one.listen("event", [&] {
 			std::this_thread::sleep_for(delay / 2);
 			success = true;
 		});
@@ -115,10 +115,10 @@ TEST_CASE("event manager") {
 
 	SECTION("callbacks are executed in registration order") {
 		int number = 0;
-		instance_one.listen("event", [&]() {
+		instance_one.listen("event", [&] {
 			number = 42;
 		});
-		instance_two.listen("event", [&]() {
+		instance_two.listen("event", [&] {
 			number = 13;
 		});
 		for (int i = 0; i < 5; i++)

@@ -11,7 +11,7 @@ ExternalProject_Add(SFML
 	#--Download step--------------
 	DOWNLOAD_DIR   ${CMAKE_SOURCE_DIR}/source
 	GIT_REPOSITORY https://github.com/LaurentGomila/SFML.git
-	GIT_TAG        1271dff
+	GIT_TAG        e257909
 	#--Update/Patch step----------
 	UPDATE_COMMAND ""
 	#--Configure step-------------

@@ -1,7 +1,7 @@
 #include <catch.hpp>
-#include "system/system.hpp"
-#include "system/managers.hpp"
-#include "module/window/module.hpp"
+#include "../src/system/system.hpp"
+#include "../src/system/managers.hpp"
+#include "../src/module/window/module.hpp"
 
 TEST_CASE("system") {
 
