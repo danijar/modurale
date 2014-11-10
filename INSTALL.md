@@ -11,20 +11,13 @@ build this project.
 Summary
 -------
 
-To just build the project, run these two commands inside the repository root.
-You can skip the next section if you are not interested in a more detailed
-build process. However, make sure to take a look at the later sections as they
-provide practical advice.
+To just build the project on Windows, run `cmake -G"Visual Studio 12 2013"`
+inside the repository root. This can take a while. Then open the generated
+Visual Studio solution, set the startup project to *modurale*, select *Release*
+mode and run.
 
-```
-# Windows
-cmake -G"Visual Studio 12 2013"
-cmake --build .
-
-# Linux
-sudo cmake -G"Unix Makefiles"
-sudo cmake --build .
-```
+On Linux, use `sudo cmake -G"Unix Makefiles"`. You can now build the project
+using `sudo cmake --build. `.
 
 Advanced
 --------
