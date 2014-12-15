@@ -1,5 +1,5 @@
 # Boost
-cmake_minimum_required(VERSION 2.8.12)
+cmake_minimum_required(VERSION 2.8.8)
 include(ExternalProject)
 
 # Find platform dependend commands to configure
@@ -80,7 +80,8 @@ ExternalProject_Add(Boost
 	                      address-model=${BOOST_ADDRESS_MODEL}
 	                      toolset=${BOOST_TOOLSET}
 	                      runtime-link=${BOOST_RUNTIME_LINK}
-	                      --without-python
+	                      --with-thread
+	                      --with-system
 	                      -sNO_BZIP2=1
 	BUILD_IN_SOURCE   1
 	#--Install step---------------
