@@ -1,15 +1,15 @@
 # Catch
-cmake_minimum_required(VERSION 2.8.12)
+cmake_minimum_required(VERSION 2.8.8)
 include(ExternalProject)
 
-# Download, configure, build and install.
+# Download, configure, build and install
 ExternalProject_Add(Catch
 	# DEPENDS
 	PREFIX            ${CMAKE_SOURCE_DIR}
 	TMP_DIR           ${CMAKE_SOURCE_DIR}/temp
 	STAMP_DIR         ${CMAKE_SOURCE_DIR}/stamp
 	#--Download step--------------
-	DOWNLOAD_DIR      ${SFML_PREFIX}/source
+	DOWNLOAD_DIR      ${CMAKE_SOURCE_PREFIX}/source
 	GIT_REPOSITORY    https://github.com/philsquared/Catch.git
 	GIT_TAG           d4e5f18436
 	#--Update/Patch step----------
@@ -21,6 +21,6 @@ ExternalProject_Add(Catch
 	BUILD_COMMAND     ""
 	BINARY_DIR        ${CMAKE_SOURCE_DIR}
 	#--Install step---------------
-	INSTALL_COMMAND   ${CMAKE_COMMAND} -E copy_directory source/include install/include
+	INSTALL_COMMAND   ${CMAKE_COMMAND} -E copy_directory source/include install/catch
 	INSTALL_DIR       ${CMAKE_SOURCE_DIR}/install
 )

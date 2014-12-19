@@ -145,9 +145,11 @@ endfunction()
 add_subdirectory_and_build(boost)
 add_subdirectory_and_build(sfml)
 add_subdirectory_and_build(catch)
+add_subdirectory_and_build(sqlite)
 
 # Find and include headers and binaries of
 # dependencies that match the configuration
 include(UseBoost)
 include(UseSFML)
 include(UseCatch)
+include(UseSQLite)

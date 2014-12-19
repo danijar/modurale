@@ -1,8 +1,8 @@
 # SFML
-cmake_minimum_required(VERSION 2.8.12)
+cmake_minimum_required(VERSION 2.8.8)
 include(ExternalProject)
 
-# Download, configure, build and install.
+# Download, configure, build and install
 ExternalProject_Add(SFML
 	# DEPENDS
 	PREFIX         ${CMAKE_SOURCE_DIR}

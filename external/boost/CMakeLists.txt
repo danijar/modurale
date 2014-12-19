@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 2.8.8)
 include(ExternalProject)
 
 # Find platform dependend commands to configure
-# and compile. Fail if unclear.
+# and compile, fail if unclear
 if (UNIX)
 	set(BOOST_CONFIGURE_COMMAND ./bootstrap.sh)
 	set(BOOST_BUILD_EXECUTABLE ./b2)

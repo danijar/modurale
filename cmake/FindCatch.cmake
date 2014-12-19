@@ -1,13 +1,12 @@
 # - Find Catch
-# Find the Catch include and library
+# Find the Catch include
 #
 #  CATCH_INCLUDE_DIR - The include directory
 #  CATCH_FOUND       - True if Catch has been found
 
 find_path(CATCH_INCLUDE_DIR
-	catch.hpp
-	HINTS ${CATCH_ROOT}/include
-	PATH_SUFFIXES
+	catch/catch.hpp
+	HINTS ${CATCH_ROOT}
 )
 
 include(FindPackageHandleStandardArgs)
