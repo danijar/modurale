@@ -28,7 +28,7 @@ ExternalProject_Add(SQLite
 	                      ${CMAKE_SOURCE_DIR}/source/CMakeLists.txt
 	#--Configure step-------------
 	SOURCE_DIR        ${CMAKE_SOURCE_DIR}/source
-	CMAKE_ARGS        -DCMAKE_INSTALL_PREFIX:PATH=${CMAKE_SOURCE_DIR}/install
+	CMAKE_ARGS        -DCMAKE_INSTALL_PREFIX=${CMAKE_SOURCE_DIR}/install
 	                  -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
 	                  -DBUILD_SHARED_LIBS=${BUILD_SHARED_LIBS}
 	#--Build step-----------------

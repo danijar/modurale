@@ -6,8 +6,8 @@
 #  SQLITE_FOUND       - True if SQLite has been found
 
 find_path(SQLITE_INCLUDE_DIR
-	include/sqlite3.h
-	HINTS ${SQLITE_ROOT}
+	sqlite3.h
+	HINTS ${SQLITE_ROOT}/include
 )
 
 find_library(SQLITE_LIBRARY

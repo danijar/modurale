@@ -17,32 +17,29 @@ Visual Studio solution, set the startup project to *modurale*, select *Release*
 mode and run.
 
 On Linux, use `sudo cmake -G"Unix Makefiles"`. You can now build the project
-using `sudo cmake --build. `.
+using `sudo cmake --build .`.
 
 Advanced
 --------
 
 This project comes with build scripts capable of downloading and building all
-dependencies automatically. They will create a sub directory for each
-dependency under `<repository>/external` where downloaded source, intermediate
-files and the final libraries get stored. Here is how to use the build scripts.
-Open a terminal at the repository root and run `cmake` with the following
-options. If you want to stick with the defaults, just set the first option. On
-Linux, you need `sudo` for this.
+dependencies automatically. Here is how to use it. Open a terminal at the
+repository root and run `cmake` with the following options. This sets up the
+project and also will automatically download, extract, build and install
+dependencies. Be prepared for this step to take a while. Every dependency has
+its sub directory under `external` so that your system environment won't be
+affected.
 
-- `-G"<generator>"` Name of the toolchain you want to use. This option is
+- `-G"<generator>"` Name of the tool chain you want to use. This option is
 required. Use `cmake --help` to get a list of all available generators. In most
 cases, you want to use *"Unix Makefiles"* on Linux and *"Visual Studio 12
 2013"* on Windows.
-- `-DGIT_EXECUTABLE:FILEPATH=<git>` Path to your git executable. Defaults to
-*git* or *git.exe* dependending on your platform. Change this if you don't have
-git available globally.
-- `-DCMAKE_BUILD_TYPE:STRING=<variant>` Build variant. Defaults to *Release*.
-Change this to *Debug* if you want debug binaries instead.
-- `-DBUILD_SHARED_LIBS:BOOL=<linkage>` Linkage type of library dependencies.
-Defaults to *FALSE* on Windows which means shared linking and *TRUE* on Linux
-which means static linking.
-- `-DUSE_STATIC_STD_LIBS:BOOL=<std-linkage>` Linkage type of runtime library.
+- `-DGIT_EXECUTABLE=<git>` Path to your Git executable. Defaults to *git* or
+*git.exe* depending on your platform. Change this if you don't have Git
+available globally.
+- `-DCMAKE_BUILD_TYPE=<variant>` Build variant. Defaults to *Release*. Change
+this to *Debug* if you want debug binaries instead.
+- `-DUSE_STATIC_STD_LIBS=<std-linkage>` Linkage type of runtime library.
 Defaults to *TRUE* on Windows and *FALSE* on Linux. Only one of this and the
 option right above can be true.
 
@@ -59,7 +56,7 @@ dependency, *modurale* or *tests* to only build a specific target.
 
 This builds the project, including tests. After this process, you have two
 executables for this, in a location depending on our platform and toolset. Run
-them and see if they start without any errors.
+them and see if they start without any errors. Congratulations!
 
 Visual Studio
 -------------

@@ -1,7 +1,7 @@
 #include <thread>
 #include <chrono>
 #include <atomic>
-#include <catch.hpp>
+#include <catch/catch.hpp>
 #include "../src/manager/event/manager.hpp"
 
 struct custom_type {
