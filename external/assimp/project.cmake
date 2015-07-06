@@ -28,7 +28,7 @@ ExternalProject_Add(Assimp
     UPDATE_COMMAND ""
     #--Configure step-------------
     SOURCE_DIR     ${CMAKE_SOURCE_DIR}/source
-    CMAKE_ARGS     -DCMAKE_INSTALL_PREFIX=${CMAKE_SOURCE_DIR}/install
+    CMAKE_ARGS     -DCMAKE_INSTALL_PREFIX=${INSTALL_DIR}
                    -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
                    -DBUILD_SHARED_LIBS=${BUILD_SHARED_LIBS}
                    -DUSE_STATIC_STD_LIBS=${USE_STATIC_STD_LIBS}
@@ -40,5 +40,5 @@ ExternalProject_Add(Assimp
     TEST_BEFORE_INSTALL 1
     TEST_COMMAND   ${ASSIMP_DEBUG_SYMBOLS_FIX}
     #--Install step---------------
-    INSTALL_DIR    ${CMAKE_SOURCE_DIR}/install
+    INSTALL_DIR    ${INSTALL_DIR}
 )

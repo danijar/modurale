@@ -6,8 +6,6 @@
 #  ASSIMP_DEPENDENCY  - The dependency
 #  ASSIMP_FOUND       - True if Assimp has been found
 
-message(WARNING ${ASSIMP_ROOT})
-
 find_path(ASSIMP_INCLUDE_DIR
 	assimp/mesh.h
 	HINTS ${ASSIMP_ROOT}/include

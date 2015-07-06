@@ -1,12 +1,4 @@
-# add_config_variable(<name> <type> <default> <description>)
-# Ensure an entry in the configuration. If it was not already set, initialize
-# it with the provided default.
-function(add_config_variable NAME TYPE DEFAULT DESCRIPTION)
-    set(${NAME} ${DEFAULT} CACHE ${TYPE} "")
-    set(${NAME} ${${NAME}} CACHE ${TYPE} ${DESCRIPTION} FORCE)
-endfunction()
-
-message("Root " ${CMAKE_CURRENT_SOURCE_DIR})
+include(utility)
 
 add_config_variable(EXTERNAL_INSTALL_PREFIX FILEPATH
     ${CMAKE_CURRENT_SOURCE_DIR}/external-install
@@ -20,7 +12,8 @@ add_config_variable(GIT_EXECUTABLE FILEPATH "git"
 # external_working_directory(<name> <dest-directory>)
 # Creates and returns the working directory given a project name.
 function(external_working_directory NAME DEST_DIR)
-    set(DIRECTORY ${EXTERNAL_WORKING_PREFIX}/${NAME})
+    string(TOLOWER ${NAME} LOWER_NAME)
+    set(DIRECTORY ${EXTERNAL_WORKING_PREFIX}/${LOWER_NAME})
     file(MAKE_DIRECTORY ${DIRECTORY})
     set(${DEST_DIR} ${DIRECTORY} PARENT_SCOPE)
 endfunction()
@@ -28,15 +21,10 @@ endfunction()
 # external_install_directory(<name> <dest-directory>)
 # Creates and returns the installation directory given a project name.
 function(external_install_directory NAME DEST_DIR)
-    set(DIRECTORY ${EXTERNAL_INSTALL_PREFIX}/${NAME})
+    string(TOLOWER ${NAME} LOWER_NAME)
+    set(DIRECTORY ${EXTERNAL_INSTALL_PREFIX}/${LOWER_NAME})
     file(MAKE_DIRECTORY ${DIRECTORY})
     set(${DEST_DIR} ${DIRECTORY} PARENT_SCOPE)
-endfunction()
-
-# copy_file(<source> <dest>)
-# Copy one file to another location.
-function(copy_file SOURCE DEST)
-    exec_program("${CMAKE_COMMAND} -E copy ${SOURCE} ${DEST}")
 endfunction()
 
 # build_subdirectory(<directory> [cmake-args...])
@@ -59,10 +47,10 @@ endfunction()
 # Writes or copies and executes a CMakeLists.txt in the correct location for
 # external projects. The installation directory will be written to NAME_ROOT.
 function(external_cmake_lists NAME CONTENT)
+    message("################################################################")
+    message("Build external project ${NAME}")
+    message("################################################################")
     string(TOUPPER ${NAME} NAME_UPPER)
-    message("################################################################")
-    message("External project " ${NAME_UPPER})
-    message("################################################################")
     # Get and ensure directories
     external_working_directory(${NAME} WORKING_DIR)
     external_install_directory(${NAME} INSTALL_DIR)
@@ -78,4 +66,5 @@ function(external_cmake_lists NAME CONTENT)
     endif()
     # Build project at configuration time
     build_subdirectory(${WORKING_DIR} -DINSTALL_DIR=${INSTALL_DIR} ${ARGN})
+    message("")
 endfunction()

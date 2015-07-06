@@ -1,9 +1,5 @@
-cmake_minimum_required(VERSION 2.8.8)
-
-set(PROJECT_NAME sqlite)
-
-include_directories(${CMAKE_SOURCE_DIR}/source)
-add_library(sqlite3 ${CMAKE_SOURCE_DIR}/source/sqlite3.c)
-
-install(TARGETS sqlite3 DESTINATION lib)
-install(FILES sqlite3.h DESTINATION include)
+include(external)
+external_working_directory(SQLite WORKING_DIR)
+# TODO: How to use relative path here?
+copy_file(${CMAKE_SOURCE_DIR}/external/sqlite/make.cmake ${WORKING_DIR})
+external_cmake_lists(SQLite "project.cmake")

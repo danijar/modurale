@@ -76,7 +76,7 @@ ExternalProject_Add(Boost
     #--Build step-----------------
     BUILD_COMMAND     ${BOOST_BUILD_EXECUTABLE} install
                           --build-dir=${CMAKE_SOURCE_DIR}/build
-                          --prefix=${CMAKE_SOURCE_DIR}/install
+                          --prefix=${INSTALL_DIR}
                           variant=${BOOST_VARIANT}
                           link=${BOOST_LINK}
                           threading=multi

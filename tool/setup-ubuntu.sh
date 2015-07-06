@@ -14,5 +14,7 @@ sudo apt-get install gcc-4.9 g++-4.9 -y
 ln -sf /usr/bin/gcc-4.9 /usr/bin/gcc
 ln -sf /usr/bin/g++-4.9 /usr/bin/g++
 
-# Set up libraries
-sudo apt-get install libglapi-mesa libx11-dev libxrandr-dev libgl1-mesa-dev libglu1-mesa-dev libfreetype6-dev libopenal-dev libsndfile1-dev libudev-dev libglew-dev libjpeg-dev -y
+# Install dependencies
+sudo apt-get install libglapi-mesa libx11-dev libxrandr-dev libgl1-mesa-dev \
+    libglu1-mesa-dev libfreetype6-dev libopenal-dev libsndfile1-dev \
+    libudev-dev libglew-dev libjpeg-dev -y

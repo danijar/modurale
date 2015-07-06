@@ -26,14 +26,17 @@ create_target(tests
 	${CMAKE_SOURCE_DIR}/src/system)
 
 # Download dependencies; could also use platform's package manager
-include(external/glew/include.cmake)
+include(external/glew/build.cmake)
+include(external/catch/build.cmake)
+include(external/sqlite/build.cmake)
+include(external/assimp/build.cmake)
+include(external/boost/build.cmake)
+include(external/sfml/build.cmake)
 
-# Use dependencies
-# include(${CMAKE_SOURCE_DIR}/external/boost/include.cmake)
-# if (UNIX)
-#     include(${CMAKE_SOURCE_DIR}/external/glew/include.cmake)
-# endif()
-# include(${CMAKE_SOURCE_DIR}/external/sfml/include.cmake)
-# include(${CMAKE_SOURCE_DIR}/external/catch/include.cmake)
-# include(${CMAKE_SOURCE_DIR}/external/sqlite/include.cmake)
-# include(${CMAKE_SOURCE_DIR}/external/assimp/include.cmake)
+# Use depdendencies
+include(external/glew/use.cmake)
+include(external/catch/use.cmake)
+include(external/sqlite/use.cmake)
+include(external/assimp/use.cmake)
+include(external/boost/use.cmake)
+include(external/sfml/use.cmake)
