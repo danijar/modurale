@@ -119,7 +119,7 @@ void window::apply(window::id entity)
 		// Open up new window
 		auto resolution = window.m_fullscreen ? VideoMode::getDesktopMode() : VideoMode(window.m_size.x, window.m_size.y);
 		auto decoration = window.m_fullscreen ? Style::Fullscreen : Style::Default;
-		window.m_handle->create(resolution, window.m_title, decoration, ContextSettings(0, 0, 0, 3, 3));
+		window.m_handle->create(resolution, window.m_title, decoration, ContextSettings(0, 0, 0, 3, 0));
 
 		// Restore size and position if windowed mode
 		if (!window.m_fullscreen) {
