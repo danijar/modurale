@@ -14,7 +14,7 @@ ExternalProject_Add(Catch
     #--Download step--------------
     DOWNLOAD_DIR      ${CMAKE_SOURCE_DIR}/source
     GIT_REPOSITORY    https://github.com/philsquared/Catch.git
-    GIT_TAG           d4e5f18436
+    GIT_TAG           3b18d9e
     #--Update/Patch step----------
     UPDATE_COMMAND    ""
     #--Configure step-------------

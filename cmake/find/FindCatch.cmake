@@ -5,7 +5,7 @@
 #  CATCH_FOUND       - True if Catch has been found
 
 find_path(CATCH_INCLUDE_DIR
-	catch/catch.hpp
+	catch.hpp
 	HINTS ${CATCH_ROOT}
 )
 

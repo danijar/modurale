@@ -81,7 +81,6 @@ TEST_CASE("manager-event") {
 		REQUIRE_NOTHROW(event.rethrow());
 	}
 
-	/*
 	SECTION("at least the expected parameters need to be provided") {
 		instance_one.listen("event", [&](int one, double two) {});
 		instance_two.fire("event", 42);
@@ -99,7 +98,6 @@ TEST_CASE("manager-event") {
 		REQUIRE_THROWS_AS(event.rethrow(), engine::manager::event::bad_types);
 		REQUIRE_NOTHROW(event.rethrow());
 	}
-	*/
 
 	SECTION("callbacks are called asynchronously") {
 		bool success = false;
