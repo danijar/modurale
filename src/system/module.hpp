@@ -14,7 +14,7 @@ public:
 	const std::string name;
 
 protected:
-	managers::instances manager;
+	manager_instances manager;
 	void exit();
 
 private:

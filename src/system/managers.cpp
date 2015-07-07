@@ -2,9 +2,8 @@
 
 namespace engine {
 namespace system {
-using namespace std;
 
-managers::instances::instances(std::string name, managers &managers) :
+manager_instances::manager_instances(std::string name, managers &managers) :
 	// Get individual instances
 	log(managers.m_log.make_instance(name)),
 	entity(managers.m_entity.make_instance(name)),

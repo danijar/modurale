@@ -17,7 +17,6 @@ window::window(string name, system::managers &managers) : module(name, managers)
 	if (!manager.entity.size<type::window>()) {
 		id entity = manager.entity.create();
 		auto window = manager.entity.add<type::window>(entity);
-		window.m_dirty = true; // TODO: Should not be needed since it's the default.
 	}
 }
 
@@ -38,6 +37,7 @@ void window::update()
 				window.m_dirty = true;
 				return;
 			case Event::KeyPressed:
+
 				manager.event.fire("type:window:key", entity, e.key.code, e.key.control);
 				break;
 			}

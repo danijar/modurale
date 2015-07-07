@@ -2,47 +2,48 @@
 
 namespace engine {
 namespace manager {
-using namespace std;
+namespace event {
 
-event::event() : m_update(&event::update, this) {}
+manager::manager() : m_update(&manager::update, this) {}
 
-event::~event()
+manager::~manager()
 {
 	m_update_running = false;
 	m_update.join();
 }
 
-event::instance &event::make_instance(string user)
+instance &manager::make_instance(std::string user)
 {
 	if (m_instances.find(user) == m_instances.end())
-		m_instances.emplace(user, make_unique<instance>(user, *this));
+		m_instances.emplace(user, std::make_unique<instance>(user, *this));
 	return *(m_instances[user].get());
 }
 
-void event::rethrow()
+void manager::rethrow()
 {
 	// Fetch last exeception and reset member
 	m_last_exception_access.lock();
-	exception_ptr last_exception = m_last_exception;
+	std::exception_ptr last_exception = m_last_exception;
 	m_last_exception = nullptr;
 	m_last_exception_access.unlock();
 
 	// Rethrow if there is an exception
 	if (last_exception)
-		rethrow_exception(last_exception);
+		std::rethrow_exception(last_exception);
 }
 
-void event::update()
+void manager::update()
 {
 	while (m_update_running.load()) {
-		function<void()> *job;
+		std::function<void()> *job;
 		if (m_jobs.pop(job)) {
 			try {
 				(*job)();
 			} catch (...) {
-				// Store exceptions for rethrowing from other ouside the worker thread
+				// Store exceptions for rethrowing from other ouside the worker
+				// thread
 				m_last_exception_access.lock();
-				m_last_exception = current_exception();
+				m_last_exception = std::current_exception();
 				m_last_exception_access.unlock();
 			}
 			delete job;
@@ -50,12 +51,6 @@ void event::update()
 	}
 }
 
-event::instance::instance(string name, event &manager) : m_name(name), m_manager(manager) {}
-
-void event::instance::rethrow()
-{
-	m_manager.rethrow();
-}
-
+} // namespace event
 } // namespace manager
 } // namespace engine

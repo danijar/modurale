@@ -2,9 +2,8 @@
 
 #include <string>
 #include <vector>
-#include <unordered_map>
 #include <map>
-#include <tuple>
+#include <unordered_map>
 #include <memory>
 #include <thread>
 #include <atomic>
@@ -15,56 +14,29 @@
 #include <mutex>
 #include <boost/any.hpp>
 #include <boost/lockfree/queue.hpp>
-
-#ifdef _MSC_VER
-#include "integer_sequence.hpp"
-#endif
+#include "dispatcher.hpp"
 
 namespace engine {
 namespace manager {
+namespace event {
 
-class event {
+class instance;
+
+class manager {
 public:
-	class bad_arity : public std::exception { const char *what() const throw() { return "Callback expects more parameters than provided."; }; };
-	class bad_types : public std::exception { const char *what() const throw() { return "Callback expects other parameter types than provided."; }; };
-	class instance;
-
-	event();
-	~event();
+	manager();
+	~manager();
 	instance &make_instance(std::string user);
-	template<typename F> void listen(std::string user, std::string const &event, F &callback);
-	template<typename... Args> void fire(std::string user, std::string const &event, Args const&... args);
+	template<typename F>
+	void listen(std::string user, std::string const &event, F &callback);
+	template<typename... Args>
+	void fire(std::string user, std::string const &event, Args const&... args);
 	void rethrow();
 
 private:
-	template<typename... Args> class dispatcher {
-	public:
-		template<typename F> dispatcher(F f);
-		void operator() (std::vector<boost::any> const &v);
-
-	private:
-		template<int... Is> void do_call(std::vector<boost::any> const &v, std::integer_sequence<int, Is...>);
-		template<typename T> T get_ith(std::vector<boost::any> const &v, int i);
-
-		std::function<void(Args...)> m_function;
-	};
-	typedef std::function<void(std::vector<boost::any> const&)> dispatcher_type;
-	template<typename T> struct function_traits;
-	template<typename R, typename C, typename... Args> struct function_traits<R(C::*)(Args...)> {
-		using args_type = std::tuple<Args...>;
-	};
-	template<typename R, typename C, typename... Args> struct function_traits<R(C::*)(Args...) const> {
-		using args_type = std::tuple<Args...>;
-	};
-	template<typename T> struct dispatcher_maker;
-	template<typename... Args> struct dispatcher_maker<std::tuple<Args...>> {
-		template<typename F> dispatcher_type make(F &&f);
-	};
-
-	template<typename F> std::function<void(std::vector<boost::any> const&)> make_dispatcher(F &&f);
-	template<typename... Args> std::function<void(std::vector<boost::any> const&)> make_dispatcher(void(*f)(Args...));
-	template<typename F, typename... Args> void enqueue(F const &f, Args const&... args);
 	void update();
+	template<typename F, typename... Args>
+	void enqueue(F const &f, Args const&... args);
 
 	std::multimap<std::string, dispatcher_type> m_callbacks;
 	std::atomic<bool> m_update_running{ true };
@@ -75,19 +47,9 @@ private:
 	std::mutex m_last_exception_access;
 };
 
-class event::instance {
-public:
-	instance(std::string name, event &manager);
-	template<typename F> void listen(std::string const &event, F &&callback);
-	template<typename... Args> void fire(std::string const &event, Args const&... args);
-	void rethrow();
-
-private:
-	std::string m_name;
-	event &m_manager;
-};
-
+} // namespace event
 } // namespace manager
 } // namespace engine
 
 #include "manager.inl"
+#include "instance.hpp"

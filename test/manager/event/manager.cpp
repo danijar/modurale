@@ -10,7 +10,7 @@ struct custom_type {
 };
 
 TEST_CASE("manager-event") {
-	engine::manager::event event;
+	engine::manager::event::manager event;
 	auto instance_one = event.make_instance("first user");
 	auto instance_two = event.make_instance("second user");
 	std::chrono::milliseconds delay(10);

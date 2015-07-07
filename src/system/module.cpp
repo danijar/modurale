@@ -6,7 +6,7 @@ using namespace std;
 
 module::module(string name, managers &managers) :
 	name(name),
-	manager{managers::instances(name, managers)} {}
+	manager{manager_instances(name, managers)} {}
 
 void module::set(bool *running)
 {

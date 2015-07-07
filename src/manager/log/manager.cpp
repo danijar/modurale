@@ -4,67 +4,42 @@
 
 namespace engine {
 namespace manager {
-using namespace std;
+namespace log {
 
-log::stream::stream(ostream &out, boost::mutex &mutex, string name, string sep, string end) : m_out(out), m_mutex(mutex), m_name(name), m_sep(sep), m_end(end) {}
+manager::manager(std::ostream &out) : m_out(out) {}
 
-log::stream::~stream()
-{
-	if (m_touched) {
-		m_out << m_end;
-		m_out.flush();
-		m_mutex.unlock();
-	}
-}
-
-log::instance &log::make_instance(string user)
+instance &manager::make_instance(std::string user)
 {
 	if (m_instances.find(user) == m_instances.end())
-		m_instances.emplace(user, make_unique<instance>(user, *this));
+		m_instances.emplace(user, std::make_unique<instance>(user, *this));
 	return *(m_instances[user].get());
 }
 
-log::stream log::info(std::string name, string sep, string end)
+stream manager::info(std::string name, std::string sep, std::string end)
 {
-	return stream(m_out, m_mutex, name, sep, end);
+	return stream(m_out, m_mutex, prefix(name, "info"), sep, end);
 }
 
-log::stream log::warning(std::string name, string sep, string end)
+stream manager::warning(std::string name, std::string sep, std::string end)
 {
-	return stream(m_out, m_mutex, name, sep, end);
+	return stream(m_out, m_mutex, prefix(name, "warning"), sep, end);
 }
 
-log::stream log::error(std::string name, string sep, string end)
+stream manager::error(std::string name, std::string sep, std::string end)
 {
-	return stream(m_out, m_mutex, name, sep, end);
+	return stream(m_out, m_mutex, prefix(name, "error"), sep, end);
 }
 
-log::stream log::debug(std::string name, string sep, string end)
+stream manager::debug(std::string name, std::string sep, std::string end)
 {
-	return stream(m_out, m_mutex, name, sep, end);
+	return stream(m_out, m_mutex, prefix(name, "debug"), sep, end);
 }
 
-log::instance::instance(string name, log &manager) : m_name(name), m_manager(manager) {}
-
-log::stream log::instance::info(string sep, string end)
+std::string manager::prefix(std::string name, std::string log_level)
 {
-	return m_manager.info(m_name, sep, end);
+    return name + " (" + log_level + "): ";
 }
 
-log::stream log::instance::warning(string sep, string end)
-{
-	return m_manager.warning(m_name, sep, end);
-}
-
-log::stream log::instance::error(string sep, string end)
-{
-	return m_manager.error(m_name, sep, end);
-}
-
-log::stream log::instance::debug(string sep, string end)
-{
-	return m_manager.debug(m_name, sep, end);
-}
-
+} // namespace log
 } // namespace manager
 } // namespace engine

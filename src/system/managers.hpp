@@ -9,15 +9,13 @@ namespace engine {
 namespace system {
 
 struct managers {
-	struct instances;
-
-	manager::log    m_log;
-	manager::entity m_entity;
-	manager::event  m_event;
+	manager::log::manager    m_log;
+	manager::entity::manager m_entity;
+	manager::event::manager  m_event;
 };
 
-struct managers::instances {
-	instances(std::string name, managers &managers);
+struct manager_instances {
+	manager_instances(std::string name, managers &managers);
 
 	manager::log::instance    &log;
 	manager::entity::instance &entity;
