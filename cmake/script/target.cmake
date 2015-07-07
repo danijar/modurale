@@ -1,3 +1,5 @@
+include(utility)
+
 # create_target(<name> [directories...])
 # Create an executable from all code found inside the given directories.
 function(create_target NAME)
@@ -13,6 +15,8 @@ function(create_target NAME)
 	endforeach()
 	# Add the collected files and add root as include directory
 	add_executable(${NAME} ${HEADERS} ${SOURCES})
+	# Add target to a global list, e.g. used by use_package()
+	set_global(ALL_TARGETS ${ALL_TARGETS} ${NAME})
 	# Display status message
 	list(LENGTH HEADERS HEADERS_COUNT)
 	list(LENGTH SOURCES SOURCES_COUNT)

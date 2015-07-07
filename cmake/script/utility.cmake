@@ -11,3 +11,9 @@ function(add_config_variable NAME TYPE DEFAULT DESCRIPTION)
     set(${NAME} ${DEFAULT} CACHE ${TYPE} "")
     set(${NAME} ${${NAME}} CACHE ${TYPE} ${DESCRIPTION} FORCE)
 endfunction()
+
+# set_global(<name> value...)
+# Create or update a hidden variable in the CMake cache.
+function(set_global NAME)
+    set(${NAME} "${ARGN}" CACHE INTERNAL "" FORCE)
+endfunction()

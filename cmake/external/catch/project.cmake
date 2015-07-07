@@ -25,6 +25,6 @@ ExternalProject_Add(Catch
     BINARY_DIR        ${CMAKE_SOURCE_DIR}
     #--Install step---------------
     INSTALL_COMMAND   ${CMAKE_COMMAND} -E copy_directory
-                          source/include ${INSTALL_DIR}/catch
+                          source/include ${INSTALL_DIR}
     INSTALL_DIR       ${INSTALL_DIR}
 )

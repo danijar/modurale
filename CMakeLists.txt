@@ -3,7 +3,8 @@
 ################################################################
 
 cmake_minimum_required(VERSION 2.8.8)
-set(CMAKE_MODULE_PATH cmake ${CMAKE_MODULE_PATH})
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH}
+    cmake cmake/script cmake/find)
 
 # Project
 set(PROJECT_NAME modurale)
@@ -13,7 +14,7 @@ set(${PROJECT_NAME_UPPER}_VERSION_MINOR 1)
 set(${PROJECT_NAME_UPPER}_VERSION_PATCH 0)
 project(${PROJECT_NAME})
 
-# Tool chain
+# Toolchain
 include(toolchain)
 
 # Targets
@@ -25,18 +26,21 @@ create_target(tests
 	${CMAKE_SOURCE_DIR}/src/manager
 	${CMAKE_SOURCE_DIR}/src/system)
 
-# Download dependencies; could also use platform's package manager
-include(external/glew/build.cmake)
-include(external/catch/build.cmake)
-include(external/sqlite/build.cmake)
-include(external/assimp/build.cmake)
-include(external/boost/build.cmake)
-include(external/sfml/build.cmake)
+# Download and setup dependencies
+# Could also use a package manager instead
+include(external/glew/build)
+include(external/catch/build)
+include(external/sqlite/build)
+include(external/assimp/build)
+include(external/boost/build)
+include(external/sfml/build)
 
 # Use depdendencies
-include(external/glew/use.cmake)
-include(external/catch/use.cmake)
-include(external/sqlite/use.cmake)
-include(external/assimp/use.cmake)
-include(external/boost/use.cmake)
-include(external/sfml/use.cmake)
+# From both package manager and builded external projects
+include(use/threads)
+include(use/glew)
+include(use/catch)
+include(use/sqlite)
+include(use/assimp)
+include(use/boost)
+include(use/sfml)
