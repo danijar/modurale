@@ -4,7 +4,9 @@
 
 cmake_minimum_required(VERSION 2.8.8)
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH}
-    cmake cmake/script cmake/find)
+    ${CMAKE_SOURCE_DIR}/cmake
+    ${CMAKE_SOURCE_DIR}/cmake/script
+    ${CMAKE_SOURCE_DIR}/cmake/find)
 
 # Project
 set(PROJECT_NAME modurale)
@@ -33,12 +35,12 @@ include(external/catch/build)
 include(external/sqlite/build)
 include(external/assimp/build)
 include(external/boost/build)
+# GLEW paths need to be available for SFML
+include(use/glew)
 include(external/sfml/build)
 
 # Use depdendencies
-# From both package manager and builded external projects
 include(use/threads)
-include(use/glew)
 include(use/catch)
 include(use/sqlite)
 include(use/assimp)

@@ -10,6 +10,8 @@ cmake_install.cmake
 install_manifest.txt
 
 # Build
+build/*
+!build/.gitkeep
 [Dd]ebug/
 [Rr]elease/
 *.exe

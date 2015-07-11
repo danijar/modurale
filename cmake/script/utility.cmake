@@ -1,6 +1,8 @@
 # copy_file(<source> <dest>)
 # Copy one file to another location.
 function(copy_file SOURCE DEST)
+    get_filename_component(DEST_DIR ${DEST} PATH)
+    file(MAKE_DIRECTORY ${DEST_DIR})
     exec_program("${CMAKE_COMMAND} -E copy ${SOURCE} ${DEST}")
 endfunction()
 

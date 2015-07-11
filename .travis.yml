@@ -1,0 +1,14 @@
+language: cpp
+compiler: gcc
+before_install:
+  - chmod a+x tool/setup-ubuntu.sh
+install:
+  - ./tool/setup-ubuntu.sh
+  - cmake --version
+  - g++ --version
+before_script:
+  - cd build
+  - cmake ../
+script:
+  - cmake --build .
+  - ./tests

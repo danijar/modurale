@@ -1,10 +1,11 @@
 include(utility)
+include(logging)
 
 add_config_variable(EXTERNAL_INSTALL_PREFIX FILEPATH
-    ${CMAKE_CURRENT_SOURCE_DIR}/external-install
+    ${CMAKE_SOURCE_DIR}/build/external-install
     "Install directory for external dependencies.")
 add_config_variable(EXTERNAL_WORKING_PREFIX FILEPATH
-    ${CMAKE_CURRENT_SOURCE_DIR}/external-working
+    ${CMAKE_SOURCE_DIR}/build/external-working
     "Install directory for external dependencies.")
 add_config_variable(GIT_EXECUTABLE FILEPATH "git"
     "Path to the Git executable used to download dependencies.")
@@ -43,10 +44,10 @@ function(build_subdirectory DIRECTORY)
         --config ${CMAKE_BUILD_TYPE})
 endfunction()
 
-# external_cmake_lists(<name> <content>/<filename> [cmake-args...])
-# Writes or copies and executes a CMakeLists.txt in the correct location for
-# external projects. The installation directory will be written to NAME_ROOT.
-function(external_cmake_lists NAME CONTENT)
+# external_cmake_lists(<name> <filename> [cmake-args...])
+# Copies and executes a CMakeLists.txt in the correct location for external
+# projects. The installation directory will be written to NAME_ROOT.
+function(external_cmake_lists NAME FILENAME)
     message("################################################################")
     message("Build external project ${NAME}")
     message("################################################################")
@@ -57,12 +58,12 @@ function(external_cmake_lists NAME CONTENT)
     # Make root accessible
     set(${NAME_UPPER}_ROOT ${INSTALL_DIR} PARENT_SCOPE)
     # Use content of existing file
-    set(FILENAME ${CMAKE_CURRENT_LIST_DIR}/${CONTENT})
+    set(FILENAME ${CMAKE_CURRENT_LIST_DIR}/${FILENAME})
     if (EXISTS ${FILENAME})
         copy_file(${FILENAME} ${WORKING_DIR}/CMakeLists.txt)
     # Write new file from lines
     else()
-        file(WRITE ${WORKING_DIR}/CMakeLists.txt ${CONTENT})
+        log_error("External project ${FILENAME} not found")
     endif()
     # Build project at configuration time
     build_subdirectory(${WORKING_DIR} -DINSTALL_DIR=${INSTALL_DIR} ${ARGN})

@@ -1,20 +1,20 @@
 #!/bin/sh
 
+# Make newer package versions available
+sudo add-apt-repository -y ppa:kalakris/cmake
+sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
+
 # Update package information
-sudo apt-get update
+sudo apt-get update -qq
 
 # Install compiler and development tools
-sudo apt-get install libdpkg-perl=1.17.5ubuntu5 -y --force-yes
-sudo apt-get install build-essential git cmake -y
-
-# Update compiler version for modern features
-sudo add-apt-repository ppa:ubuntu-toolchain-r/test -y
-sudo apt-get update
-sudo apt-get install gcc-4.9 g++-4.9 -y
-ln -sf /usr/bin/gcc-4.9 /usr/bin/gcc
-ln -sf /usr/bin/g++-4.9 /usr/bin/g++
+sudo apt-get install -qq build-essential git cmake gcc-5 g++-5
+sudo rm /usr/bin/gcc
+sudo rm /usr/bin/g++
+sudo ln -s /usr/bin/gcc-5 /usr/bin/gcc
+sudo ln -s /usr/bin/g++-5 /usr/bin/g++
 
 # Install dependencies
-sudo apt-get install libglapi-mesa libx11-dev libxrandr-dev libgl1-mesa-dev \
-    libglu1-mesa-dev libfreetype6-dev libopenal-dev libsndfile1-dev \
-    libudev-dev libglew-dev libjpeg-dev -y
+sudo apt-get install -qq libglapi-mesa libx11-dev libxrandr-dev \
+    libgl1-mesa-dev libglu1-mesa-dev libfreetype6-dev libopenal-dev \
+    libsndfile1-dev libudev-dev libglew-dev libjpeg-dev
