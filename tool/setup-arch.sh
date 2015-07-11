@@ -4,5 +4,5 @@
 sudo pacman -Sy --needed --noconfirm gcc git cmake
 
 # Install dependencies
-sudo pacman -Sy --needed --noconfirm libsndfile libxrandr libjpeg openal \
-    freetype2 libxmu libxi glu
+sudo pacman -Sy --needed --noconfirm libsndfile libxrandr libjpeg-turbo \
+    openal freetype2 libxmu libxi glu

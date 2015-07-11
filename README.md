@@ -7,13 +7,42 @@ Requirements
 ------------
 
 Modurale is written in cross-platform C++ and should compile in Windows, Linux
-and Mac environments. Currently it has been tested on Windows only, though.
+and Mac environments. Currently it has been tested on Windows and Linux.
 
-Dependencies
+Instructions
 ------------
 
-The following libraries are used. Because of the automated build system there
-is no need to manually install them though.
+```bash
+# Clone the repository and navigate into its root folder.
+git clone git@github.com:danijar/modurale.git
+cd modurale
+
+# Install the indirect dependencies. Use the setup script if available for
+# your platform. Otherwise, please refer to the readme for a full list.
+tool/setup-<platform>.sh
+
+# Configure. This also downloads, builds and installs the direct dependencies.
+This can take a couple of minutes.
+cmake .
+
+# Build.
+cmake --build .
+
+# Optionally, runs tests.
+./tests
+
+# Run Modurale.
+./modurale
+```
+
+To clean up temporary and build files, you can reset the repository using `git
+clean -xffd`. Warning: This will remove all uncommited changes.
+
+Direct dependencies
+-------------------
+
+The following libraries are used in Modurale. Because of the automated build
+system there is no need to manually install them though.
 
 |   Library   |  Version   |                 Description                  |
 | ----------- | :--------: | -------------------------------------------- |
@@ -33,3 +62,21 @@ is no need to manually install them though.
 [7]: https://github.com/assimp/assimp
 [8]: https://github.com/assimp/assimp/commit/dca3f09
 [9]: http://glew.sourceforge.net/
+
+Indirect dependencies
+---------------------
+
+Since libraries above have dependencies themselves, the following libraries
+must be available on the system. There are setup scripts available for some
+platforms inside the `tool/` directory.
+
+|         Library         |      Arch     |
+| ----------------------- | ------------- |
+| FreeType                | freetype2     |
+| JPEG                    | libjpeg-turbo |
+| Sound Files             | libsndfile    |
+| OpenAL                  | openal        |
+| OpenGL Utility          | glu           |
+| X Input                 | libxi         |
+| X Miscellaneous Utility | libxmu        |
+| XRandR                  | libxrandr     |
