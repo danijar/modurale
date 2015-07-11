@@ -16,29 +16,35 @@ endif()
 
 # Download, configure, build and install
 ExternalProject_Add(Assimp
-    # DEPENDS
-    PREFIX         ${CMAKE_SOURCE_DIR}
-    TMP_DIR        ${CMAKE_SOURCE_DIR}/temp
-    STAMP_DIR      ${CMAKE_SOURCE_DIR}/stamp
+    PREFIX             ${CMAKE_SOURCE_DIR}
+    TMP_DIR            ${CMAKE_SOURCE_DIR}/temp
+    STAMP_DIR          ${CMAKE_SOURCE_DIR}/stamp
     #--Download step--------------
-    DOWNLOAD_DIR   ${CMAKE_SOURCE_DIR}/source
-    GIT_REPOSITORY https://github.com/assimp/assimp.git
-    GIT_TAG        dca3f09
+    DOWNLOAD_DIR       ${CMAKE_SOURCE_DIR}/download
+    GIT_REPOSITORY     https://github.com/assimp/assimp.git
+    GIT_TAG            dca3f09
     #--Update/Patch step----------
-    UPDATE_COMMAND ""
+    UPDATE_COMMAND     ""
     #--Configure step-------------
-    SOURCE_DIR     ${CMAKE_SOURCE_DIR}/source
-    CMAKE_ARGS     -DCMAKE_INSTALL_PREFIX=${INSTALL_DIR}
-                   -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
-                   -DBUILD_SHARED_LIBS=${BUILD_SHARED_LIBS}
-                   -DUSE_STATIC_STD_LIBS=${USE_STATIC_STD_LIBS}
-                   -DASSIMP_BUILD_ASSIMP_TOOLS=FALSE
-                   -DASSIMP_ENABLE_BOOST_WORKAROUND=TRUE
+    SOURCE_DIR         ${CMAKE_SOURCE_DIR}/source
+    CMAKE_ARGS         -DCMAKE_INSTALL_PREFIX=${INSTALL_DIR}
+                       -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
+                       -DBUILD_SHARED_LIBS=${BUILD_SHARED_LIBS}
+                       -DUSE_STATIC_STD_LIBS=${USE_STATIC_STD_LIBS}
+                       -DASSIMP_BUILD_ASSIMP_TOOLS=FALSE
+                       -DASSIMP_ENABLE_BOOST_WORKAROUND=TRUE
     #--Build step-----------------
-    BINARY_DIR     ${CMAKE_SOURCE_DIR}/build
+    BINARY_DIR         ${CMAKE_SOURCE_DIR}/build
     #--Test step-----------------
     TEST_BEFORE_INSTALL 1
-    TEST_COMMAND   ${ASSIMP_DEBUG_SYMBOLS_FIX}
+    TEST_COMMAND       ${ASSIMP_DEBUG_SYMBOLS_FIX}
     #--Install step---------------
-    INSTALL_DIR    ${INSTALL_DIR}
+    INSTALL_DIR        ${INSTALL_DIR}
+    #--Output logging-------------
+    LOG_DOWNLOAD       ${LOGGING}
+    LOG_UPDATE         ${LOGGING}
+    LOG_CONFIGURE      ${LOGGING}
+    LOG_BUILD          ${LOGGING}
+    LOG_TEST           ${LOGGING}
+    LOG_INSTALL        ${LOGGING}
 )

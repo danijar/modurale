@@ -19,3 +19,13 @@ endfunction()
 function(set_global NAME)
     set(${NAME} "${ARGN}" CACHE INTERNAL "" FORCE)
 endfunction()
+
+# invert(<value> <dest>)
+# Sets the destination variable to the inverted boolean value.
+function(invert VALUE DEST)
+    if (${VALUE})
+        set(${DEST} OFF PARENT_SCOPE)
+    else()
+        set(${DEST} ON PARENT_SCOPE)
+    endif()
+endfunction()

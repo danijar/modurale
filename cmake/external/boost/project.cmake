@@ -89,4 +89,11 @@ ExternalProject_Add(Boost
     BUILD_IN_SOURCE   1
     #--Install step---------------
     INSTALL_COMMAND   ""
+    #--Output logging-------------
+    LOG_DOWNLOAD      ${LOGGING}
+    LOG_UPDATE        ${LOGGING}
+    LOG_CONFIGURE     ${LOGGING}
+    LOG_BUILD         ${LOGGING}
+    LOG_TEST          ${LOGGING}
+    LOG_INSTALL       ${LOGGING}
 )

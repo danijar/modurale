@@ -7,7 +7,6 @@ include(ExternalProject)
 
 # Download, configure, build and install
 ExternalProject_Add(GLEW
-    # DEPENDS
     PREFIX             ${CMAKE_SOURCE_DIR}
     TMP_DIR            ${CMAKE_SOURCE_DIR}/temp
     STAMP_DIR          ${CMAKE_SOURCE_DIR}/stamp
@@ -25,5 +24,12 @@ ExternalProject_Add(GLEW
     BUILD_COMMAND      make all
     #--Install step---------------
     INSTALL_DIR        ${INSTALL_DIR}
-    INSTALL_COMMAND    GLEW_DEST=${INSTALL_DIR} make install
+    INSTALL_COMMAND    env GLEW_DEST=${INSTALL_DIR} make install
+    #--Output logging-------------
+    LOG_DOWNLOAD       ${LOGGING}
+    LOG_UPDATE         ${LOGGING}
+    LOG_CONFIGURE      ${LOGGING}
+    LOG_BUILD          ${LOGGING}
+    LOG_TEST           ${LOGGING}
+    LOG_INSTALL        ${LOGGING}
 )

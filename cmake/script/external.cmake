@@ -9,6 +9,8 @@ add_config_variable(EXTERNAL_WORKING_PREFIX FILEPATH
     "Install directory for external dependencies.")
 add_config_variable(GIT_EXECUTABLE FILEPATH "git"
     "Path to the Git executable used to download dependencies.")
+add_config_variable(EXTERNAL_LOGGING BOOL OFF
+    "Verbose output of setting up external dependencies.")
 
 # external_working_directory(<name> <dest-directory>)
 # Creates and returns the working directory given a project name.
@@ -66,6 +68,10 @@ function(external_cmake_lists NAME FILENAME)
         log_error("External project ${FILENAME} not found")
     endif()
     # Build project at configuration time
-    build_subdirectory(${WORKING_DIR} -DINSTALL_DIR=${INSTALL_DIR} ${ARGN})
+    invert(${EXTERNAL_LOGGING} LOG_TO_FILE)
+    build_subdirectory(${WORKING_DIR}
+        -DINSTALL_DIR=${INSTALL_DIR}
+        -DLOGGING=${LOG_TO_FILE}
+        ${ARGN})
     message("")
 endfunction()
