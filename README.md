@@ -23,7 +23,8 @@ git clone git@github.com:danijar/modurale.git
 cd modurale
 
 # Install the indirect dependencies. Use the setup script if available for
-# your platform. Otherwise, please refer to the readme for a full list.
+# your platform. Otherwise, please see section Indirect Dependencies.
+chmod +x tool/setup-<platform>.sh
 tool/setup-<platform>.sh
 
 # Configure. This also downloads, builds and installs the direct dependencies.
@@ -76,13 +77,15 @@ Since libraries above have dependencies themselves, the following libraries
 must be available on the system. There are setup scripts available for some
 platforms inside the `tool/` directory.
 
-|         Library         |      Arch     |
-| ----------------------- | ------------- |
-| FreeType                | freetype2     |
-| JPEG                    | libjpeg-turbo |
-| Sound Files             | libsndfile    |
-| OpenAL                  | openal        |
-| OpenGL Utility          | glu           |
-| X Input                 | libxi         |
-| X Miscellaneous Utility | libxmu        |
-| XRandR                  | libxrandr     |
+|    Library     |      Arch     |      Ubuntu      |
+| -------------- | ------------- | ---------------- |
+| FreeType       | freetype2     | libfreetype6-dev |
+| JPEG           | libjpeg-turbo | libjpeg-dev      |
+| OpenAL         | openal        | libopenal-dev    |
+| OpenGL Utility | glu           | libglu1-mesa-dev |
+| Sound Files    | libsndfile    | libsndfile1-dev  |
+| Udev           | systemd       | libudev-dev      |
+| X Input        | libxi         |                  |
+| X Utility      | libxmu        |                  |
+| X11 Client     |               | libx11-dev       |
+| XRandR         | libxrandr     | libxrandr-dev    |

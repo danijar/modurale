@@ -15,6 +15,5 @@ sudo ln -s /usr/bin/gcc-5 /usr/bin/gcc
 sudo ln -s /usr/bin/g++-5 /usr/bin/g++
 
 # Install dependencies
-sudo apt-get install -qq libglapi-mesa libx11-dev libxrandr-dev \
-    libgl1-mesa-dev libglu1-mesa-dev libfreetype6-dev libopenal-dev \
-    libsndfile1-dev libudev-dev libglew-dev libjpeg-dev
+sudo apt-get install -qq libfreetype6-dev libjpeg-dev libopenal-dev \
+    libglu1-mesa-dev libsndfile1-dev libudev-dev libx11-dev libxrandr-dev
