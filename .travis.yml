@@ -1,5 +1,8 @@
 language: cpp
 compiler: gcc
+branches:
+  only:
+    - master
 before_install:
   - chmod a+x tool/setup-ubuntu.sh
 install:
@@ -8,7 +11,7 @@ install:
   - g++ --version
 before_script:
   - cd build
-  - cmake ../
+  - cmake ../project
 script:
   - cmake --build .
-  - ./tests
+  - engine/tests

@@ -1,12 +1,6 @@
 include(utility)
 include(logging)
 
-add_config_variable(EXTERNAL_INSTALL_PREFIX FILEPATH
-    ${CMAKE_SOURCE_DIR}/build/external-install
-    "Install directory for external dependencies.")
-add_config_variable(EXTERNAL_WORKING_PREFIX FILEPATH
-    ${CMAKE_SOURCE_DIR}/build/external-working
-    "Install directory for external dependencies.")
 add_config_variable(GIT_EXECUTABLE FILEPATH "git"
     "Path to the Git executable used to download dependencies.")
 add_config_variable(EXTERNAL_LOGGING BOOL OFF
@@ -16,7 +10,7 @@ add_config_variable(EXTERNAL_LOGGING BOOL OFF
 # Creates and returns the working directory given a project name.
 function(external_working_directory NAME DEST_DIR)
     string(TOLOWER ${NAME} LOWER_NAME)
-    set(DIRECTORY ${EXTERNAL_WORKING_PREFIX}/${LOWER_NAME})
+    set(DIRECTORY ${REPOSITORY_DIR}/build/${LOWER_NAME})
     file(MAKE_DIRECTORY ${DIRECTORY})
     set(${DEST_DIR} ${DIRECTORY} PARENT_SCOPE)
 endfunction()
@@ -25,7 +19,7 @@ endfunction()
 # Creates and returns the installation directory given a project name.
 function(external_install_directory NAME DEST_DIR)
     string(TOLOWER ${NAME} LOWER_NAME)
-    set(DIRECTORY ${EXTERNAL_INSTALL_PREFIX}/${LOWER_NAME})
+    set(DIRECTORY ${REPOSITORY_DIR}/install/${LOWER_NAME})
     file(MAKE_DIRECTORY ${DIRECTORY})
     set(${DEST_DIR} ${DIRECTORY} PARENT_SCOPE)
 endfunction()
@@ -51,14 +45,17 @@ endfunction()
 # projects. The installation directory will be written to NAME_ROOT.
 function(external_cmake_lists NAME FILENAME)
     message("################################################################")
-    message("Build external project ${NAME}")
+    message("External project ${NAME}")
     message("################################################################")
     string(TOUPPER ${NAME} NAME_UPPER)
     # Get and ensure directories
+    # TODO: Check if those are the defaults anyway and can be omitted in th
+    # function calls below.
     external_working_directory(${NAME} WORKING_DIR)
     external_install_directory(${NAME} INSTALL_DIR)
-    # Make root accessible
-    set(${NAME_UPPER}_ROOT ${INSTALL_DIR} PARENT_SCOPE)
+    # Help find scripts to find the package later
+    set(${NAME_UPPER}_ROOT ${INSTALL_DIR} CACHE FILEPATH
+        "Installation location of ${NAME} dependency" FORCE)
     # Use content of existing file
     set(FILENAME ${CMAKE_CURRENT_LIST_DIR}/${FILENAME})
     if (EXISTS ${FILENAME})

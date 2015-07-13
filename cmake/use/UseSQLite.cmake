@@ -1,0 +1,5 @@
+include(using)
+
+register_package(SQLite
+    INCLUDES SQLITE_INCLUDE_DIR
+    LIBRARIES SQLITE_LIBRARY)

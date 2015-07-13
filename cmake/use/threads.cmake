@@ -1,3 +1,0 @@
-include(using)
-set(THREADS_PREFER_PTHREAD_FLAG ON)
-use_package(Threads LIBRARIES CMAKE_THREAD_LIBS_INIT)

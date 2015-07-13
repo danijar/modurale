@@ -27,23 +27,20 @@ cd modurale
 chmod +x tool/setup-<platform>.sh
 tool/setup-<platform>.sh
 
-# Configure. This also downloads, builds and installs the direct dependencies.
-This can take a couple of minutes.
+# Configure and build external dependencies. They will be downloaded first.
+# This can take a couple of minutes.
 cd build
 cmake ..
 
-# Build.
+# Build the engine and application.
 cmake --build .
 
-# Optionally, runs tests.
-./tests
+# Optionally, run tests.
+modurale/tests
 
-# Run Modurale.
-./modurale
+# Launch the example application
+game/game
 ```
-
-To clean up temporary and build files, you can reset the repository using `git
-clean -xffd`. Warning: This will remove all uncommited changes.
 
 Direct dependencies
 -------------------
@@ -51,24 +48,25 @@ Direct dependencies
 The following libraries are used in Modurale. Because of the automated build
 system there is no need to manually install them though.
 
-|    Library    |   Version    |                 Description                  |
-| ------------- | :----------: | -------------------------------------------- |
-| [SFML][2.1]   |  [2.1][2.2]  | Simple and fast multimedia library.          |
-| [Boost][2.3]  |    1.56.0    | Large collection of multi-purpose libraries. |
-| [Catch][2.4]  | [1.2.1][2.5] | Multi-paradigm automated test framework.     |
-| [SQLite][2.6] |    3.8.7     | Serverless transactional SQL database.       |
-| [Assimp][2.7] | [3.1.1][2.8] | Import library for various 3D model formats. |
-| [GLEW][2.9]   |    1.12.0    | OpenGL run-time extension loader.            |
+|    Library    |    Version    |                 Description                  |
+| ------------- | :-----------: | -------------------------------------------- |
+| [SFML][2.1]   |   [2.1][2.2]  | Simple and fast multimedia library.          |
+| [Boost][2.3]  | [1.58.0][2.4] | Large collection of multi-purpose libraries. |
+| [Catch][2.5]  |  [1.2.1][2.6] | Multi-paradigm automated test framework.     |
+| [SQLite][2.7] |     3.8.7     | Serverless transactional SQL database.       |
+| [Assimp][2.8] |  [3.1.1][2.9] | Import library for various 3D model formats. |
+| [GLEW][2.10]  |     1.12.0    | OpenGL run-time extension loader.            |
 
 [2.1]: https://github.com/LaurentGomila/SFML
 [2.2]: https://github.com/LaurentGomila/SFML/commit/e257909
 [2.3]: http://www.boost.org/
-[2.4]: https://github.com/philsquared/Catch
-[2.5]: https://github.com/philsquared/Catch/commit/3b18d9e
-[2.6]: http://www.sqlite.org/
-[2.7]: https://github.com/assimp/assimp
-[2.8]: https://github.com/assimp/assimp/commit/dca3f09
-[2.9]: http://glew.sourceforge.net/
+[2.4]: https://github.com/boostorg/boost/commit/9ccd339
+[2.5]: https://github.com/philsquared/Catch
+[2.6]: https://github.com/philsquared/Catch/commit/3b18d9e
+[2.7]: http://www.sqlite.org/
+[2.8]: https://github.com/assimp/assimp
+[2.9]: https://github.com/assimp/assimp/commit/dca3f09
+[2.10]: http://glew.sourceforge.net/
 
 Indirect dependencies
 ---------------------

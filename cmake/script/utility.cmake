@@ -29,3 +29,18 @@ function(invert VALUE DEST)
         set(${DEST} ON PARENT_SCOPE)
     endif()
 endfunction()
+
+# collect_files(<destination> PATHS [path...] EXTENSIONS [extension...])
+# Recursively scan one or more directories for all files that end with one of
+# the specified file extensions.
+function(collect_files DESTINATION)
+    cmake_parse_arguments(PARAM "" "" "PATHS;EXTENSIONS" ${ARGN})
+    set(FILES)
+    foreach(PATH ${PARAM_PATHS})
+        foreach(EXTENSION ${PARAM_EXTENSIONS})
+            file(GLOB_RECURSE FILES_CURRENT ${PATH}/*.${EXTENSION})
+            list(APPEND FILES ${FILES_CURRENT})
+        endforeach()
+    endforeach()
+    set(${DESTINATION} ${FILES} PARENT_SCOPE)
+endfunction()
