@@ -1,74 +1,52 @@
 include(utility)
-include(logging)
 
 add_config_variable(GIT_EXECUTABLE FILEPATH "git"
     "Path to the Git executable used to download dependencies.")
-add_config_variable(EXTERNAL_LOGGING BOOL OFF
+add_config_variable(LOG_EXTERNAL BOOL OFF
     "Verbose output of setting up external dependencies.")
 
-# external_working_directory(<name> <dest-directory>)
-# Creates and returns the working directory given a project name.
-function(external_working_directory NAME DEST_DIR)
-    string(TOLOWER ${NAME} LOWER_NAME)
-    set(DIRECTORY ${REPOSITORY_DIR}/build/${LOWER_NAME})
-    file(MAKE_DIRECTORY ${DIRECTORY})
-    set(${DEST_DIR} ${DIRECTORY} PARENT_SCOPE)
-endfunction()
-
-# external_install_directory(<name> <dest-directory>)
-# Creates and returns the installation directory given a project name.
-function(external_install_directory NAME DEST_DIR)
-    string(TOLOWER ${NAME} LOWER_NAME)
-    set(DIRECTORY ${REPOSITORY_DIR}/install/${LOWER_NAME})
-    file(MAKE_DIRECTORY ${DIRECTORY})
-    set(${DEST_DIR} ${DIRECTORY} PARENT_SCOPE)
-endfunction()
-
-# build_subdirectory(<directory> [cmake-args...])
-# Add another project and build it at configuration time.
-function(build_subdirectory DIRECTORY)
-    # Configure project
-    exec_program(${CMAKE_COMMAND} ${DIRECTORY} ARGS
-        -G\"${CMAKE_GENERATOR}\"
-        -DCMAKE_CONFIGURATION_TYPES:STRING="Debug\;Release"
-        -DCMAKE_BUILD_TYPE:STRING=${CMAKE_BUILD_TYPE}
-        -DBUILD_SHARED_LIBS:BOOL=${BUILD_SHARED_LIBS}
-        ${ARGN})
-    # Force build at compile time
-    exec_program(${CMAKE_COMMAND} ${DIRECTORY} ARGS
-        --build .
-        --config ${CMAKE_BUILD_TYPE})
-endfunction()
-
-# external_cmake_lists(<name> <filename> [cmake-args...])
-# Copies and executes a CMakeLists.txt in the correct location for external
-# projects. The installation directory will be written to NAME_ROOT.
-function(external_cmake_lists NAME FILENAME)
+# build_subdirectory(<directory-name> [cmake-args...])
+# Build and install a directory relative to the current CMake file. The
+# directory must contain a valid CMakeLists.txt. Defaults for build and install
+# directories apply. The installation directory will be stored in a uppsercase
+# variable named <source-dir>_ROOT.
+function(build_subdirectory DIRECTORY_NAME)
+    # TODO: Rename to build_external()
+    string(TOUPPER ${DIRECTORY_NAME} NAME)
     message("################################################################")
-    message("External project ${NAME}")
+    message("${NAME}")
     message("################################################################")
-    string(TOUPPER ${NAME} NAME_UPPER)
-    # Get and ensure directories
-    # TODO: Check if those are the defaults anyway and can be omitted in th
-    # function calls below.
-    external_working_directory(${NAME} WORKING_DIR)
-    external_install_directory(${NAME} INSTALL_DIR)
+    build_directory(
+        ${CMAKE_CURRENT_LIST_DIR}/${DIRECTORY_NAME}
+        ${CMAKE_BINARY_DIR}/${DIRECTORY_NAME}
+        ${REPOSITORY_DIR}/install/${DIRECTORY_NAME})
     # Help find scripts to find the package later
-    set(${NAME_UPPER}_ROOT ${INSTALL_DIR} CACHE FILEPATH
-        "Installation location of ${NAME} dependency" FORCE)
-    # Use content of existing file
-    set(FILENAME ${CMAKE_CURRENT_LIST_DIR}/${FILENAME})
-    if (EXISTS ${FILENAME})
-        copy_file(${FILENAME} ${WORKING_DIR}/CMakeLists.txt)
-    # Write new file from lines
-    else()
-        log_error("External project ${FILENAME} not found")
-    endif()
-    # Build project at configuration time
-    invert(${EXTERNAL_LOGGING} LOG_TO_FILE)
-    build_subdirectory(${WORKING_DIR}
-        -DINSTALL_DIR=${INSTALL_DIR}
+    set(${NAME}_ROOT ${INSTALL_DIR} CACHE FILEPATH
+        "Installation location of ${DIRECTORY} dependency" FORCE)
+    message("")
+endfunction()
+
+# build_directory(<source-dir> <build-dir> <install-dir> [cmake-args...])
+# Build the project at source dir at configuration time. The directories to
+# use for build files and installation files can be specified.
+function(build_directory SOURCE_DIR BUILD_DIR INSTALL_DIR)
+    # TODO: Rename to build_subdirectory()
+    # TODO: Prepend ${CMAKE_CURRENT_LIST_DIR} if ${SOURCE_DIR} is relative
+    # TODO: Prepend ${CMAKE_BINARY_DIR} if ${BUILD_DIR} is relative
+    # Configure project
+    invert(${LOG_EXTERNAL} LOG_TO_FILE)
+    exec_program(${CMAKE_COMMAND} ${BUILD_DIR} ARGS ${SOURCE_DIR}
+        -G\"${CMAKE_GENERATOR}\"
+        -DCMAKE_MODULE_PATH=${CMAKE_MODULE_PATH}
+        -DCMAKE_CONFIGURATION_TYPES=\"Debug\;Release\"
+        -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
+        -DBUILD_SHARED_LIBS=${BUILD_SHARED_LIBS}
+        -DCMAKE_BINARY_DIR=${BUILD_DIR}
+        -DCMAKE_INSTALL_PREFIX=${INSTALL_DIR}
         -DLOGGING=${LOG_TO_FILE}
         ${ARGN})
-    message("")
+    # Force build at compile time
+    exec_program(${CMAKE_COMMAND} ${BUILD_DIR} ARGS
+        --build .
+        --config ${CMAKE_BUILD_TYPE})
 endfunction()
