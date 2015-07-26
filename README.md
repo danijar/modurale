@@ -30,7 +30,7 @@ tool/setup-<platform>.sh
 # Configure and build external dependencies. They will be downloaded first.
 # This can take a couple of minutes.
 cd build
-cmake ..
+cmake ../project/
 
 # Build the engine and application.
 cmake --build .

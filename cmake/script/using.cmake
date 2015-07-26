@@ -4,24 +4,30 @@ include(CMakeParseArguments)
 
 # use_package(<package> [target...])
 # Include directories and link libraries of the package to all specified
-# targets. The package must be registered with register_package() before.
+# targets. The package must be registered with register_package() first.
 function(use_package PACKAGE)
+    # Try to find the package
     string(TOUPPER ${PACKAGE} PACKAGE_UPPER)
     include(Use${PACKAGE})
     if (NOT (${PACKAGE_UPPER}_INCLUDES OR ${PACKAGE_UPPER}_LIBRARIES))
         log_error("Dependency ${PACKAGE} is not registered")
     endif()
+    # Use includes and libraries
     foreach (TARGET ${ARGN})
-        target_include_directories(${TARGET} PUBLIC
-            ${${PACKAGE_UPPER}_INCLUDES})
-        target_link_libraries(${TARGET}
-            ${${PACKAGE_UPPER}_LIBRARIES})
-    endif()
+        if (${PACKAGE_UPPER}_INCLUDES)
+            target_include_directories(${TARGET} PUBLIC
+                ${${PACKAGE_UPPER}_INCLUDES})
+        endif()
+        if (${PACKAGE_UPPER}_LIBRARIES)
+            target_link_libraries(${TARGET}
+                ${${PACKAGE_UPPER}_LIBRARIES})
+        endif()
+    endforeach()
     # Debug output
     if (${PACKAGE_UPPER}_INCLUDES)
         log_success("Include ${${PACKAGE_UPPER}_INCLUDES}")
     endif()
-    if (${PACKAGE_UPPER}_LIBRARIES)
+    if (${PACKAGE_UPPER}_LIBRARIES AND ARGN)
         log_success("Link    ${${PACKAGE_UPPER}_LIBRARIES} to ${ARGN}")
     endif()
 endfunction()

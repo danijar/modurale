@@ -29,11 +29,4 @@ ExternalProject_Add(SQLite
     BUILD_COMMAND      ${CMAKE_COMMAND} --build .
     #--Install step---------------
     INSTALL_DIR        ${CMAKE_INSTALL_PREFIX}
-    #--Output logging-------------
-    LOG_DOWNLOAD       ${LOGGING}
-    LOG_UPDATE         ${LOGGING}
-    LOG_CONFIGURE      ${LOGGING}
-    LOG_BUILD          ${LOGGING}
-    LOG_TEST           ${LOGGING}
-    LOG_INSTALL        ${LOGGING}
 )

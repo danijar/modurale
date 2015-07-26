@@ -11,7 +11,7 @@ install:
   - g++ --version
 before_script:
   - cd build
-  - cmake ../project
+  - cmake ../project/
 script:
   - cmake --build .
-  - engine/tests
+  - modurale/modurale-test

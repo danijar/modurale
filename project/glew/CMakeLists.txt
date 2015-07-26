@@ -26,11 +26,4 @@ ExternalProject_Add(GLEW
     #--Install step---------------
     INSTALL_DIR        ${CMAKE_INSTALL_PREFIX}
     INSTALL_COMMAND    env GLEW_DEST=${CMAKE_INSTALL_PREFIX} make install
-    #--Output logging-------------
-    LOG_DOWNLOAD       ${LOGGING}
-    LOG_UPDATE         ${LOGGING}
-    LOG_CONFIGURE      ${LOGGING}
-    LOG_BUILD          ${LOGGING}
-    LOG_TEST           ${LOGGING}
-    LOG_INSTALL        ${LOGGING}
 )

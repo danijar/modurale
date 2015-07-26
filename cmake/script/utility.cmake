@@ -1,3 +1,5 @@
+include(CMakeParseArguments)
+
 # copy_file(<source> <dest>)
 # Copy one file to another location.
 function(copy_file SOURCE DEST)

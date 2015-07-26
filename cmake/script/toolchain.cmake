@@ -1,6 +1,6 @@
 # Enable modern C++ features
 if (UNIX OR MINGW)
-	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++1y")
+	list(APPEND CMAKE_CXX_FLAGS -std=c++1y)
 endif()
 
 # Build variants; defaults to release

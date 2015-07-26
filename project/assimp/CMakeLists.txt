@@ -15,6 +15,7 @@ else()
 endif()
 
 # Download, configure, build and install
+# TODO: Make use of PREFIX instead of repeating it all over again
 ExternalProject_Add(Assimp
     PREFIX             ${CMAKE_CURRENT_BINARY_DIR}
     TMP_DIR            ${CMAKE_CURRENT_BINARY_DIR}/temp
@@ -40,11 +41,4 @@ ExternalProject_Add(Assimp
     TEST_COMMAND       ${ASSIMP_DEBUG_SYMBOLS_FIX}
     #--Install step---------------
     INSTALL_DIR        ${CMAKE_INSTALL_PREFIX}
-    #--Output logging-------------
-    LOG_DOWNLOAD       ${LOGGING}
-    LOG_UPDATE         ${LOGGING}
-    LOG_CONFIGURE      ${LOGGING}
-    LOG_BUILD          ${LOGGING}
-    LOG_TEST           ${LOGGING}
-    LOG_INSTALL        ${LOGGING}
 )

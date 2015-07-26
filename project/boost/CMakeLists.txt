@@ -54,6 +54,11 @@ elseif (WIN32)
     set(BOOST_ADDRESS_MODEL 32)
 endif()
 
+# Hide deprecated warnings
+if (UNIX OR MINGW)
+    set(CXX_FLAGS "-Wno-deprecated -Wno-deprecated-declarations")
+endif()
+
 # Use collected variables to download, configure, build and install.
 ExternalProject_Add(Boost
     PREFIX            ${CMAKE_CURRENT_BINARY_DIR}
@@ -78,17 +83,11 @@ ExternalProject_Add(Boost
                           address-model=${BOOST_ADDRESS_MODEL}
                           toolset=${BOOST_TOOLSET}
                           runtime-link=${BOOST_RUNTIME_LINK}
+                          cxxflags=${CXX_FLAGS}
                           --with-thread
                           --with-system
                           -sNO_BZIP2=1
     BUILD_IN_SOURCE   1
     #--Install step---------------
     INSTALL_COMMAND   ""
-    #--Output logging-------------
-    LOG_DOWNLOAD      ${LOGGING}
-    LOG_UPDATE        ${LOGGING}
-    LOG_CONFIGURE     ${LOGGING}
-    LOG_BUILD         ${LOGGING}
-    LOG_TEST          ${LOGGING}
-    LOG_INSTALL       ${LOGGING}
 )

@@ -11,9 +11,21 @@ function(log_success)
 endfunction()
 
 function(log_warning)
-    message(WARNING "${COLOR_YELLOW}${ARGV}${COLOR_RESET}")
+    message(STATUS "${COLOR_YELLOW}${ARGV}${COLOR_RESET}")
 endfunction()
 
 function(log_error)
-    message(SEND_ERROR "${COLOR_RED}${ARGV}${COLOR_RESET}")
+    message(STATUS "${COLOR_RED}${ARGV}${COLOR_RESET}")
+endfunction()
+
+function(log_info)
+    message(STATUS "${ARGV}")
+endfunction()
+
+function(print_headline TEXT)
+    message("")
+    message("################################################################")
+    message(" ${TEXT}")
+    message("################################################################")
+    message("")
 endfunction()
