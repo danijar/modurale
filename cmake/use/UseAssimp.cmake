@@ -1,5 +1,5 @@
-include(using)
+include(project)
 
-register_package(Assimp
+register_project(Assimp
     INCLUDES ASSIMP_INCLUDE_DIR
     LIBRARIES ASSIMP_LIBRARY)

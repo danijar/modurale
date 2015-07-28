@@ -6,9 +6,9 @@ cmake_minimum_required(VERSION 2.8.8)
 
 include(ExternalProject)
 
-include(using)
+include(project)
 
-use_package(GLEW)
+use_project(GLEW)
 
 # Download, configure, build and install
 ExternalProject_Add(SFML

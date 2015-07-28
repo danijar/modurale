@@ -36,9 +36,9 @@ cmake ../project/
 cmake --build .
 
 # Optionally, run tests.
-modurale/tests
+modurale/modurale-test
 
-# Launch the example application
+# Launch the example application.
 game/game
 ```
 

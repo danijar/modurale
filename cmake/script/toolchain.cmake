@@ -1,35 +1,35 @@
+include(utility)
+
 # Enable modern C++ features
-if (UNIX OR MINGW)
+if (CMAKE_COMPILER_IS_GNUCXX)
 	list(APPEND CMAKE_CXX_FLAGS -std=c++1y)
 endif()
 
 # Build variants; defaults to release
 set(CMAKE_CONFIGURATION_TYPES "Debug;Release" CACHE STRING "" FORCE)
-set(CMAKE_BUILD_TYPE "Release" CACHE STRING "")
-set(CMAKE_BUILD_TYPE ${CMAKE_BUILD_TYPE} CACHE STRING
-	"Whether to build Debug or Release builds." FORCE)
+add_config_variable(CMAKE_BUILD_TYPE STRING "Release"
+	"Whether to build Debug or Release builds.")
 
-# Dependency linkage type; default depends on platform
+# Linkage type; default depends on platform
 if (UNIX)
 	set(BUILD_SHARED_LIBS ON CACHE BOOL "")
 else()
 	set(BUILD_SHARED_LIBS OFF CACHE BOOL "")
 endif()
-set(BUILD_SHARED_LIBS ${BUILD_SHARED_LIBS} CACHE BOOL
-	"Whether to build static or dynamic libraries." FORCE)
+add_config_variable(BUILD_SHARED_LIBS BOOL ON "Whether to build static or "
+	"dynamic libraries of both the projects and its dependencies")
 
-# Runtime library linkage is set to match other library's linkage
+# Runtime library linkage is set to match general linkage
 if (BUILD_SHARED_LIBS)
 	set(USE_STATIC_STD_LIBS OFF)
 else()
 	set(USE_STATIC_STD_LIBS ON)
 endif()
-set(USE_STATIC_STD_LIBS ${USE_STATIC_STD_LIBS} CACHE BOOL
-	"This is set to opposite of USE_STATIC_STD_LIBS automatically." FORCE)
+add_config_variable(USE_STATIC_STD_LIBS BOOL OFF
+	"This is set to opposite of BUILD_SHARED_LIBS automatically.")
 
-# Runtime linkage; defaults to static
 if (USE_STATIC_STD_LIBS)
-	if (UNIX OR MINGW)
+	if (CMAKE_COMPILER_IS_GNUCXX)
 		set(CMAKE_EXE_LINKER_FLAGS "-static-libgcc -static-libstdc++")
 	elseif (MSVC)
 		set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /MT")

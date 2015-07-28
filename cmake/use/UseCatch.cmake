@@ -1,3 +1,3 @@
-include(using)
+include(project)
 
-register_package(Catch INCLUDES CATCH_INCLUDE_DIR)
+register_project(Catch INCLUDES CATCH_INCLUDE_DIR)

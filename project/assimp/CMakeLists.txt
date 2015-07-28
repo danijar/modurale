@@ -3,7 +3,15 @@
 ################################################################
 
 cmake_minimum_required(VERSION 2.8.8)
+
 include(ExternalProject)
+
+# Hide warnings
+if (CMAKE_COMPILER_IS_GNUCXX)
+    list(APPEND CMAKE_CXX_FLAGS -Wno-unused-variable)
+    list(APPEND CMAKE_CXX_FLAGS -Wno-unused-but-set-variable)
+    list(APPEND CMAKE_CXX_FLAGS -Wno-incompatible-pointer-types)
+endif()
 
 # Debug symbols fix for Visual Studio
 if (MSVC AND CMAKE_BUILD_TYPE STREQUAL "Debug")
@@ -32,6 +40,7 @@ ExternalProject_Add(Assimp
                        -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
                        -DBUILD_SHARED_LIBS=${BUILD_SHARED_LIBS}
                        -DUSE_STATIC_STD_LIBS=${USE_STATIC_STD_LIBS}
+                       -DCMAKE_CXX_FLAGS=${CMAKE_CXX_FLAGS}
                        -DASSIMP_BUILD_ASSIMP_TOOLS=FALSE
                        -DASSIMP_ENABLE_BOOST_WORKAROUND=TRUE
     #--Build step-----------------

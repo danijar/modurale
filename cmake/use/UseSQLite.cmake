@@ -1,5 +1,5 @@
-include(using)
+include(project)
 
-register_package(SQLite
+register_project(SQLite
     INCLUDES SQLITE_INCLUDE_DIR
     LIBRARIES SQLITE_LIBRARY)

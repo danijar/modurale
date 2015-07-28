@@ -4,16 +4,20 @@
 
 cmake_minimum_required(VERSION 2.8.8)
 
+include(project)
 include(utility)
 
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include)
+include_directories(include)
 
 collect_files(SOURCE PATHS src EXTENSIONS cpp)
 add_executable(game ${HEADER} ${SOURCE})
-add_dependencies(game engine)
-target_link_libraries(game engine)
 
 collect_files(TEST PATHS test EXTENSIONS cpp)
 add_executable(game-test ${HEADER} ${SOURCE} ${TEST})
-add_dependencies(game-test engine)
-target_link_libraries(game-test engine)
+
+use_project(modurale game game-test)
+
+install_project(game
+    RUNTIMES game game-test
+    # FOLDERS script texture mesh
+)
