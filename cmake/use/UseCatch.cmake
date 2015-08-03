@@ -1,3 +1,3 @@
 include(project)
 
-register_project(Catch INCLUDES CATCH_INCLUDE_DIR)
+register_project(Catch INCLUDE_DIRS CATCH_INCLUDE_DIR)

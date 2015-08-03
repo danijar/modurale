@@ -60,7 +60,6 @@ if (UNIX OR MINGW)
     set(CXX_FLAGS "-Wno-deprecated -Wno-deprecated-declarations")
 endif()
 
-# Use collected variables to download, configure, build and install.
 ExternalProject_Add(Boost
     PREFIX            ${CMAKE_CURRENT_BINARY_DIR}
     TMP_DIR           ${CMAKE_CURRENT_BINARY_DIR}/temp
@@ -69,6 +68,7 @@ ExternalProject_Add(Boost
     DOWNLOAD_DIR      ${CMAKE_CURRENT_BINARY_DIR}/download
     URL               http://downloads.sourceforge.net/project/boost/boost/1.56.0/boost_1_56_0.tar.gz
     URL_MD5           8c54705c424513fa2be0042696a3a162
+    DOWNLOAD_NO_PROGRESS 1
     #--Update/Patch step----------
     UPDATE_COMMAND    ""
     #--Configure step-------------
@@ -92,3 +92,6 @@ ExternalProject_Add(Boost
     #--Install step---------------
     INSTALL_COMMAND   ""
 )
+
+# Dummy step to get an install target
+install(CODE "")

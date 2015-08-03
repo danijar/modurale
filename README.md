@@ -27,19 +27,18 @@ cd modurale
 chmod +x tool/setup-<platform>.sh
 tool/setup-<platform>.sh
 
-# Configure and build external dependencies. They will be downloaded first.
-# This can take a couple of minutes.
+# Build the projects. They will download and build dependencies as well. The
+# step can take a couple of minutes.
 cd build
 cmake ../project/
-
-# Build the engine and application.
 cmake --build .
+cd ..
 
-# Optionally, run tests.
-modurale/modurale-test
+# Optionally, run the tests.
+install/modurale/bin/modurale-test
 
-# Launch the example application.
-game/game
+# Run the example application.
+install/game/bin/game
 ```
 
 Direct dependencies

@@ -7,11 +7,12 @@ before_install:
   - chmod a+x tool/setup-ubuntu.sh
 install:
   - ./tool/setup-ubuntu.sh
+before_script:
   - cmake --version
   - g++ --version
-before_script:
   - cd build
   - cmake ../project/
 script:
   - cmake --build .
-  - modurale/modurale-test
+  - cd ..
+  - install/modurale/modurale-test

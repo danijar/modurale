@@ -6,7 +6,6 @@ cmake_minimum_required(VERSION 2.8.8)
 
 include(ExternalProject)
 
-# Download, configure, build and install.
 ExternalProject_Add(SQLite
     PREFIX             ${CMAKE_CURRENT_BINARY_DIR}
     TMP_DIR            ${CMAKE_CURRENT_BINARY_DIR}/temp
@@ -15,6 +14,7 @@ ExternalProject_Add(SQLite
     DOWNLOAD_DIR       ${CMAKE_CURRENT_BINARY_DIR}/download
     URL                http://www.sqlite.org/2014/sqlite-autoconf-3080704.tar.gz
     URL_HASH           SHA1=70ca0b8884a6b145b7f777724670566e2b4f3cde
+    DOWNLOAD_NO_PROGRESS 1
     #--Update/Patch step----------
     UPDATE_COMMAND     ${CMAKE_COMMAND} -E copy
                            ${CMAKE_CURRENT_SOURCE_DIR}/make.cmake
@@ -30,3 +30,5 @@ ExternalProject_Add(SQLite
     #--Install step---------------
     INSTALL_DIR        ${CMAKE_INSTALL_PREFIX}
 )
+
+install(CODE "")

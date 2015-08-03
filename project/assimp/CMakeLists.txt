@@ -8,9 +8,11 @@ include(ExternalProject)
 
 # Hide warnings
 if (CMAKE_COMPILER_IS_GNUCXX)
-    list(APPEND CMAKE_CXX_FLAGS -Wno-unused-variable)
-    list(APPEND CMAKE_CXX_FLAGS -Wno-unused-but-set-variable)
-    list(APPEND CMAKE_CXX_FLAGS -Wno-incompatible-pointer-types)
+    list(APPEND CMAKE_CXX_FLAGS
+        -Wno-unused-variable
+        -Wno-unused-but-set-variable
+        -Wno-incompatible-pointer-types
+        -Wno-deprecated-variable)
 endif()
 
 # Debug symbols fix for Visual Studio
@@ -22,8 +24,10 @@ else()
     set(ASSIMP_DEBUG_SYMBOLS_FIX "")
 endif()
 
-# Download, configure, build and install
-# TODO: Make use of PREFIX instead of repeating it all over again
+# TODO: Specify paths relative to PREFIX if that works
+# TODO: Why not download into ${CMAKE_CURRENT_BINARY_DIR}/download?
+# TODO: Indent enough for longest key name
+# TODO: Disable Boost workaround
 ExternalProject_Add(Assimp
     PREFIX             ${CMAKE_CURRENT_BINARY_DIR}
     TMP_DIR            ${CMAKE_CURRENT_BINARY_DIR}/temp
@@ -32,6 +36,7 @@ ExternalProject_Add(Assimp
     DOWNLOAD_DIR       ${CMAKE_CURRENT_BINARY_DIR}/source
     GIT_REPOSITORY     https://github.com/danijar/assimp.git
     GIT_TAG            2219694
+    DOWNLOAD_NO_PROGRESS 1
     #--Update/Patch step----------
     UPDATE_COMMAND     ""
     #--Configure step-------------
@@ -51,3 +56,6 @@ ExternalProject_Add(Assimp
     #--Install step---------------
     INSTALL_DIR        ${CMAKE_INSTALL_PREFIX}
 )
+
+# Dummy step to get an install target
+install(CODE "")

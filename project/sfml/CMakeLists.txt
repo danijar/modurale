@@ -5,20 +5,19 @@
 cmake_minimum_required(VERSION 2.8.8)
 
 include(ExternalProject)
-
 include(project)
 
 use_project(GLEW)
 
-# Download, configure, build and install
 ExternalProject_Add(SFML
     PREFIX             ${CMAKE_CURRENT_BINARY_DIR}
     TMP_DIR            ${CMAKE_CURRENT_BINARY_DIR}/temp
     STAMP_DIR          ${CMAKE_CURRENT_BINARY_DIR}/stamp
     #--Download step--------------
     DOWNLOAD_DIR       ${CMAKE_CURRENT_BINARY_DIR}/source
-    GIT_REPOSITORY     https://github.com/LaurentGomila/SFML.git
+    GIT_REPOSITORY     https://github.com/SFML/SFML.git
     GIT_TAG            e257909
+    DOWNLOAD_NO_PROGRESS 1
     #--Update/Patch step----------
     UPDATE_COMMAND     ""
     #--Configure step-------------
@@ -33,3 +32,6 @@ ExternalProject_Add(SFML
     #--Install step---------------
     INSTALL_DIR        ${CMAKE_INSTALL_PREFIX}
 )
+
+# Dummy step to get an install target
+install(CODE "")

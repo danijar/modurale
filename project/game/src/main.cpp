@@ -1,19 +1,16 @@
 #include <exception>
 #include <iostream>
-#include "system/system.hpp"
-#include "system/managers.hpp"
-#include "module/window/module.hpp"
-
-using namespace std;
-using namespace engine;
+#include "modurale/system/system.hpp"
+#include "modurale/system/managers.hpp"
+#include "modurale/module/window/module.hpp"
 
 int main()
 {
 	try {
-		system::system system;
-		system::managers managers;
+		engine::system::system system;
+		engine::system::managers managers;
 
-		module::window window("window", managers);
+		engine::module::window window("window", managers);
 		system.attach(window);
 
 		while (system.running())
@@ -21,8 +18,8 @@ int main()
 
 		system.detach("window");
 	} catch (std::exception &e) {
-		cerr << "Uncaught exception: " << e.what() << endl;
-		cin.get();
+		std::cerr << "Uncaught exception: " << e.what() << std::endl;
+		std::cin.get();
 	}
 
 	return 0;

@@ -1,0 +1,30 @@
+# Configure script to use @PROJECT@
+#
+# @PROJECT_UPPER@_ROOT         - Base directory of the @PROJECT@
+#                                installation.
+# @PROJECT_UPPER@_INCLUDE_DIRS - Paths to the header files.
+# @PROJECT_UPPER@_LIBRARIES    - List of libraries to link against.
+# @PROJECT_UPPER@_DEPENDENCIES - List of libraries @PROJECT@
+#                                depends on needed for static linking.
+set(@PROJECT_UPPER@_ROOT ${CMAKE_CURRENT_LIST_DIR}/../../../)
+get_filename_component(@PROJECT_UPPER@_ROOT ${@PROJECT_UPPER@_ROOT} ABSOLUTE)
+
+# Reconstruct paths to include directories
+foreach(PATH @CONFIG_INCLUDE_DIRS@)
+    if (NOT IS_ABSOLUTE ${PATH})
+        set(PATH ${@PROJECT_UPPER@_ROOT}/${PATH})
+    endif()
+    set(@PROJECT_UPPER@_INCLUDE_DIRS ${@PROJECT_UPPER@_INCLUDE_DIRS} ${PATH})
+endforeach()
+
+# Reconstruct paths to library files
+foreach(LIBRARY @CONFIG_LIBRARIES@)
+    message("LIBRARY_PATH_HINT ${@PROJECT_UPPER@_ROOT}/lib")
+    find_library(${LIBRARY}_LIBRARY ${LIBRARY} ${@PROJECT_UPPER@_ROOT}/lib)
+    message("${LIBRARY}_LIBRARY ${${LIBRARY}_LIBRARY}")
+    set(@PROJECT_UPPER@_LIBRARIES ${@PROJECT_UPPER@_LIBRARIES}
+        ${${LIBRARY}_LIBRARY})
+endforeach()
+
+# Hard-code dependencies
+set(@PROJECT_UPPER@_DEPENDENCIES @CONFIG_DEPENDENCIES@)
