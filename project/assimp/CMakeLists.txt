@@ -27,20 +27,19 @@ else()
     set(ASSIMP_DEBUG_SYMBOLS_FIX "")
 endif()
 
-# TODO: Specify paths relative to PREFIX if that works
 ExternalProject_Add(Assimp
     PREFIX               ${CMAKE_CURRENT_BINARY_DIR}
-    TMP_DIR              ${CMAKE_CURRENT_BINARY_DIR}/temp
-    STAMP_DIR            ${CMAKE_CURRENT_BINARY_DIR}/stamp
+    TMP_DIR              temp
+    STAMP_DIR            stamp
     #--Download step--------------
-    DOWNLOAD_DIR         ${CMAKE_CURRENT_BINARY_DIR}/download
+    DOWNLOAD_DIR         download
     GIT_REPOSITORY       https://github.com/assimp/assimp.git
     GIT_TAG              524834c
     DOWNLOAD_NO_PROGRESS 1
     #--Update/Patch step----------
     UPDATE_COMMAND       ""
     #--Configure step-------------
-    SOURCE_DIR           ${CMAKE_CURRENT_BINARY_DIR}/source
+    SOURCE_DIR           source
     CMAKE_ARGS           -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
                          -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
                          -DBUILD_SHARED_LIBS=${BUILD_SHARED_LIBS}
@@ -48,7 +47,7 @@ ExternalProject_Add(Assimp
                          -DCMAKE_CXX_FLAGS=${CMAKE_CXX_FLAGS}
                          -DASSIMP_BUILD_ASSIMP_TOOLS=FALSE
     #--Build step-----------------
-    BINARY_DIR           ${CMAKE_CURRENT_BINARY_DIR}/build
+    BINARY_DIR           build
     #--Test step-----------------
     TEST_BEFORE_INSTALL  1
     TEST_COMMAND         ${ASSIMP_DEBUG_SYMBOLS_FIX}

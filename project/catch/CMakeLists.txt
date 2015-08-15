@@ -8,10 +8,10 @@ include(ExternalProject)
 
 ExternalProject_Add(Catch
     PREFIX               ${CMAKE_CURRENT_BINARY_DIR}
-    TMP_DIR              ${CMAKE_CURRENT_BINARY_DIR}/temp
-    STAMP_DIR            ${CMAKE_CURRENT_BINARY_DIR}/stamp
+    TMP_DIR              temp
+    STAMP_DIR            stamp
     #--Download step--------------
-    DOWNLOAD_DIR         ${CMAKE_CURRENT_BINARY_DIR}/download
+    DOWNLOAD_DIR         download
     GIT_REPOSITORY       https://github.com/philsquared/Catch.git
     GIT_TAG              3b18d9e
     DOWNLOAD_NO_PROGRESS 1
@@ -19,7 +19,7 @@ ExternalProject_Add(Catch
     UPDATE_COMMAND       ""
     #--Configure step-------------
     CONFIGURE_COMMAND    ""
-    SOURCE_DIR           ${CMAKE_CURRENT_BINARY_DIR}/source
+    SOURCE_DIR           source
     #--Build step-----------------
     BUILD_COMMAND        ""
     BINARY_DIR           ${CMAKE_CURRENT_BINARY_DIR}

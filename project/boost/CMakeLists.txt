@@ -62,17 +62,17 @@ endif()
 
 ExternalProject_Add(Boost
     PREFIX               ${CMAKE_CURRENT_BINARY_DIR}
-    TMP_DIR              ${CMAKE_CURRENT_BINARY_DIR}/temp
-    STAMP_DIR            ${CMAKE_CURRENT_BINARY_DIR}/stamp
+    TMP_DIR              temp
+    STAMP_DIR            stamp
     #--Download step--------------
-    DOWNLOAD_DIR         ${CMAKE_CURRENT_BINARY_DIR}/download
+    DOWNLOAD_DIR         download
     URL                  http://downloads.sourceforge.net/project/boost/boost/1.56.0/boost_1_56_0.tar.gz
     URL_MD5              8c54705c424513fa2be0042696a3a162
     DOWNLOAD_NO_PROGRESS 1
     #--Update/Patch step----------
     UPDATE_COMMAND       ""
     #--Configure step-------------
-    SOURCE_DIR           ${CMAKE_CURRENT_BINARY_DIR}/source
+    SOURCE_DIR           source
     CONFIGURE_COMMAND    ${BOOST_CONFIGURE_COMMAND}
     #--Build step-----------------
     BUILD_COMMAND        ${BOOST_BUILD_EXECUTABLE} install
