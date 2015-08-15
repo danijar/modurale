@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # Make newer package versions available
-sudo add-apt-repository -y ppa:kalakris/cmake
+sudo add-apt-repository -y ppa:andykimpe/cmake
 sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
 
 # Update package information
