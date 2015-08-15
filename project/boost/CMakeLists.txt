@@ -61,36 +61,36 @@ if (UNIX OR MINGW)
 endif()
 
 ExternalProject_Add(Boost
-    PREFIX            ${CMAKE_CURRENT_BINARY_DIR}
-    TMP_DIR           ${CMAKE_CURRENT_BINARY_DIR}/temp
-    STAMP_DIR         ${CMAKE_CURRENT_BINARY_DIR}/stamp
+    PREFIX               ${CMAKE_CURRENT_BINARY_DIR}
+    TMP_DIR              ${CMAKE_CURRENT_BINARY_DIR}/temp
+    STAMP_DIR            ${CMAKE_CURRENT_BINARY_DIR}/stamp
     #--Download step--------------
-    DOWNLOAD_DIR      ${CMAKE_CURRENT_BINARY_DIR}/download
-    URL               http://downloads.sourceforge.net/project/boost/boost/1.56.0/boost_1_56_0.tar.gz
-    URL_MD5           8c54705c424513fa2be0042696a3a162
+    DOWNLOAD_DIR         ${CMAKE_CURRENT_BINARY_DIR}/download
+    URL                  http://downloads.sourceforge.net/project/boost/boost/1.56.0/boost_1_56_0.tar.gz
+    URL_MD5              8c54705c424513fa2be0042696a3a162
     DOWNLOAD_NO_PROGRESS 1
     #--Update/Patch step----------
-    UPDATE_COMMAND    ""
+    UPDATE_COMMAND       ""
     #--Configure step-------------
-    SOURCE_DIR        ${CMAKE_CURRENT_BINARY_DIR}/source
-    CONFIGURE_COMMAND ${BOOST_CONFIGURE_COMMAND}
+    SOURCE_DIR           ${CMAKE_CURRENT_BINARY_DIR}/source
+    CONFIGURE_COMMAND    ${BOOST_CONFIGURE_COMMAND}
     #--Build step-----------------
-    BUILD_COMMAND     ${BOOST_BUILD_EXECUTABLE} install
-                          --build-dir=${CMAKE_CURRENT_BINARY_DIR}/build
-                          --prefix=${CMAKE_INSTALL_PREFIX}
-                          variant=${BOOST_VARIANT}
-                          link=${BOOST_LINK}
-                          threading=multi
-                          address-model=${BOOST_ADDRESS_MODEL}
-                          toolset=${BOOST_TOOLSET}
-                          runtime-link=${BOOST_RUNTIME_LINK}
-                          cxxflags=${CXX_FLAGS}
-                          --with-thread
-                          --with-system
-                          -sNO_BZIP2=1
-    BUILD_IN_SOURCE   1
+    BUILD_COMMAND        ${BOOST_BUILD_EXECUTABLE} install
+                             --build-dir=${CMAKE_CURRENT_BINARY_DIR}/build
+                             --prefix=${CMAKE_INSTALL_PREFIX}
+                             variant=${BOOST_VARIANT}
+                             link=${BOOST_LINK}
+                             threading=multi
+                             address-model=${BOOST_ADDRESS_MODEL}
+                             toolset=${BOOST_TOOLSET}
+                             runtime-link=${BOOST_RUNTIME_LINK}
+                             cxxflags=${CXX_FLAGS}
+                             --with-thread
+                             --with-system
+                             -sNO_BZIP2=1
+    BUILD_IN_SOURCE      1
     #--Install step---------------
-    INSTALL_COMMAND   ""
+    INSTALL_COMMAND      ""
 )
 
 # Dummy step to get an install target

@@ -7,25 +7,25 @@ cmake_minimum_required(VERSION 2.8.8)
 include(ExternalProject)
 
 ExternalProject_Add(GLEW
-    PREFIX             ${CMAKE_BINARY_DIR}
-    TMP_DIR            ${CMAKE_BINARY_DIR}/temp
-    STAMP_DIR          ${CMAKE_BINARY_DIR}/stamp
+    PREFIX               ${CMAKE_BINARY_DIR}
+    TMP_DIR              ${CMAKE_BINARY_DIR}/temp
+    STAMP_DIR            ${CMAKE_BINARY_DIR}/stamp
     #--Download step--------------
-    DOWNLOAD_DIR       ${CMAKE_BINARY_DIR}/source
-    URL                http://garr.dl.sourceforge.net/project/glew/glew/1.12.0/glew-1.12.0.tgz
-    URL_HASH           SHA1=070dfb61dbb7cd0915517decf467264756469a94
+    DOWNLOAD_DIR         ${CMAKE_BINARY_DIR}/download
+    URL                  http://garr.dl.sourceforge.net/project/glew/glew/1.12.0/glew-1.12.0.tgz
+    URL_HASH             SHA1=070dfb61dbb7cd0915517decf467264756469a94
     DOWNLOAD_NO_PROGRESS 1
     #--Update/Patch step----------
-    UPDATE_COMMAND     ""
+    UPDATE_COMMAND       ""
     #--Configure step-------------
-    SOURCE_DIR         ${CMAKE_BINARY_DIR}/source
-    CONFIGURE_COMMAND  ""
+    SOURCE_DIR           ${CMAKE_BINARY_DIR}/source
+    CONFIGURE_COMMAND    ""
     #--Build step-----------------
-    BINARY_DIR         ${CMAKE_BINARY_DIR}/source
-    BUILD_COMMAND      make all
+    BINARY_DIR           ${CMAKE_BINARY_DIR}/source
+    BUILD_COMMAND        make all
     #--Install step---------------
-    INSTALL_DIR        ${CMAKE_INSTALL_PREFIX}
-    INSTALL_COMMAND    env GLEW_DEST=${CMAKE_INSTALL_PREFIX} make install
+    INSTALL_DIR          ${CMAKE_INSTALL_PREFIX}
+    INSTALL_COMMAND      env GLEW_DEST=${CMAKE_INSTALL_PREFIX} make install
 )
 
 # Dummy step to get an install target
