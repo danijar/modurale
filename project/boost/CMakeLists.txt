@@ -55,9 +55,9 @@ elseif (WIN32)
     set(BOOST_ADDRESS_MODEL 32)
 endif()
 
-# Hide deprecated warnings
-if (UNIX OR MINGW)
-    set(CXX_FLAGS "-Wno-deprecated -Wno-deprecated-declarations")
+# Hide warnings
+if (CMAKE_COMPILER_IS_GNUCXX)
+    list(APPEND CMAKE_CXX_FLAGS -W)
 endif()
 
 ExternalProject_Add(Boost

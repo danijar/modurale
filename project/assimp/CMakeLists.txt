@@ -11,11 +11,7 @@ use_project(Boost)
 
 # Hide warnings
 if (CMAKE_COMPILER_IS_GNUCXX)
-    list(APPEND CMAKE_CXX_FLAGS
-        -Wno-unused-variable
-        -Wno-unused-but-set-variable
-        -Wno-incompatible-pointer-types
-        -Wno-deprecated-variable)
+    list(APPEND CMAKE_CXX_FLAGS -W)
 endif()
 
 # Debug symbols fix for Visual Studio
