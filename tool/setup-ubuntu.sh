@@ -17,3 +17,6 @@ sudo ln -s /usr/bin/g++-5 /usr/bin/g++
 # Install dependencies
 sudo apt-get install -qq libfreetype6-dev libjpeg-dev libopenal-dev \
     libglu1-mesa-dev libsndfile1-dev libudev-dev libx11-dev libxrandr-dev
+
+# Workaround for CMake 2.8.12 to find Freetype
+sudo ln -s /usr/include/freetype2/freetype /usr/include/freetype

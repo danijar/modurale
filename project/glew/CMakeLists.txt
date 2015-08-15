@@ -14,7 +14,6 @@ ExternalProject_Add(GLEW
     DOWNLOAD_DIR         download
     URL                  http://garr.dl.sourceforge.net/project/glew/glew/1.12.0/glew-1.12.0.tgz
     URL_HASH             SHA1=070dfb61dbb7cd0915517decf467264756469a94
-    DOWNLOAD_NO_PROGRESS 1
     #--Update/Patch step----------
     UPDATE_COMMAND       ""
     #--Configure step-------------

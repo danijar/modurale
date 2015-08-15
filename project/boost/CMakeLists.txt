@@ -2,7 +2,7 @@
 # Boost
 ################################################################
 
-cmake_minimum_required(VERSION 2.8.8)
+cmake_minimum_required(VERSION 2.8.12)
 
 include(ExternalProject)
 
@@ -57,7 +57,9 @@ endif()
 
 # Hide warnings
 if (CMAKE_COMPILER_IS_GNUCXX)
-    list(APPEND CMAKE_CXX_FLAGS -W)
+    set(CXX_FLAGS "-w")
+else()
+    set(CXX_FLAGS "")
 endif()
 
 ExternalProject_Add(Boost
@@ -68,7 +70,6 @@ ExternalProject_Add(Boost
     DOWNLOAD_DIR         download
     URL                  http://downloads.sourceforge.net/project/boost/boost/1.56.0/boost_1_56_0.tar.gz
     URL_MD5              8c54705c424513fa2be0042696a3a162
-    DOWNLOAD_NO_PROGRESS 1
     #--Update/Patch step----------
     UPDATE_COMMAND       ""
     #--Configure step-------------

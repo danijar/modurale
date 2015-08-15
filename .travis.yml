@@ -15,4 +15,4 @@ before_script:
 script:
   - cmake --build .
   - cd ..
-  - install/modurale/modurale-test
+  - install/modurale/bin/modurale-test

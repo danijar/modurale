@@ -2,7 +2,7 @@
 # SFML
 ################################################################
 
-cmake_minimum_required(VERSION 2.8.8)
+cmake_minimum_required(VERSION 2.8.12)
 
 include(ExternalProject)
 include(project)
@@ -17,7 +17,6 @@ ExternalProject_Add(SFML
     DOWNLOAD_DIR         download
     GIT_REPOSITORY       https://github.com/SFML/SFML.git
     GIT_TAG              e257909
-    DOWNLOAD_NO_PROGRESS 1
     #--Update/Patch step----------
     UPDATE_COMMAND       ""
     #--Configure step-------------

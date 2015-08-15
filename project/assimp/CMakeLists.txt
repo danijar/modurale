@@ -11,7 +11,7 @@ use_project(Boost)
 
 # Hide warnings
 if (CMAKE_COMPILER_IS_GNUCXX)
-    list(APPEND CMAKE_CXX_FLAGS -W)
+    list(APPEND CMAKE_CXX_FLAGS "-w")
 endif()
 
 # Debug symbols fix for Visual Studio
@@ -31,7 +31,6 @@ ExternalProject_Add(Assimp
     DOWNLOAD_DIR         download
     GIT_REPOSITORY       https://github.com/assimp/assimp.git
     GIT_TAG              524834c
-    DOWNLOAD_NO_PROGRESS 1
     #--Update/Patch step----------
     UPDATE_COMMAND       ""
     #--Configure step-------------
